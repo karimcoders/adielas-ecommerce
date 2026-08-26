@@ -1,62 +1,169 @@
-import { Coffee, Leaf, Scale, XCircle } from "lucide-react";
+import { Scale, Sparkles, XCircle, Zap } from "lucide-react";
 import { Reveal } from "./Reveal";
 
-const benefits = [
+function Smiley({ className = "" }: { className?: string }) {
+  return (
+    <span
+      className={`flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-[0_10px_24px_rgba(20,56,15,0.16)] ${className}`}
+    >
+      <svg viewBox="0 0 48 48" className="h-11 w-11" aria-hidden="true">
+        <circle
+          cx="24"
+          cy="24"
+          r="17"
+          fill="none"
+          stroke="var(--sage-deep)"
+          strokeWidth="3"
+        />
+        <circle cx="18" cy="20" r="2.2" fill="var(--sage-deep)" />
+        <circle cx="30" cy="20" r="2.2" fill="var(--sage-deep)" />
+        <path
+          d="M16 28c2.4 3.6 6 5.4 8 5.4s5.6-1.8 8-5.4"
+          fill="none"
+          stroke="var(--sage-deep)"
+          strokeWidth="3"
+          strokeLinecap="round"
+        />
+      </svg>
+    </span>
+  );
+}
+
+/* hand-drawn ellipse used to circle words, like a marker scribble */
+function Scribble({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="relative inline-block px-2">
+      {children}
+      <svg
+        viewBox="0 0 120 44"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+        className="pointer-events-none absolute -inset-x-1 inset-y-0 h-full w-[calc(100%+8px)]"
+      >
+        <ellipse
+          cx="60"
+          cy="22"
+          rx="56"
+          ry="18"
+          fill="none"
+          stroke="var(--forest)"
+          strokeWidth="2.5"
+          transform="rotate(-3 60 22)"
+        />
+      </svg>
+    </span>
+  );
+}
+
+const scenes = [
   {
-    Icon: Leaf,
-    title: "MORE TASTE",
-    copy: "Ceremonial-grade matcha, stone-ground slow for a naturally sweet, umami-rich sip — never bitter.",
+    Icon: Sparkles,
+    title: ["MORE", "TASTE"],
+    side: "right" as const,
+    caption: (
+      <>
+        <Scribble>Stone-ground matcha,</Scribble> silky smooth and never
+        bitter — premium taste in every green sip.
+      </>
+    ),
   },
   {
-    Icon: Coffee,
-    title: "MORE CAFFEINE",
-    copy: "85mg of clean caffeine paired with L-theanine for calm, crash-free energy that lasts hours.",
+    Icon: Zap,
+    title: ["MORE", "CAFFEINE"],
+    side: "left" as const,
+    caption: (
+      <>
+        85 mg of natural caffeine per cup — about as much as a cappuccino,
+        your daily clean energy boost.
+      </>
+    ),
   },
   {
     Icon: Scale,
-    title: "MORE WEIGHT LOSS",
-    copy: "20g protein plus glucomannan fiber keep you fuller for longer, so snacking quietly steps aside.",
+    title: ["MORE WEIGHT", "LOSS"],
+    side: "right" as const,
+    caption: (
+      <>
+        With glucomannan fiber that helps you feel full — built for your
+        conscious lifestyle.
+      </>
+    ),
   },
   {
     Icon: XCircle,
-    title: "NO ADDED SUGAR",
-    copy: "95% less sugar than a café latte. All creaminess, zero of the syrupy regret.",
+    title: ["NO ADDED", "SUGAR"],
+    side: "left" as const,
+    caption: (
+      <>
+        Only naturally occurring sugars, with far less of them than your
+        usual café matcha latte.
+      </>
+    ),
   },
 ];
 
 export function Benefits() {
   return (
-    <section id="benefits" className="relative py-16 sm:py-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
-        <div className="space-y-6 sm:space-y-10">
-          {benefits.map(({ Icon, title, copy }, i) => (
+    <section id="benefits" className="relative overflow-x-clip bg-[var(--cream-page)] py-10 sm:py-16">
+      {/* white connector curve snaking through all scenes */}
+      <svg
+        viewBox="0 0 1440 3400"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 h-full w-full"
+      >
+        <path
+          d="M-80 240 C 320 60, 760 420, 1180 240 S 1560 620, 1120 900 C 700 1160, 320 1040, 220 1420 C 140 1780, 760 1740, 1120 1900 C 1500 2070, 1180 2460, 760 2480 C 380 2500, 240 2760, 560 2960 C 880 3160, 1300 3060, 1520 2860"
+          fill="none"
+          stroke="#ffffff"
+          strokeWidth="42"
+          strokeLinecap="round"
+        />
+      </svg>
+
+      <div className="relative">
+        {/* sticky can riding the center of all scenes */}
+        <div className="sticky top-[24vh] z-10 h-0">
+          <div className="pointer-events-none mx-auto -mt-6 w-[190px] sm:w-[240px]">
+            <div className="animate-sway">
+              <img
+                src="/images/more/can-green-cut.png"
+                alt=""
+                aria-hidden="true"
+                className="w-full drop-shadow-[0_36px_40px_rgba(20,56,15,0.30)]"
+              />
+            </div>
+          </div>
+        </div>
+
+        {scenes.map(({ Icon, title, side, caption }, i) => (
+          <div
+            key={title.join(" ")}
+            className="flex min-h-[86vh] items-center px-4 sm:px-6 lg:px-10"
+          >
             <Reveal
-              key={title}
-              delay={i * 60}
-              variant={i % 2 === 0 ? "left" : "right"}
+              variant={side === "right" ? "right" : "left"}
+              className={`w-full lg:w-1/2 ${
+                side === "right" ? "lg:justify-self-end" : "lg:justify-self-start"
+              }`}
             >
-              <div className="group relative flex flex-col gap-4 pb-6 sm:flex-row sm:items-center sm:gap-10 sm:pb-10">
-                <div className="flex items-center gap-4 sm:w-[46%] sm:shrink-0">
-                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[var(--forest)] text-[var(--cream)] transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110 sm:h-16 sm:w-16">
-                    <Icon className="h-5 w-5 sm:h-7 sm:w-7" />
-                  </span>
-                  <h3
-                    className={`font-display text-[clamp(2rem,6vw,4.5rem)] leading-none transition-colors duration-300 ${
-                      i % 2 === 0 ? "text-[var(--forest)]" : "text-white"
-                    } group-hover:text-[var(--forest-deep)]`}
-                  >
-                    {title}
+              <div className="relative mx-auto max-w-[560px]">
+                <Smiley className="absolute -top-8 left-1/2 z-10 -translate-x-1/2" />
+                <div className="rounded-[1.6rem] bg-[var(--sage)] px-6 pb-10 pt-16 text-center shadow-[0_24px_60px_rgba(20,56,15,0.16)] sm:px-10 sm:pb-12">
+                  <h3 className="font-display text-[clamp(2.6rem,5.5vw,4.6rem)] leading-[0.92] text-white">
+                    {title[0]}
+                    <br />
+                    {title[1]}
                   </h3>
+                  <p className="mx-auto mt-6 flex max-w-sm flex-wrap items-start justify-center gap-x-2 text-sm font-semibold leading-relaxed text-[var(--forest-deep)] sm:text-base">
+                    <Icon className="mt-1 h-4 w-4 shrink-0" />
+                    <span>{caption}</span>
+                  </p>
                 </div>
-                <p className="max-w-md text-sm font-medium leading-relaxed text-[var(--forest-deep)]/90 sm:text-base">
-                  {copy}
-                </p>
-                {/* underline that draws itself in on reveal */}
-                <span aria-hidden="true" className="rule-draw" />
               </div>
             </Reveal>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </section>
   );

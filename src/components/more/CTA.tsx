@@ -1,84 +1,93 @@
-import { Package, Truck } from "lucide-react";
-import { MaskedLines, Reveal } from "./Reveal";
+import { Reveal } from "./Reveal";
+import { MaskedLines } from "./Reveal";
 import { Parallax } from "./motion";
-import { ArrowUpRight, Squiggle } from "./icons";
 
-const payments = ["VISA", "Mastercard", "PayPal", "Apple Pay", "G Pay", "Amex", "Klarna"];
+function PayBubble({
+  label,
+  size,
+  className = "",
+  speed = 0.06,
+}: {
+  label: string;
+  size: string;
+  className?: string;
+  speed?: number;
+}) {
+  return (
+    <Parallax speed={speed} className={`absolute ${className}`}>
+      <span
+        className={`${size} flex items-center justify-center rounded-full bg-white text-center text-sm font-bold tracking-tight text-[#1a1a1a] shadow-[0_18px_36px_rgba(20,56,15,0.10)] sm:text-base`}
+      >
+        {label}
+      </span>
+    </Parallax>
+  );
+}
 
 export function CTA() {
   return (
-    <section className="relative overflow-x-clip bg-[var(--forest)] py-20 text-[var(--cream)] sm:py-28">
-      {/* decorative rings — slow drift on scroll */}
-      <Parallax
-        speed={0.14}
-        className="pointer-events-none absolute -right-24 -top-24 h-72 w-72"
+    <section className="relative overflow-x-clip bg-[var(--sage)] pb-16 pt-20 text-[var(--forest)] sm:pb-24 sm:pt-28">
+      {/* wavy white line through the background */}
+      <svg
+        viewBox="0 0 1440 900"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 h-full w-full"
       >
-        <div className="h-full w-full rounded-full border-[26px] border-white/10" />
-      </Parallax>
-      <Parallax
-        speed={-0.1}
-        className="pointer-events-none absolute -bottom-32 -left-20 h-80 w-80"
-      >
-        <div className="h-full w-full animate-spin-slow rounded-full border border-dashed border-white/20" />
-      </Parallax>
+        <path
+          d="M-60 620 C 240 480, 420 700, 700 560 S 1140 420, 1500 560"
+          fill="none"
+          stroke="#ffffff"
+          strokeWidth="40"
+          strokeLinecap="round"
+          opacity="0.9"
+        />
+      </svg>
 
       <div className="relative mx-auto max-w-5xl px-4 text-center sm:px-6">
-        <p className="font-display text-sm tracking-[0.3em] text-white/70">
-          3–5 DAYS DELIVERY
-        </p>
-        <h2 className="font-display mt-4 text-[clamp(2.6rem,7vw,5.5rem)] leading-[0.95]">
+        <Reveal variant="down">
+          <p className="font-hand absolute -top-10 left-2 hidden -rotate-6 text-2xl text-[var(--forest)] sm:block lg:left-10">
+            3–5 days
+            <br />
+            delivery
+          </p>
+        </Reveal>
+
+        <h2 className="mx-auto max-w-4xl text-4xl font-semibold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
           <MaskedLines
             lines={[
               <span key="c1" className="block">
-                DON&apos;T JUST CRAVE IT.
+                Don&apos;t just crave it.
               </span>,
-              <span key="c2" className="block text-white">
-                GET IT.
+              <span key="c2" className="block text-[var(--sage-deep)]">
+                Get it.
               </span>,
             ]}
           />
         </h2>
-        <Reveal delay={160}>
-          <div className="mt-5 flex justify-center text-white/80">
-            <Squiggle className="h-4 w-36" />
-          </div>
-        </Reveal>
 
-        <Reveal delay={120}>
-          <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a
-              href="#shop"
-              className="group flex items-center gap-2 rounded-full bg-[var(--cream)] py-2 pl-2 pr-7 text-lg font-bold text-[var(--forest)] transition hover:scale-[1.03] hover:bg-white"
-            >
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--forest)] text-[var(--cream)] transition-transform duration-300 group-hover:rotate-45">
-                <ArrowUpRight className="h-4 w-4" />
-              </span>
-              Shop all
-            </a>
-            <div className="flex items-center gap-4 text-xs font-semibold text-white/80 sm:text-sm">
-              <span className="flex items-center gap-2">
-                <Truck className="h-4 w-4" /> Free shipping over €50
-              </span>
-              <span className="hidden h-4 w-px bg-white/30 sm:block" />
-              <span className="flex items-center gap-2">
-                <Package className="h-4 w-4" /> 30-day returns
-              </span>
-            </div>
-          </div>
+        <Reveal delay={140}>
+          <a
+            href="#shop"
+            className="btn-pill group mt-8 px-7 py-3.5 text-lg"
+          >
+            Shop all
+          </a>
+          <p className="font-hand mt-10 rotate-[-3deg] text-xl text-[var(--forest)] sm:text-2xl">
+            Free shipping over €40
+          </p>
         </Reveal>
+      </div>
 
-        <Reveal delay={200}>
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-2.5">
-            {payments.map((p) => (
-              <span
-                key={p}
-                className="rounded-full bg-white/10 px-4 py-2 text-xs font-bold tracking-wide text-white/90 ring-1 ring-inset ring-white/20"
-              >
-                {p}
-              </span>
-            ))}
-          </div>
-        </Reveal>
+      {/* payment bubbles */}
+      <div className="relative mt-14 h-[170px] sm:h-[210px]">
+        <PayBubble label="Amex" size="h-20 w-20" className="left-[2%] top-2 sm:h-24 sm:w-24" speed={0.1} />
+        <PayBubble label="Mastercard" size="h-24 w-24 sm:h-28 sm:w-28" className="left-[15%] top-16" speed={0.05} />
+        <PayBubble label="PayPal" size="h-20 w-20 sm:h-24 sm:w-24" className="left-[32%] top-24" speed={0.12} />
+        <PayBubble label="Apple Pay" size="h-24 w-24 sm:h-28 sm:w-28" className="left-[46%] top-6" speed={0.07} />
+        <PayBubble label="G Pay" size="h-20 w-20 sm:h-24 sm:w-24" className="left-[64%] top-20" speed={0.11} />
+        <PayBubble label="VISA" size="h-24 w-24 sm:h-28 sm:w-28" className="left-[78%] top-10" speed={0.06} />
+        <PayBubble label="Klarna" size="h-20 w-20 sm:h-24 sm:w-24" className="left-[90%] top-24 hidden md:flex" speed={0.09} />
       </div>
     </section>
   );

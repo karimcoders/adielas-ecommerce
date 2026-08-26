@@ -129,6 +129,7 @@
   --forest: #1e4a19;
   --forest-deep: #14380f;
   --cream: #edf3e4;
+  --cream-page: #e9efe1;
   --cloud: #e6eee2;
   --olive: #8e9e5b;
 }
@@ -253,6 +254,30 @@ body {
   animation: spin-slow 18s linear infinite;
 }
 
+/* slower spin for the big arc marquee dial */
+@keyframes spin-slower {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.animate-spin-slower {
+  animation: spin-slower 36s linear infinite;
+}
+
+/* can wobble used in benefits scenes */
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(4deg);
+  }
+}
+.animate-sway {
+  animation: sway 7s ease-in-out infinite;
+}
+
 /* pill buttons */
 .btn-pill {
   display: inline-flex;
@@ -301,7 +326,9 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee,
   .animate-floaty,
-  .animate-spin-slow {
+  .animate-spin-slow,
+  .animate-spin-slower,
+  .animate-sway {
     animation: none;
   }
   .reveal,

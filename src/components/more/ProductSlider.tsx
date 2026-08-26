@@ -3,158 +3,173 @@
 import { useCallback, useEffect, useState } from "react";
 import { Reveal } from "./Reveal";
 import { Parallax } from "./motion";
-import { ArrowUpRight } from "./icons";
+import { ArrowUpRight, CurvedArrow } from "./icons";
 
-const packs = [
+const flavours = [
   {
     name: ["FUDGE", "BROWNIE"],
-    image: "/images/more/pouch-fudge.png",
+    image: "/images/more/pouch-fudge-cut.png",
     alt: "Chocolate brown flavour pouch",
     price: "€14.90",
   },
   {
     name: ["VANILLA CHOC", "CHIP COOKIE"],
-    image: "/images/more/pouch-vanilla-choc.png",
+    image: "/images/more/pouch-vanilla-choc-cut.png",
     alt: "Vanilla choc chip cookie flavour pouch",
     price: "€14.90",
   },
   {
     name: ["SALTED", "CARAMEL"],
-    image: "/images/more/pouch-caramel.png",
+    image: "/images/more/pouch-caramel-cut.png",
     alt: "Salted caramel flavour pouch",
     price: "€14.90",
   },
   {
     name: ["VANILLA", "PERFECTION"],
-    image: "/images/more/pouch-vanilla.png",
-    alt: "Vanilla perfection flavour pouch",
+    image: "/images/more/pouch-vanilla-cut.png",
+    alt: "Vanilla flavour pouch",
     price: "€14.90",
   },
   {
     name: ["STRAWBERRY", "PERFECTION"],
-    image: "/images/more/pouch-strawberry.png",
-    alt: "Strawberry perfection flavour pouch",
+    image: "/images/more/pouch-strawberry-cut.png",
+    alt: "Strawberry flavour pouch",
     price: "€14.90",
   },
 ];
 
 export function ProductSlider() {
-  const [index, setIndex] = useState(0);
-  const [perView, setPerView] = useState(4);
+  const [index, setIndex] = useState(4);
 
+  const prev = useCallback(
+    () => setIndex((i) => (i <= 0 ? flavours.length - 1 : i - 1)),
+    [],
+  );
+  const next = useCallback(
+    () => setIndex((i) => (i >= flavours.length - 1 ? 0 : i + 1)),
+    [],
+  );
+
+  // gentle auto-advance until the visitor interacts
   useEffect(() => {
-    const update = () => {
-      if (window.innerWidth < 640) setPerView(1);
-      else if (window.innerWidth < 1024) setPerView(2);
-      else if (window.innerWidth < 1280) setPerView(3);
-      else setPerView(4);
+    const id = window.setInterval(next, 5200);
+    const stop = () => window.clearInterval(id);
+    window.addEventListener("pointerdown", stop, { once: true });
+    return () => {
+      window.clearInterval(id);
+      window.removeEventListener("pointerdown", stop);
     };
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, []);
+  }, [next]);
 
-  const maxIndex = Math.max(0, packs.length - perView);
-  const current = Math.min(index, maxIndex);
-  const prev = useCallback(() => setIndex((i) => Math.min(i, maxIndex) <= 0 ? maxIndex : Math.min(i, maxIndex) - 1), [maxIndex]);
-  const next = useCallback(() => setIndex((i) => Math.min(i, maxIndex) >= maxIndex ? 0 : Math.min(i, maxIndex) + 1), [maxIndex]);
+  const active = flavours[index];
 
   return (
-    <section id="shop" className="relative overflow-hidden py-20 sm:py-28">
-      {/* giant background script — drifts slower than the page */}
+    <section id="shop" className="relative overflow-x-clip bg-[var(--cream-page)] pb-24 pt-20 sm:pb-32 sm:pt-28">
+      {/* big ring arc on the right */}
       <Parallax
-        speed={0.12}
-        className="pointer-events-none absolute inset-x-0 top-0 text-center"
+        speed={0.1}
+        className="pointer-events-none absolute -right-40 top-24 h-[520px] w-[520px] sm:-right-24"
       >
-        <span
-          aria-hidden="true"
-          className="font-script select-none whitespace-nowrap text-[22vw] leading-none text-white/15"
-        >
-          boost it
-        </span>
+        <div className="h-full w-full rounded-full border-[46px] border-white" />
       </Parallax>
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
         <Reveal>
-          <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-              Flavour <span className="font-script text-[1.2em] leading-none">Boost</span>
+          <div className="mx-auto max-w-4xl text-center">
+            <h2 className="font-display text-[clamp(3.2rem,9vw,7.5rem)] leading-[0.95] text-[var(--forest)]">
+              FLAVOUR BOOST
             </h2>
-            <h3 className="font-display mt-2 text-2xl text-[var(--forest-deep)] sm:text-3xl">
-              NEW TASTE. LOW SUGAR.
-            </h3>
-            <p className="mt-4 text-sm font-medium leading-relaxed text-[var(--forest-deep)]/90 sm:text-base">
+            <p className="mt-3 text-2xl font-semibold text-[var(--sage-deep)] sm:text-3xl">
+              New taste, low sugar
+            </p>
+            <p className="mx-auto mt-5 max-w-md text-sm font-medium leading-relaxed text-[var(--forest-deep)]/90 sm:text-base">
               Stir a 3 g scoop into your 300 ml iced matcha and turn today&apos;s
-              sip into fudge brownie, salted caramel or strawberry perfection —
-              under 15 calories, seriously dessert-level.
+              sip into a dessert-level treat — under 15 calories a cup.
             </p>
           </div>
         </Reveal>
 
-        <Reveal delay={120}>
-          <div className="relative mt-12">
-            <div className="overflow-hidden px-1">
-              <div
-                className="flex transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
-                style={{ transform: `translateX(-${current * (100 / perView)}%)` }}
-              >
-                {packs.map((pack) => (
-                  <div
-                    key={pack.name.join(" ")}
-                    className="shrink-0 px-2 sm:px-3"
-                    style={{ width: `${100 / perView}%` }}
-                  >
-                    <div className="group flex h-full flex-col items-center rounded-[2rem] bg-white/55 p-4 pt-4 shadow-[0_18px_44px_rgba(20,56,15,0.12)] backdrop-blur transition hover:bg-white/75 sm:p-5">
-                      <div className="w-full overflow-hidden rounded-3xl">
-                        <img
-                          src={pack.image}
-                          alt={pack.alt}
-                          className="h-56 w-full object-cover transition-transform duration-500 group-hover:scale-105 sm:h-64"
-                        />
-                      </div>
-                      <h4 className="font-display mt-5 text-center text-lg leading-tight sm:text-xl">
-                        {pack.name[0]}
-                        <br />
-                        {pack.name[1]}
-                      </h4>
-                      <p className="mt-1 text-xs font-semibold uppercase tracking-widest text-[var(--forest)]/60">
-                        Flavour Boost®
-                      </p>
-                      <p className="mt-2 text-base font-bold">{pack.price}</p>
-                      <a
-                        href="#top"
-                        className="btn-pill group/btn mt-4 py-1.5 pl-1.5 pr-6 text-sm"
-                        aria-label={`Buy ${pack.name.join(" ")}`}
-                      >
-                        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--cream)] text-[var(--forest)] transition-transform duration-300 group-hover/btn:rotate-45">
-                          <ArrowUpRight className="h-3.5 w-3.5" />
-                        </span>
-                        Buy now
-                      </a>
-                    </div>
-                  </div>
-                ))}
+        {/* handwritten note */}
+        <Reveal delay={140}>
+          <div className="relative mx-auto max-w-6xl">
+            <div className="absolute -top-2 left-0 hidden -rotate-6 text-[var(--forest)] lg:block">
+              <p className="font-hand text-2xl leading-[0.95]">
+                More flavour
+                <br />
+                combos
+              </p>
+              <CurvedArrow className="ml-8 mt-1 h-12 w-10 rotate-[115deg]" />
+            </div>
+
+            {/* composition: base combo + current flavour */}
+            <div className="mt-14 flex items-center justify-center gap-4 sm:gap-10">
+              <div className="relative flex w-[34%] max-w-[300px] items-end justify-center sm:w-[30%]">
+                <img
+                  src="/images/more/pouch-vanilla-cut.png"
+                  alt=""
+                  aria-hidden="true"
+                  className="absolute bottom-0 left-0 w-[68%] -rotate-[9deg] drop-shadow-[0_22px_30px_rgba(20,56,15,0.22)]"
+                />
+                <img
+                  src="/images/more/can-green-cut.png"
+                  alt="Protein iced matcha latte tub"
+                  className="relative z-10 w-[72%] translate-x-[16%] drop-shadow-[0_26px_34px_rgba(20,56,15,0.26)]"
+                />
+              </div>
+
+              <span className="font-display flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white text-3xl text-[var(--forest)] shadow-[0_14px_30px_rgba(20,56,15,0.14)] sm:h-16 sm:w-16 sm:text-4xl">
+                +
+              </span>
+
+              <div className="relative flex w-[34%] max-w-[300px] items-end justify-center sm:w-[30%]">
+                <img
+                  key={active.image}
+                  src={active.image}
+                  alt={active.alt}
+                  className="w-[86%] rotate-[7deg] drop-shadow-[0_26px_34px_rgba(20,56,15,0.26)] transition-opacity duration-300"
+                />
               </div>
             </div>
 
-            {/* arrows */}
-            <div className="mt-8 flex justify-center gap-3">
-              <button
-                type="button"
-                onClick={prev}
-                aria-label="Previous products"
-                className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--forest)] text-[var(--cream)] transition hover:scale-110 hover:bg-[var(--forest-deep)]"
-              >
-                <ArrowUpRight className="h-5 w-5 rotate-[225deg]" />
-              </button>
-              <button
-                type="button"
-                onClick={next}
-                aria-label="Next products"
-                className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--forest)] text-[var(--cream)] transition hover:scale-110 hover:bg-[var(--forest-deep)]"
-              >
-                <ArrowUpRight className="h-5 w-5 rotate-45" />
-              </button>
+            {/* flavour label + buy + arrows */}
+            <div className="mt-10 flex flex-col items-center gap-6 text-center">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--olive)]">
+                  Flavour Boost®
+                </p>
+                <h3 className="font-display mt-1 text-3xl leading-[0.95] text-[var(--forest)] sm:text-4xl">
+                  {active.name[0]}
+                  <br />
+                  {active.name[1]}
+                </h3>
+              </div>
+              <div className="flex items-center gap-6">
+                <a href="#top" className="btn-pill group px-6 py-3 text-base">
+                  Buy now
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:rotate-45" />
+                </a>
+                <span className="text-base font-bold text-[var(--forest)]">
+                  {active.price}
+                </span>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={prev}
+                    aria-label="Previous flavour"
+                    className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-[var(--forest)] shadow transition hover:scale-110"
+                  >
+                    <ArrowUpRight className="h-5 w-5 rotate-[225deg]" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={next}
+                    aria-label="Next flavour"
+                    className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-[var(--forest)] shadow transition hover:scale-110"
+                  >
+                    <ArrowUpRight className="h-5 w-5 rotate-45" />
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </Reveal>

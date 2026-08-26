@@ -1,48 +1,131 @@
 import { Reveal } from "./Reveal";
 import { Parallax } from "./motion";
 
-const flavors = [
-  { name: "Original", colors: "from-[#9dbb6a] to-[#5c7a3f]", speed: 0.05 },
-  { name: "Cookie", colors: "from-[#d9c39a] to-[#8a6b42]", speed: 0.11 },
-  { name: "Strawberry", colors: "from-[#f2b8c6] to-[#d96a86]", speed: 0.17 },
-  { name: "Banana", colors: "from-[#f4e3a1] to-[#d9b83f]", speed: 0.08 },
-  { name: "Chocolate", colors: "from-[#b08d68] to-[#5f4028]", speed: 0.14 },
+const floating = [
+  {
+    src: "/images/more/ingredient-cookie-cut.png",
+    label: "Vanilla Crumble",
+    alt: "Chocolate chip cookies",
+    pos: "left-[2%] top-[34%] w-[84px] sm:w-[110px]",
+    rotate: "-rotate-12",
+    note: "left-[6%] top-[16%]",
+    arrow: "rotate-[24deg]",
+    speed: 0.1,
+  },
+  {
+    src: "/images/more/ingredient-strawberry-cut.png",
+    label: "Strawberry Cheesecake",
+    alt: "Fresh strawberries",
+    pos: "right-[0%] top-[42%] w-[110px] sm:w-[150px]",
+    rotate: "rotate-6",
+    note: "right-[4%] top-[18%]",
+    arrow: "-rotate-[24deg]",
+    speed: -0.08,
+  },
 ];
 
 export function Flavors() {
   return (
-    <section className="relative py-16 sm:py-24">
+    <section className="relative overflow-x-clip bg-[var(--cream-page)] pb-0 pt-20 sm:pt-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
         <Reveal>
-          <h2 className="text-center text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl">
-            Matcha, just the way you like it.{" "}
-            <span className="font-script text-[1.2em] leading-none">What&apos;s your flavour?</span>
+          <h2 className="mx-auto max-w-4xl text-center text-4xl font-semibold leading-tight tracking-tight text-[var(--forest)] sm:text-5xl lg:text-[3.4rem]">
+            Any way you like your matcha —
+            <br />
+            <span className="text-[var(--sage-deep)]">which flavour today?</span>
           </h2>
         </Reveal>
+      </div>
 
-        <div className="mt-12 flex flex-wrap items-start justify-center gap-8 sm:gap-12">
-          {flavors.map((f, i) => (
-            <Reveal key={f.name} delay={i * 90} variant="zoom">
-              <Parallax
-                speed={f.speed}
-                className="group flex w-24 flex-col items-center gap-3 sm:w-28"
-              >
-                <div
-                  className={`h-24 w-24 rounded-full bg-gradient-to-br ${f.colors} shadow-[0_16px_32px_rgba(20,56,15,0.22),inset_-10px_-12px_20px_rgba(20,56,15,0.25),inset_8px_8px_16px_rgba(255,255,255,0.35)] transition-transform duration-300 group-hover:-translate-y-2 group-hover:scale-105 sm:h-28 sm:w-28`}
-                />
-                <span className="font-display text-sm tracking-wide text-[var(--forest)] sm:text-base">
-                  {f.name.toUpperCase()}
-                </span>
-              </Parallax>
-            </Reveal>
-          ))}
+      {/* trio composition */}
+      <div className="relative mx-auto mt-16 h-[300px] max-w-6xl sm:mt-20 sm:h-[420px]">
+        {floating.map((f) => (
+          <div key={f.label} className={`absolute ${f.pos}`}>
+            <Parallax speed={f.speed} className={f.rotate}>
+              <img
+                src={f.src}
+                alt={f.alt}
+                loading="lazy"
+                className="w-full drop-shadow-[0_18px_26px_rgba(20,56,15,0.25)]"
+              />
+            </Parallax>
+          </div>
+        ))}
+
+        {/* handwritten labels + arrows */}
+        <div className={`absolute left-[8%] top-[6%] hidden -rotate-6 sm:block`}>
+          <p className="font-hand text-xl leading-[0.95] text-[var(--forest)]">
+            Vanilla
+            <br />
+            Crumble
+          </p>
+          <svg
+            viewBox="0 0 60 40"
+            className={`ml-6 mt-1 h-8 w-10 ${floating[0].arrow}`}
+            aria-hidden="true"
+          >
+            <path
+              d="M4 4c14 6 22 16 26 30m0 0-7-6m7 6 2-9"
+              fill="none"
+              stroke="var(--forest)"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
+        <div className="absolute right-[6%] top-[6%] hidden rotate-3 text-right sm:block">
+          <p className="font-hand text-xl leading-[0.95] text-[var(--forest)]">
+            Strawberry
+            <br />
+            Cheesecake
+          </p>
+          <svg
+            viewBox="0 0 60 40"
+            className={`ml-auto mr-6 mt-1 h-8 w-10 ${floating[1].arrow}`}
+            aria-hidden="true"
+          >
+            <path
+              d="M56 4C42 10 34 20 30 34m0 0 7-6m-7 6-2-9"
+              fill="none"
+              stroke="var(--forest)"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
         </div>
 
-        <Reveal delay={160}>
-          <p className="mx-auto mt-10 max-w-xl text-center text-sm font-medium leading-relaxed text-[var(--forest-deep)]/90 sm:text-base">
-            One 300ml base latte, endless moods — swap the flavour with a single
-            scoop and your tastebuds never get bored.
-          </p>
+        {/* cans rising from the bottom edge */}
+        <Reveal variant="down" delay={120} className="absolute bottom-0 left-[10%] hidden w-[21%] sm:block">
+          <div className="translate-y-[16%] -rotate-6">
+            <img
+              src="/images/more/can-green-cut.png"
+              alt="Vanilla crumble tub"
+              loading="lazy"
+              className="w-full drop-shadow-[0_30px_36px_rgba(20,56,15,0.28)]"
+            />
+          </div>
+        </Reveal>
+        <Reveal variant="down" className="absolute bottom-0 left-1/2 z-10 w-[30%] -translate-x-1/2">
+          <div className="translate-y-[12%]">
+            <img
+              src="/images/more/can-green-cut.png"
+              alt="Original protein iced matcha latte tub"
+              loading="lazy"
+              className="w-full drop-shadow-[0_30px_40px_rgba(20,56,15,0.32)]"
+            />
+          </div>
+        </Reveal>
+        <Reveal variant="down" delay={220} className="absolute bottom-0 right-[10%] hidden w-[21%] sm:block">
+          <div className="translate-y-[16%] rotate-6">
+            <img
+              src="/images/more/can-green-cut.png"
+              alt="Strawberry cheesecake tub"
+              loading="lazy"
+              className="w-full drop-shadow-[0_30px_36px_rgba(20,56,15,0.28)]"
+            />
+          </div>
         </Reveal>
       </div>
     </section>
