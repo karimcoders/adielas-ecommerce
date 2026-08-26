@@ -1,4 +1,4 @@
-const TEXT = "IT'S A MATCH(A) · ";
+const TEXT = "GROW EVERY DAY · ";
 
 /* A huge rotating dial: only its top arc peeks above the fold, so the
    forest band + ticker text appear curved exactly like a circle edge. */

@@ -121,17 +121,17 @@
   }
 }
 
-/* ===== More Nutrition clone design tokens ===== */
+/* ===== ADIELAS revamp design tokens (warm cream + maroon) ===== */
 :root {
-  --sage: #abc397;
-  --sage-deep: #96b086;
-  --sage-soft: #c2d5b2;
-  --forest: #1e4a19;
-  --forest-deep: #14380f;
-  --cream: #edf3e4;
-  --cream-page: #e9efe1;
-  --cloud: #e6eee2;
-  --olive: #8e9e5b;
+  --sage: #f2e9cf;
+  --sage-deep: #c99a4e;
+  --sage-soft: #e6d9b4;
+  --forest: #5c2b2e;
+  --forest-deep: #451f22;
+  --cream: #fbf7ea;
+  --cream-page: #f7f1dc;
+  --cloud: #f0e7cb;
+  --olive: #a98139;
 }
 
 html {

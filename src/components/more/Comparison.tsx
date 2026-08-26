@@ -3,13 +3,13 @@ import { Reveal } from "./Reveal";
 import { Squiggle } from "./icons";
 
 const rows = [
-  "Low in carbs",
-  "Low in sugar",
-  "High in protein",
-  "Supports weight goals",
-  "Supports muscle growth",
-  "Contains dietary fiber",
-  "Ready in 30 seconds",
+  "No added sugar",
+  "No preservatives or colours",
+  "Sprouted & sun-dried grains",
+  "Pediatrician co-formulated",
+  "Plant-based protein & fiber",
+  "Naturally occurring nutrients",
+  "Stage-wise for growing ages",
 ];
 
 function Smiley() {
@@ -43,15 +43,15 @@ export function Comparison() {
     <section className="relative bg-[var(--cream-page)] py-20 sm:py-28">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-10">
         <Reveal variant="zoom">
-          <div className="relative rounded-[2rem] bg-white p-5 shadow-[0_30px_70px_rgba(20,56,15,0.12)] sm:p-8 lg:p-10">
+          <div className="relative rounded-[2rem] bg-white p-5 shadow-[0_30px_70px_rgba(69,31,34,0.12)] sm:p-8 lg:p-10">
             <Smiley />
 
             <div className="mt-6 grid gap-8 lg:grid-cols-2 lg:gap-12">
               {/* photo card */}
               <div className="relative overflow-hidden rounded-[1.4rem] bg-[var(--cloud)]">
                 <img
-                  src="/images/more/clip-shake.png"
-                  alt="Scoop of vibrant matcha powder"
+                  src="/images/adielas/stage1.png"
+                  alt="ADIELAS Stage 1 pack on a kitchen counter"
                   loading="lazy"
                   className="h-full min-h-[320px] w-full object-cover"
                 />
@@ -74,10 +74,10 @@ export function Comparison() {
               {/* table */}
               <div>
                 <h2 className="text-3xl font-semibold leading-tight tracking-tight text-[var(--forest)] sm:text-4xl">
-                  More for you.
+                  Every spoon, compared.
                   <br />
                   <span className="text-[var(--sage-deep)]">
-                    See the difference.
+                    The difference is clear.
                   </span>
                 </h2>
 
@@ -85,13 +85,13 @@ export function Comparison() {
                   {/* head */}
                   <div className="grid grid-cols-[1.6fr_0.8fr_1fr] items-end gap-2 border-b-2 border-[var(--forest)]/70 pb-3">
                     <span className="text-xs font-semibold text-[var(--olive)]">
-                      Benefits
+                      What matters
                     </span>
                     <span className="font-script text-center text-2xl leading-none text-[var(--forest)]">
-                      more
+                      adielas
                     </span>
                     <span className="text-center text-xs font-semibold text-[var(--olive)]">
-                      Regular matcha
+                      Sugary kids drinks
                     </span>
                   </div>
 

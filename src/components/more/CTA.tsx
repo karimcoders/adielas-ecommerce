@@ -16,7 +16,7 @@ function PayBubble({
   return (
     <Parallax speed={speed} className={`absolute ${className}`}>
       <span
-        className={`${size} flex items-center justify-center rounded-full bg-white text-center text-sm font-bold tracking-tight text-[#1a1a1a] shadow-[0_18px_36px_rgba(20,56,15,0.10)] sm:text-base`}
+        className={`${size} flex items-center justify-center rounded-full bg-white text-center text-sm font-bold tracking-tight text-[#1a1a1a] shadow-[0_18px_36px_rgba(69,31,34,0.10)] sm:text-base`}
       >
         {label}
       </span>
@@ -47,9 +47,9 @@ export function CTA() {
       <div className="relative mx-auto max-w-5xl px-4 text-center sm:px-6">
         <Reveal variant="down">
           <p className="font-hand absolute -top-10 left-2 hidden -rotate-6 text-2xl text-[var(--forest)] sm:block lg:left-10">
-            3–5 days
+            easy
             <br />
-            delivery
+            online ordering
           </p>
         </Reveal>
 
@@ -57,7 +57,7 @@ export function CTA() {
           <MaskedLines
             lines={[
               <span key="c1" className="block">
-                Don&apos;t just crave it.
+                Give them the good stuff.
               </span>,
               <span key="c2" className="block text-[var(--sage-deep)]">
                 Get it.
@@ -67,27 +67,24 @@ export function CTA() {
         </h2>
 
         <Reveal delay={140}>
-          <a
-            href="#shop"
-            className="btn-pill group mt-8 px-7 py-3.5 text-lg"
-          >
-            Shop all
+          <a href="#shop" className="btn-pill group mt-8 px-7 py-3.5 text-lg">
+            Shop now
           </a>
           <p className="font-hand mt-10 rotate-[-3deg] text-xl text-[var(--forest)] sm:text-2xl">
-            Free shipping over €40
+            Safe, secure checkout
           </p>
         </Reveal>
       </div>
 
       {/* payment bubbles */}
       <div className="relative mt-14 h-[170px] sm:h-[210px]">
-        <PayBubble label="Amex" size="h-20 w-20" className="left-[2%] top-2 sm:h-24 sm:w-24" speed={0.1} />
-        <PayBubble label="Mastercard" size="h-24 w-24 sm:h-28 sm:w-28" className="left-[15%] top-16" speed={0.05} />
-        <PayBubble label="PayPal" size="h-20 w-20 sm:h-24 sm:w-24" className="left-[32%] top-24" speed={0.12} />
-        <PayBubble label="Apple Pay" size="h-24 w-24 sm:h-28 sm:w-28" className="left-[46%] top-6" speed={0.07} />
-        <PayBubble label="G Pay" size="h-20 w-20 sm:h-24 sm:w-24" className="left-[64%] top-20" speed={0.11} />
-        <PayBubble label="VISA" size="h-24 w-24 sm:h-28 sm:w-28" className="left-[78%] top-10" speed={0.06} />
-        <PayBubble label="Klarna" size="h-20 w-20 sm:h-24 sm:w-24" className="left-[90%] top-24 hidden md:flex" speed={0.09} />
+        <PayBubble label="UPI" size="h-20 w-20" className="left-[3%] top-2 sm:h-24 sm:w-24" speed={0.1} />
+        <PayBubble label="Paytm" size="h-24 w-24 sm:h-28 sm:w-28" className="left-[16%] top-16" speed={0.05} />
+        <PayBubble label="PhonePe" size="h-20 w-20 sm:h-24 sm:w-24" className="left-[33%] top-24" speed={0.12} />
+        <PayBubble label="RuPay" size="h-24 w-24 sm:h-28 sm:w-28" className="left-[47%] top-6" speed={0.07} />
+        <PayBubble label="G Pay" size="h-20 w-20 sm:h-24 sm:w-24" className="left-[65%] top-20" speed={0.11} />
+        <PayBubble label="VISA" size="h-24 w-24 sm:h-28 sm:w-28" className="left-[79%] top-10" speed={0.06} />
+        <PayBubble label="Mastercard" size="h-20 w-24 sm:h-24 sm:w-28" className="left-[90%] top-24 hidden md:flex" speed={0.09} />
       </div>
     </section>
   );

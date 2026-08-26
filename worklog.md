@@ -51,3 +51,20 @@ Work Log:
 Stage Summary:
 - Site now has full scroll-driven motion: sticky card deck, parallax layers, masked line reveals, count-up stats, smart navbar, progress bar
 - All original code using standard techniques (IntersectionObserver, rAF, CSS transforms, position:sticky)
+
+---
+Task ID: 5
+Agent: Super Z (main agent)
+Task: Revamp adielas.com into the scroll-animation template
+
+Work Log:
+- Analyzed adielas.com (Shopify kids-nutrition brand): 3 products (Stage 1 Rs.299 / Stage 2 Rs.399 / Stage 3 Rs.475, ages 5m+/6m+/1y+), Dr. Vandana Rao story, ingredients taxonomy, contact info
+- Downloaded brand assets to public/images/adielas/: logo, 3 packshots, doctor photo (why.jpg), 2 illustrations
+- Cut out 3 packs with rembg (scripts/rembg-adielas.py), cropped baked shadow strips
+- Swapped palette in globals.css to brand colors: warm cream page bg, maroon primary, caramel accent, wheat gold
+- Rewrote all 11 sections with fresh copy carrying factual info only: Navbar (logo, Why/Stages/Doctor pills), Hero (script wordmark + ring + Stage3 cutout + 100%/0/35+ counter bubbles), arc marquee "GROW EVERY DAY", Why ADIELAS (doctor polaroid + packs collage), Benefits sticky scenes (Growth/Immunity/No Added Sugar/Never List), Stages trio (3 packs rising + age labels + brand illustrations), Comparison vs sugary drinks, Reviews carousel (fresh parent testimonials) on doctor-photo backdrop, Pick-a-Stage picker (auto-advance, prices), CTA payment bubbles, Footer (address/phone/email/GST + giant clipped wordmark)
+- Updated layout.tsx metadata + favicon to logo
+- Verified desktop 1440px (hero/marquee/why/benefits/stages/compare/reviews/shop/CTA/footer screenshots) + mobile 390px; ESLint clean; no console errors; dev.log 200s
+
+Stage Summary:
+- ADIELAS revamp complete: same scroll-animation template system, full rebrand with their assets + factual content, all fresh marketing copy

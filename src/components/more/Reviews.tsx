@@ -7,34 +7,34 @@ import { ArrowUpRight } from "./icons";
 
 const reviews = [
   {
-    title: "Best matcha ever!",
-    body: "Creamy, smooth and zero clumps. It genuinely tastes like the café version — minus the sugar coma.",
-    name: "Amelia R.",
+    title: "Mealtimes made easy!",
+    body: "My fussy eater finishes the whole bowl. It mixes smooth, tastes mildly sweet and I know exactly what's inside.",
+    name: "Priya S.",
   },
   {
-    title: "Super delicious!",
-    body: "I stir in the cookie flavour and it feels like dessert for breakfast. My 3pm snack cravings are gone.",
-    name: "Jonas K.",
+    title: "Clean label, finally.",
+    body: "No long chemical names on the pack. Just sprouted grains and dry fruits — exactly what I wanted for my son.",
+    name: "Rahul M.",
   },
   {
-    title: "Risk of addiction",
-    body: "One shaker before work and I'm focused for hours. No jitters, no crash — just calm energy.",
-    name: "Sofia M.",
+    title: "Stage 2 is a winner",
+    body: "We moved from Stage 1 to Stage 2 seamlessly. Tummy-friendly and keeps him full through the morning.",
+    name: "Anita K.",
   },
   {
-    title: "The best Matcha.",
-    body: "Tried five brands this year. Nothing comes close on taste, and the macros are unreal.",
-    name: "Daniel P.",
+    title: "Doctor-formulated trust",
+    body: "Knowing a pediatrician co-created it gives me real peace of mind. You can taste the quality.",
+    name: "Farhan A.",
   },
   {
-    title: "Highly recommended!",
-    body: "Lost 4 kg in two months without changing anything else. It keeps me full till lunch, every day.",
-    name: "Lea B.",
+    title: "Grandma approves too!",
+    body: "Three generations agree — it feels like the traditional ragi porridge, just easier and more balanced.",
+    name: "Lakshmi V.",
   },
   {
-    title: "Favorite!!!",
-    body: "My whole gym crew is hooked now. Mixing is effortless and it never tastes chalky.",
-    name: "Marco T.",
+    title: "Travel-friendly nutrition",
+    body: "Quick to prepare anywhere. It has become our go-to for daycare lunches and evening hunger pangs.",
+    name: "Neha D.",
   },
 ];
 
@@ -90,30 +90,29 @@ export function Reviews() {
 
   const maxIndex = Math.max(0, reviews.length - perView);
   const current = Math.min(index, maxIndex);
-  // the centered (active) card renders white; the others stay glassy
   const activeIdx = current + Math.floor((perView - 1) / 2);
   const prev = useCallback(() => setIndex((i) => Math.min(i, maxIndex) <= 0 ? maxIndex : Math.min(i, maxIndex) - 1), [maxIndex]);
   const next = useCallback(() => setIndex((i) => Math.min(i, maxIndex) >= maxIndex ? 0 : Math.min(i, maxIndex) + 1), [maxIndex]);
 
   return (
     <section
-      id="reviews"
+      id="doctor"
       className="relative overflow-hidden bg-[var(--forest-deep)] py-20 sm:py-28"
     >
       {/* full-bleed photo backdrop */}
       <img
-        src="/images/more/clip-morning.png"
+        src="/images/adielas/why.jpg"
         alt=""
         aria-hidden="true"
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover opacity-40"
       />
-      <div className="absolute inset-0 bg-[#3a4033]/72" />
+      <div className="absolute inset-0 bg-[var(--forest-deep)]/78" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
         <div className="flex flex-col items-center text-center">
           <Reveal variant="down">
             <p className="font-hand -rotate-3 text-2xl text-white/90">
-              Premium Matcha Taste
+              Loved by little tummies
             </p>
           </Reveal>
           <h2 className="mt-2 text-white">
@@ -121,15 +120,15 @@ export function Reviews() {
               lines={[
                 <span
                   key="r1"
-                  className="font-display block text-[clamp(3rem,8vw,6.5rem)] leading-[0.95]"
+                  className="font-display block text-[clamp(2.6rem,7vw,5.6rem)] leading-[0.95]"
                 >
-                  CLEAN. GREEN.
+                  HAPPY KIDS.
                 </span>,
                 <span
                   key="r2"
-                  className="font-display block text-[clamp(3rem,8vw,6.5rem)] leading-[0.95]"
+                  className="font-display block text-[clamp(2.6rem,7vw,5.6rem)] leading-[0.95]"
                 >
-                  GOODNESS.
+                  HAPPIER PARENTS.
                 </span>,
               ]}
             />
@@ -185,7 +184,7 @@ export function Reviews() {
                           <Stars />
                           {active && (
                             <span className="font-script text-2xl leading-none text-[var(--forest)]/40">
-                              more
+                              adielas
                             </span>
                           )}
                         </div>

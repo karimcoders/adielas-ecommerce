@@ -6,30 +6,30 @@ export function Footer() {
     <footer className="relative overflow-hidden bg-[var(--sage)]">
       <div className="mx-auto max-w-7xl px-4 pb-40 pt-16 sm:px-6 sm:pb-48 lg:px-10">
         <div className="grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
-          {/* big product card */}
+          {/* big brand card */}
           <Reveal variant="right">
-            <div className="relative overflow-hidden rounded-[1.8rem] bg-[var(--sage-deep)] px-6 pb-8 pt-12 text-center shadow-[0_30px_70px_rgba(20,56,15,0.22)] sm:px-10 sm:pt-16">
-              <h2 className="font-display text-[clamp(2.6rem,5vw,4.4rem)] leading-[0.92] text-white">
-                MATCHA
+            <div className="relative overflow-hidden rounded-[1.8rem] bg-[var(--sage-soft)] px-6 pb-8 pt-12 text-center shadow-[0_30px_70px_rgba(69,31,34,0.20)] sm:px-10 sm:pt-16">
+              <h2 className="font-display text-[clamp(2.2rem,4.4vw,3.8rem)] leading-[0.92] text-white">
+                NUTRITION
                 <br />
-                MEETS
+                THAT GROWS
                 <br />
-                PROTEIN
+                WITH THEM
               </h2>
               <div className="pointer-events-none relative mx-auto mt-6 flex w-fit items-end justify-center">
                 <img
-                  src="/images/more/can-green-cut.png"
+                  src="/images/adielas/stage1-cut.png"
                   alt=""
                   aria-hidden="true"
-                  className="w-24 -rotate-6 sm:w-28"
+                  className="w-20 -rotate-6 sm:w-24"
                 />
                 <img
-                  src="/images/more/can-green-cut.png"
-                  alt="Protein iced matcha latte tub"
-                  className="-ml-4 w-32 sm:w-36"
+                  src="/images/adielas/stage3-cut.png"
+                  alt="ADIELAS Stage 3 nutritional food pack"
+                  className="-ml-4 w-28 sm:w-32"
                 />
               </div>
-              <a href="#top" className="btn-pill group relative mt-6 px-6 py-3 text-base">
+              <a href="#shop" className="btn-pill group relative mt-6 px-6 py-3 text-base">
                 Buy now
                 <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:rotate-45" />
               </a>
@@ -42,7 +42,7 @@ export function Footer() {
               <div className="flex gap-4">
                 <a
                   href="#shop"
-                  className="flex w-36 flex-col items-center gap-2 rounded-2xl bg-white px-4 py-5 text-center shadow-[0_16px_36px_rgba(20,56,15,0.12)] transition hover:-translate-y-1"
+                  className="flex w-36 flex-col items-center gap-2 rounded-2xl bg-white px-4 py-5 text-center shadow-[0_16px_36px_rgba(69,31,34,0.12)] transition hover:-translate-y-1"
                 >
                   <svg viewBox="0 0 40 40" className="h-9 w-9" aria-hidden="true">
                     <rect x="7" y="12" width="16" height="20" rx="3" fill="none" stroke="var(--olive)" strokeWidth="2.4" />
@@ -56,19 +56,18 @@ export function Footer() {
                   </span>
                 </a>
                 <a
-                  href="#shop"
-                  className="flex w-36 flex-col items-center gap-2 rounded-2xl bg-white px-4 py-5 text-center shadow-[0_16px_36px_rgba(20,56,15,0.12)] transition hover:-translate-y-1"
+                  href="#doctor"
+                  className="flex w-36 flex-col items-center gap-2 rounded-2xl bg-white px-4 py-5 text-center shadow-[0_16px_36px_rgba(69,31,34,0.12)] transition hover:-translate-y-1"
                 >
                   <svg viewBox="0 0 40 40" className="h-9 w-9" aria-hidden="true">
-                    <rect x="6" y="10" width="24" height="16" rx="3" fill="none" stroke="var(--olive)" strokeWidth="2.4" />
-                    <path d="M10 6h24v16" fill="none" stroke="var(--olive)" strokeWidth="2.4" strokeLinecap="round" />
-                    <circle cx="13" cy="18" r="1.6" fill="var(--olive)" />
-                    <path d="M18 15h8M18 21h8" stroke="var(--olive)" strokeWidth="2" strokeLinecap="round" />
+                    <circle cx="20" cy="13" r="7" fill="none" stroke="var(--olive)" strokeWidth="2.4" />
+                    <path d="M8 34c1.8-7 6.4-10.5 12-10.5S30.2 27 32 34" fill="none" stroke="var(--olive)" strokeWidth="2.4" strokeLinecap="round" />
+                    <path d="M26 8c2 1.6 3 3.4 3 5" stroke="var(--olive)" strokeWidth="2" strokeLinecap="round" />
                   </svg>
                   <span className="font-display text-sm leading-tight text-[var(--forest)]">
-                    SAMPLES
+                    DR.
                     <br />
-                    &amp; SINGLES
+                    VANDANA
                   </span>
                 </a>
               </div>
@@ -76,30 +75,42 @@ export function Footer() {
 
             <Reveal variant="left" delay={160}>
               <h3 className="text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
-                <span className="text-[var(--sage-deep)]">More Nutrition</span>
+                <span className="text-[var(--sage-deep)]">ADIELAS</span>
                 <br />
-                <span className="text-[var(--forest)]">Iced Matcha Latte</span>
+                <span className="text-[var(--forest)]">
+                  Nutrition for Growing Children
+                </span>
               </h3>
             </Reveal>
 
             <Reveal variant="left" delay={220}>
               <nav aria-label="Footer" className="flex flex-col gap-2.5">
                 <a
-                  href="#nutrition"
+                  href="#why"
                   className="w-fit text-sm font-semibold text-[var(--forest)] underline underline-offset-4 hover:text-[var(--forest-deep)]"
                 >
-                  Shipping and Delivery
+                  Why ADIELAS
                 </a>
                 <a
-                  href="#nutrition"
+                  href="#stages"
                   className="w-fit text-sm font-semibold text-[var(--forest)] underline underline-offset-4 hover:text-[var(--forest-deep)]"
                 >
-                  Returns and Exchanges
+                  Shop Stages
                 </a>
               </nav>
             </Reveal>
 
             <Reveal variant="left" delay={280}>
+              <address className="text-sm not-italic leading-relaxed text-[var(--forest-deep)]/85">
+                649, 6th C Main, 14th Cross, JP Nagar 3rd Phase,
+                <br />
+                Bangalore 560078 · +91 98453 79428
+                <br />
+                Info@adielas.com
+              </address>
+            </Reveal>
+
+            <Reveal variant="left" delay={340}>
               <div className="flex items-center gap-2.5">
                 {[
                   { label: "Instagram", Icon: InstagramIcon },
@@ -121,9 +132,9 @@ export function Footer() {
         </div>
 
         {/* legal line */}
-        <div className="mt-14 flex items-center justify-between text-xs font-medium text-[var(--forest)]/80">
-          <p>Demo rebuild for learning purposes — not affiliated with any brand.</p>
-          <p>Site Credits</p>
+        <div className="mt-14 flex flex-col items-start justify-between gap-2 text-xs font-medium text-[var(--forest)]/80 sm:flex-row">
+          <p>© {new Date().getFullYear()} ADIELAS. All rights reserved. · GST: 29ADFPV3524L3ZZ</p>
+          <p>Demo redesign for internal preview.</p>
         </div>
       </div>
 
@@ -132,8 +143,8 @@ export function Footer() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 bottom-0 select-none overflow-hidden"
       >
-        <p className="font-script translate-y-[24%] text-center text-[34vw] leading-[0.8] text-[var(--forest)]">
-          more
+        <p className="font-script translate-y-[24%] text-center text-[30vw] leading-[0.8] text-[var(--forest)]">
+          adielas
         </p>
       </div>
     </footer>

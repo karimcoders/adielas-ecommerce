@@ -10,9 +10,9 @@ const socials = [
 ];
 
 const links = [
-  { label: "Nutrition", href: "#nutrition" },
-  { label: "Benefits", href: "#benefits" },
-  { label: "Reviews", href: "#reviews" },
+  { label: "Why Adielas", href: "#why" },
+  { label: "Stages", href: "#stages" },
+  { label: "Doctor", href: "#doctor" },
 ];
 
 export function Navbar() {
@@ -26,7 +26,6 @@ export function Navbar() {
       raf = 0;
       const y = window.scrollY;
       setScrolled(y > 24);
-      // scrolling down → tuck the bar away; scrolling up → bring it back
       if (y > lastY.current && y > 140) setHidden(true);
       else setHidden(false);
       lastY.current = y;
@@ -53,10 +52,8 @@ export function Navbar() {
     >
       <nav
         aria-label="Main"
-        className={`flex items-center justify-between gap-3 px-4 sm:px-6 lg:px-10 ${
-          scrolled
-            ? "py-2.5 transition-[padding] duration-500"
-            : "py-4 transition-[padding] duration-500"
+        className={`flex items-center justify-between gap-3 px-4 transition-[padding] duration-500 sm:px-6 lg:px-10 ${
+          scrolled ? "py-2" : "py-4"
         }`}
       >
         {/* socials */}
@@ -66,7 +63,7 @@ export function Navbar() {
               key={label}
               href={href}
               aria-label={label}
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--cloud)] text-[var(--forest)] shadow-sm backdrop-blur transition hover:scale-110 hover:bg-[var(--forest)] hover:text-[var(--cream)] sm:h-10 sm:w-10"
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--cream)] text-[var(--forest)] shadow-sm backdrop-blur transition hover:scale-110 hover:bg-[var(--forest)] hover:text-[var(--cream)] sm:h-10 sm:w-10"
             >
               <Icon className="h-4 w-4" />
             </a>
@@ -82,15 +79,15 @@ export function Navbar() {
           ))}
         </div>
 
-        {/* shop all */}
+        {/* shop */}
         <a
           href="#shop"
-          className="flex items-center gap-2 rounded-full bg-[var(--cloud)] py-1.5 pl-1.5 pr-5 text-sm font-semibold text-[var(--forest)] shadow-sm backdrop-blur transition hover:bg-[var(--forest)] hover:text-[var(--cream)]"
+          className="flex items-center gap-2 rounded-full bg-[var(--cream)] py-1.5 pl-1.5 pr-5 text-sm font-semibold text-[var(--forest)] shadow-sm backdrop-blur transition hover:bg-[var(--forest)] hover:text-[var(--cream)]"
         >
           <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--forest)] text-[var(--cream)]">
             <ArrowUpRight className="h-3.5 w-3.5" />
           </span>
-          Shop all
+          Shop now
         </a>
       </nav>
     </header>

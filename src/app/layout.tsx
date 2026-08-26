@@ -26,11 +26,11 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
-  title: "More Nutrition — Matcha meets Protein",
+  title: "ADIELAS — Premium Nutrition for Growing Children",
   description:
-    "Protein Iced Matcha Latte — 20g of protein, 95% less sugar, 85mg of natural caffeine. Clean, green goodness in every sip.",
+    "Clean, simple, science-backed nutrition for growing children — sprouted grains, multigrains and dry fruits, formulated with a pediatrician. Stage 1, 2 and 3.",
   icons: {
-    icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
+    icon: "/images/adielas/logo.png",
   },
 };
 

@@ -1,10 +1,10 @@
-import { Scale, Sparkles, XCircle, Zap } from "lucide-react";
+import { HeartPulse, ShieldCheck, Sprout, Ban } from "lucide-react";
 import { Reveal } from "./Reveal";
 
 function Smiley({ className = "" }: { className?: string }) {
   return (
     <span
-      className={`flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-[0_10px_24px_rgba(20,56,15,0.16)] ${className}`}
+      className={`flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-[0_10px_24px_rgba(69,31,34,0.14)] ${className}`}
     >
       <svg viewBox="0 0 48 48" className="h-11 w-11" aria-hidden="true">
         <circle
@@ -29,7 +29,7 @@ function Smiley({ className = "" }: { className?: string }) {
   );
 }
 
-/* hand-drawn ellipse used to circle words, like a marker scribble */
+/* hand-drawn ellipse used to circle words */
 function Scribble({ children }: { children: React.ReactNode }) {
   return (
     <span className="relative inline-block px-2">
@@ -57,46 +57,46 @@ function Scribble({ children }: { children: React.ReactNode }) {
 
 const scenes = [
   {
-    Icon: Sparkles,
-    title: ["MORE", "TASTE"],
+    Icon: Sprout,
+    title: ["MORE", "GROWTH"],
     side: "right" as const,
     caption: (
       <>
-        <Scribble>Stone-ground matcha,</Scribble> silky smooth and never
-        bitter — premium taste in every green sip.
+        <Scribble>Sprouted ragi</Scribble> with multigrains and dry fruits —
+        natural protein, fiber and amino acids for steady, healthy growth.
       </>
     ),
   },
   {
-    Icon: Zap,
-    title: ["MORE", "CAFFEINE"],
+    Icon: ShieldCheck,
+    title: ["MORE", "IMMUNITY"],
     side: "left" as const,
     caption: (
       <>
-        85 mg of natural caffeine per cup — about as much as a cappuccino,
-        your daily clean energy boost.
+        Plant antioxidants, vitamins and minerals — polyphenols, flavonoids,
+        carotenoids and more, straight from real food.
       </>
     ),
   },
   {
-    Icon: Scale,
-    title: ["MORE WEIGHT", "LOSS"],
-    side: "right" as const,
-    caption: (
-      <>
-        With glucomannan fiber that helps you feel full — built for your
-        conscious lifestyle.
-      </>
-    ),
-  },
-  {
-    Icon: XCircle,
+    Icon: HeartPulse,
     title: ["NO ADDED", "SUGAR"],
+    side: "right" as const,
+    caption: (
+      <>
+        Only the gentle, naturally occurring sweetness of grains and fruits —
+        never a spoonful of refined sugar.
+      </>
+    ),
+  },
+  {
+    Icon: Ban,
+    title: ["THE 'NEVER'", "LIST"],
     side: "left" as const,
     caption: (
       <>
-        Only naturally occurring sugars, with far less of them than your
-        usual café matcha latte.
+        No preservatives, colours, flavours, sweeteners, emulsifiers or
+        thickeners. If a child doesn&apos;t need it, it stays out.
       </>
     ),
   },
@@ -104,7 +104,10 @@ const scenes = [
 
 export function Benefits() {
   return (
-    <section id="benefits" className="relative overflow-x-clip bg-[var(--cream-page)] py-10 sm:py-16">
+    <section
+      id="benefits"
+      className="relative overflow-x-clip bg-[var(--cream-page)] py-10 sm:py-16"
+    >
       {/* white connector curve snaking through all scenes */}
       <svg
         viewBox="0 0 1440 3400"
@@ -122,15 +125,15 @@ export function Benefits() {
       </svg>
 
       <div className="relative">
-        {/* sticky can riding the center of all scenes */}
+        {/* sticky pack riding the center of all scenes */}
         <div className="sticky top-[24vh] z-10 h-0">
-          <div className="pointer-events-none mx-auto -mt-6 w-[190px] sm:w-[240px]">
+          <div className="pointer-events-none mx-auto -mt-6 w-[150px] sm:w-[190px]">
             <div className="animate-sway">
               <img
-                src="/images/more/can-green-cut.png"
+                src="/images/adielas/stage3-cut.png"
                 alt=""
                 aria-hidden="true"
-                className="w-full drop-shadow-[0_36px_40px_rgba(20,56,15,0.30)]"
+                className="w-full drop-shadow-[0_36px_40px_rgba(69,31,34,0.28)]"
               />
             </div>
           </div>
@@ -149,8 +152,8 @@ export function Benefits() {
             >
               <div className="relative mx-auto max-w-[560px]">
                 <Smiley className="absolute -top-8 left-1/2 z-10 -translate-x-1/2" />
-                <div className="rounded-[1.6rem] bg-[var(--sage)] px-6 pb-10 pt-16 text-center shadow-[0_24px_60px_rgba(20,56,15,0.16)] sm:px-10 sm:pb-12">
-                  <h3 className="font-display text-[clamp(2.6rem,5.5vw,4.6rem)] leading-[0.92] text-white">
+                <div className="rounded-[1.6rem] bg-[var(--sage-soft)] px-6 pb-10 pt-16 text-center shadow-[0_24px_60px_rgba(69,31,34,0.14)] sm:px-10 sm:pb-12">
+                  <h3 className="font-display text-[clamp(2.4rem,5vw,4.2rem)] leading-[0.92] text-white">
                     {title[0]}
                     <br />
                     {title[1]}
