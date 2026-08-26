@@ -1,32 +1,44 @@
 import { Package, Truck } from "lucide-react";
-import { Reveal } from "./Reveal";
+import { MaskedLines, Reveal } from "./Reveal";
+import { Parallax } from "./motion";
 import { ArrowUpRight, Squiggle } from "./icons";
 
 const payments = ["VISA", "Mastercard", "PayPal", "Apple Pay", "G Pay", "Amex", "Klarna"];
 
 export function CTA() {
   return (
-    <section className="relative overflow-hidden bg-[var(--forest)] py-20 text-[var(--cream)] sm:py-28">
-      {/* decorative rings */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full border-[26px] border-white/10"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -bottom-32 -left-20 h-80 w-80 animate-spin-slow rounded-full border border-dashed border-white/20"
-      />
+    <section className="relative overflow-x-clip bg-[var(--forest)] py-20 text-[var(--cream)] sm:py-28">
+      {/* decorative rings — slow drift on scroll */}
+      <Parallax
+        speed={0.14}
+        className="pointer-events-none absolute -right-24 -top-24 h-72 w-72"
+      >
+        <div className="h-full w-full rounded-full border-[26px] border-white/10" />
+      </Parallax>
+      <Parallax
+        speed={-0.1}
+        className="pointer-events-none absolute -bottom-32 -left-20 h-80 w-80"
+      >
+        <div className="h-full w-full animate-spin-slow rounded-full border border-dashed border-white/20" />
+      </Parallax>
 
       <div className="relative mx-auto max-w-5xl px-4 text-center sm:px-6">
-        <Reveal>
-          <p className="font-display text-sm tracking-[0.3em] text-white/70">
-            3–5 DAYS DELIVERY
-          </p>
-          <h2 className="font-display mt-4 text-[clamp(2.6rem,7vw,5.5rem)] leading-[0.95]">
-            DON&apos;T JUST CRAVE IT.
-            <br />
-            <span className="text-white">GET IT.</span>
-          </h2>
+        <p className="font-display text-sm tracking-[0.3em] text-white/70">
+          3–5 DAYS DELIVERY
+        </p>
+        <h2 className="font-display mt-4 text-[clamp(2.6rem,7vw,5.5rem)] leading-[0.95]">
+          <MaskedLines
+            lines={[
+              <span key="c1" className="block">
+                DON&apos;T JUST CRAVE IT.
+              </span>,
+              <span key="c2" className="block text-white">
+                GET IT.
+              </span>,
+            ]}
+          />
+        </h2>
+        <Reveal delay={160}>
           <div className="mt-5 flex justify-center text-white/80">
             <Squiggle className="h-4 w-36" />
           </div>

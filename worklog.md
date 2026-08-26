@@ -30,3 +30,24 @@ Work Log:
 
 Stage Summary:
 - Site now uses real photographic imagery throughout; all sections render cleanly
+
+---
+Task ID: 3
+Agent: Super Z (main agent)
+Task: Add Webflow-style scroll animations throughout the site
+
+Work Log:
+- Built motion toolkit (src/components/more/motion.tsx): Parallax (rAF scroll-driven translate3d), Counter (ease-out count-up on IntersectionObserver), ScrollProgress (top reading bar, scaleX)
+- Upgraded Reveal.tsx with variants: up/down/left/right/zoom/tilt/mask + MaskedLines component (line-by-line slide-up out of overflow masks)
+- Fixed observer deadlock: masked inner lines are fully clipped by overflow-hidden parents, so zero intersection area -> observe the untransformed wrapper instead and toggle class on inner line
+- Navbar: hide-on-scroll-down / show-on-scroll-up via rAF-throttled scroll listener; tighter padding when scrolled
+- Hero: masked wordmark + 3-line headline reveal, count-up stat bubbles (20G/95%/85MG), parallax blobs + can photo
+- Mission: signature sticky stacking clip-card deck (top offsets staggered per card, z-index increasing, overflow-x-clip on section so sticky survives)
+- Benefits: alternating left/right slide-ins + .rule-draw underline that scales in on reveal
+- Flavors: per-sphere parallax drift speeds (0.05-0.17) + zoom reveals; ProductSlider: parallax "boost it" bg script; Comparison: staggered left reveals per row; Reviews: masked title; CTA: masked heading + parallax rings
+- CSS: variant initial states, is-visible override last (source-order specificity tie), rule-draw, sticky-card helper, reduced-motion guards extended
+- Verified agent-browser: desktop 1440px (hero, stack pile-through, benefits, shop, CTA) + mobile 390px (hero, stack); navbar transform, progress scaleX, rule scaleX(1) all confirmed via eval; console clean; lint clean; recent dev.log entries all 200 (old errors are historical from Task 1)
+
+Stage Summary:
+- Site now has full scroll-driven motion: sticky card deck, parallax layers, masked line reveals, count-up stats, smart navbar, progress bar
+- All original code using standard techniques (IntersectionObserver, rAF, CSS transforms, position:sticky)

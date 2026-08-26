@@ -1,11 +1,12 @@
 import { Reveal } from "./Reveal";
+import { Parallax } from "./motion";
 
 const flavors = [
-  { name: "Original", colors: "from-[#9dbb6a] to-[#5c7a3f]" },
-  { name: "Cookie", colors: "from-[#d9c39a] to-[#8a6b42]" },
-  { name: "Strawberry", colors: "from-[#f2b8c6] to-[#d96a86]" },
-  { name: "Banana", colors: "from-[#f4e3a1] to-[#d9b83f]" },
-  { name: "Chocolate", colors: "from-[#b08d68] to-[#5f4028]" },
+  { name: "Original", colors: "from-[#9dbb6a] to-[#5c7a3f]", speed: 0.05 },
+  { name: "Cookie", colors: "from-[#d9c39a] to-[#8a6b42]", speed: 0.11 },
+  { name: "Strawberry", colors: "from-[#f2b8c6] to-[#d96a86]", speed: 0.17 },
+  { name: "Banana", colors: "from-[#f4e3a1] to-[#d9b83f]", speed: 0.08 },
+  { name: "Chocolate", colors: "from-[#b08d68] to-[#5f4028]", speed: 0.14 },
 ];
 
 export function Flavors() {
@@ -21,15 +22,18 @@ export function Flavors() {
 
         <div className="mt-12 flex flex-wrap items-start justify-center gap-8 sm:gap-12">
           {flavors.map((f, i) => (
-            <Reveal key={f.name} delay={i * 90}>
-              <div className="group flex w-24 flex-col items-center gap-3 sm:w-28">
+            <Reveal key={f.name} delay={i * 90} variant="zoom">
+              <Parallax
+                speed={f.speed}
+                className="group flex w-24 flex-col items-center gap-3 sm:w-28"
+              >
                 <div
                   className={`h-24 w-24 rounded-full bg-gradient-to-br ${f.colors} shadow-[0_16px_32px_rgba(20,56,15,0.22),inset_-10px_-12px_20px_rgba(20,56,15,0.25),inset_8px_8px_16px_rgba(255,255,255,0.35)] transition-transform duration-300 group-hover:-translate-y-2 group-hover:scale-105 sm:h-28 sm:w-28`}
                 />
                 <span className="font-display text-sm tracking-wide text-[var(--forest)] sm:text-base">
                   {f.name.toUpperCase()}
                 </span>
-              </div>
+              </Parallax>
             </Reveal>
           ))}
         </div>

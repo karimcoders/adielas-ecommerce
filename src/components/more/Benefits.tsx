@@ -30,8 +30,12 @@ export function Benefits() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
         <div className="space-y-6 sm:space-y-10">
           {benefits.map(({ Icon, title, copy }, i) => (
-            <Reveal key={title} delay={i * 80}>
-              <div className="group flex flex-col gap-4 border-b-2 border-[var(--forest)]/15 pb-6 sm:flex-row sm:items-center sm:gap-10 sm:pb-10">
+            <Reveal
+              key={title}
+              delay={i * 60}
+              variant={i % 2 === 0 ? "left" : "right"}
+            >
+              <div className="group relative flex flex-col gap-4 pb-6 sm:flex-row sm:items-center sm:gap-10 sm:pb-10">
                 <div className="flex items-center gap-4 sm:w-[46%] sm:shrink-0">
                   <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[var(--forest)] text-[var(--cream)] transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110 sm:h-16 sm:w-16">
                     <Icon className="h-5 w-5 sm:h-7 sm:w-7" />
@@ -47,6 +51,8 @@ export function Benefits() {
                 <p className="max-w-md text-sm font-medium leading-relaxed text-[var(--forest-deep)]/90 sm:text-base">
                   {copy}
                 </p>
+                {/* underline that draws itself in on reveal */}
+                <span aria-hidden="true" className="rule-draw" />
               </div>
             </Reveal>
           ))}

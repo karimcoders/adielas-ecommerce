@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { Reveal } from "./Reveal";
+import { Parallax } from "./motion";
 import { ArrowUpRight } from "./icons";
 
 const packs = [
@@ -60,13 +61,18 @@ export function ProductSlider() {
 
   return (
     <section id="shop" className="relative overflow-hidden py-20 sm:py-28">
-      {/* giant background script */}
-      <span
-        aria-hidden="true"
-        className="font-script pointer-events-none absolute -top-6 left-1/2 -translate-x-1/2 select-none whitespace-nowrap text-[22vw] leading-none text-white/15"
+      {/* giant background script — drifts slower than the page */}
+      <Parallax
+        speed={0.12}
+        className="pointer-events-none absolute inset-x-0 top-0 text-center"
       >
-        boost it
-      </span>
+        <span
+          aria-hidden="true"
+          className="font-script select-none whitespace-nowrap text-[22vw] leading-none text-white/15"
+        >
+          boost it
+        </span>
+      </Parallax>
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
         <Reveal>

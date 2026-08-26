@@ -40,32 +40,33 @@ export function Comparison() {
 
             {/* rows */}
             {rows.map((row, i) => (
-              <div
-                key={row.label}
-                className={`grid grid-cols-[1.4fr_1fr_1fr] items-center gap-2 px-4 py-4 sm:px-8 sm:py-5 ${
-                  i % 2 === 0 ? "bg-white/60" : "bg-transparent"
-                }`}
-              >
-                <span className="text-xs font-semibold text-[var(--forest-deep)] sm:text-sm">
-                  {row.label}
-                </span>
-                <span className="flex items-center justify-center gap-1.5 text-center">
-                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--forest)] text-white">
-                    <Check className="h-3 w-3" strokeWidth={3} />
+              <Reveal key={row.label} delay={i * 70} variant="left">
+                <div
+                  className={`grid grid-cols-[1.4fr_1fr_1fr] items-center gap-2 px-4 py-4 sm:px-8 sm:py-5 ${
+                    i % 2 === 0 ? "bg-white/60" : "bg-transparent"
+                  }`}
+                >
+                  <span className="text-xs font-semibold text-[var(--forest-deep)] sm:text-sm">
+                    {row.label}
                   </span>
-                  <span className="font-display text-sm text-[var(--forest)] sm:text-lg">
-                    {typeof row.more === "string" ? row.more : ""}
+                  <span className="flex items-center justify-center gap-1.5 text-center">
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--forest)] text-white">
+                      <Check className="h-3 w-3" strokeWidth={3} />
+                    </span>
+                    <span className="font-display text-sm text-[var(--forest)] sm:text-lg">
+                      {typeof row.more === "string" ? row.more : ""}
+                    </span>
                   </span>
-                </span>
-                <span className="flex items-center justify-center gap-1.5 text-center">
-                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--sage-deep)] text-[var(--forest)]">
-                    <X className="h-3 w-3" strokeWidth={3} />
+                  <span className="flex items-center justify-center gap-1.5 text-center">
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--sage-deep)] text-[var(--forest)]">
+                      <X className="h-3 w-3" strokeWidth={3} />
+                    </span>
+                    <span className="text-xs font-medium text-[var(--forest-deep)]/60 sm:text-sm">
+                      {typeof row.other === "string" ? row.other : ""}
+                    </span>
                   </span>
-                  <span className="text-xs font-medium text-[var(--forest-deep)]/60 sm:text-sm">
-                    {typeof row.other === "string" ? row.other : ""}
-                  </span>
-                </span>
-              </div>
+                </div>
+              </Reveal>
             ))}
           </div>
         </Reveal>

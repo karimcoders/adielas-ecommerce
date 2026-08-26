@@ -166,9 +166,54 @@ body {
     transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
   transition-delay: var(--reveal-delay, 0ms);
 }
+.reveal[data-variant="down"] {
+  transform: translateY(-48px);
+}
+.reveal[data-variant="left"] {
+  transform: translateX(-64px);
+}
+.reveal[data-variant="right"] {
+  transform: translateX(64px);
+}
+.reveal[data-variant="zoom"] {
+  transform: scale(0.85);
+}
+.reveal[data-variant="tilt"] {
+  transform: translateY(52px) rotate(-3deg);
+}
+.reveal[data-variant="mask"] {
+  transform: translateY(115%);
+}
 .reveal.is-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
+}
+
+/* benefit row underline draws itself in once visible */
+.rule-draw {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  background: rgba(30, 74, 25, 0.18);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+}
+.reveal.is-visible .rule-draw {
+  transform: scaleX(1);
+}
+
+/* sticky stack cards (Mission clips) */
+.sticky-card {
+  position: sticky;
+}
+@media (min-width: 768px) {
+  .sticky-card {
+    transform-origin: top center;
+    transition: filter 0.4s ease;
+  }
 }
 
 /* marquee */
@@ -259,7 +304,8 @@ body {
   .animate-spin-slow {
     animation: none;
   }
-  .reveal {
+  .reveal,
+  .rule-draw {
     opacity: 1;
     transform: none;
     transition: none;

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { Star } from "lucide-react";
-import { Reveal } from "./Reveal";
+import { MaskedLines, Reveal } from "./Reveal";
 import { ArrowUpRight } from "./icons";
 
 const reviews = [
@@ -77,14 +77,22 @@ export function Reviews() {
         <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
           <Reveal>
             <div>
-              <p className="font-display text-sm tracking-[0.25em] text-[var(--forest)]/70">
-                DON&apos;T TAKE OUR WORD FOR IT
-              </p>
-              <h2 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
-                Clean. Green.{" "}
-                <span className="font-script text-[1.15em] leading-none">Goodness.</span>
-              </h2>
-            </div>
+            <p className="font-display text-sm tracking-[0.25em] text-[var(--forest)]/70">
+              DON&apos;T TAKE OUR WORD FOR IT
+            </p>
+            <h2 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
+              <MaskedLines
+                lines={[
+                  <span key="r1" className="block">
+                    Clean. Green.{" "}
+                    <span className="font-script text-[1.15em] leading-none">
+                      Goodness.
+                    </span>
+                  </span>,
+                ]}
+              />
+            </h2>
+          </div>
           </Reveal>
           <Reveal delay={120}>
             <div className="flex gap-3">
