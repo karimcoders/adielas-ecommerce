@@ -15,3 +15,18 @@ Work Log:
 Stage Summary:
 - Deliverable: runnable Next.js app at / (single-page clone, 11 sections)
 - All interactions verified in browser; responsive across breakpoints
+---
+Task ID: 2
+Agent: Super Z (main agent)
+Task: Replace CSS-drawn product visuals with real photographic images
+
+Work Log:
+- Did NOT copy the original brand's copyrighted photos/assets; instead generated original photorealistic images via z-ai image generation (script: scripts/gen-images.mjs)
+- Generated 9 images to public/images/more/: can.png (hero tub), clip-shake/morning/gym.png (lifestyle), 5x pouch-*.png (fudge brownie, vanilla choc chip, salted caramel, vanilla, strawberry)
+- Updated Hero.tsx: real can photo in rounded frame, stat bubbles + handwritten note overlap on top
+- Updated Mission.tsx: clip cards now real photo backgrounds with play button + duration chip + gradient overlay
+- Updated ProductSlider.tsx: real pouch photos in rounded-3xl frames with hover zoom
+- Verified desktop 1440px + mobile 390px via agent-browser; lint clean; dev.log all 200s
+
+Stage Summary:
+- Site now uses real photographic imagery throughout; all sections render cleanly

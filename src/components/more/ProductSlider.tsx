@@ -7,53 +7,35 @@ import { ArrowUpRight } from "./icons";
 const packs = [
   {
     name: ["FUDGE", "BROWNIE"],
-    tint: "from-[#6f4a33] to-[#3f2a1c]",
-    accent: "#d9b08c",
+    image: "/images/more/pouch-fudge.png",
+    alt: "Chocolate brown flavour pouch",
     price: "€14.90",
   },
   {
     name: ["VANILLA CHOC", "CHIP COOKIE"],
-    tint: "from-[#d9c9a3] to-[#a68b5b]",
-    accent: "#5f4028",
+    image: "/images/more/pouch-vanilla-choc.png",
+    alt: "Vanilla choc chip cookie flavour pouch",
     price: "€14.90",
   },
   {
     name: ["SALTED", "CARAMEL"],
-    tint: "from-[#e0b878] to-[#b07f3f]",
-    accent: "#5c4322",
+    image: "/images/more/pouch-caramel.png",
+    alt: "Salted caramel flavour pouch",
     price: "€14.90",
   },
   {
     name: ["VANILLA", "PERFECTION"],
-    tint: "from-[#f2ecd9] to-[#cdbf96]",
-    accent: "#6f5f38",
+    image: "/images/more/pouch-vanilla.png",
+    alt: "Vanilla perfection flavour pouch",
     price: "€14.90",
   },
   {
     name: ["STRAWBERRY", "PERFECTION"],
-    tint: "from-[#f2b8c6] to-[#d96a86]",
-    accent: "#7a2f42",
+    image: "/images/more/pouch-strawberry.png",
+    alt: "Strawberry perfection flavour pouch",
     price: "€14.90",
   },
 ];
-
-function Pouch({ tint, accent }: { tint: string; accent: string }) {
-  return (
-    <div
-      className={`relative mx-auto h-52 w-40 rounded-t-[1.4rem] rounded-b-[0.9rem] bg-gradient-to-b ${tint} shadow-[0_20px_40px_rgba(20,56,15,0.25),inset_-14px_0_24px_rgba(0,0,0,0.18),inset_12px_0_20px_rgba(255,255,255,0.18)] transition-transform duration-300 group-hover:-translate-y-2 group-hover:rotate-2`}
-    >
-      {/* crimp top */}
-      <div className="absolute inset-x-0 -top-2 h-4 rounded-[50%] bg-white/25" />
-      <div className="flex h-full flex-col items-center justify-center gap-1 px-4 text-center">
-        <span className="font-script text-3xl leading-none text-white drop-shadow">more</span>
-        <span className="text-[8px] font-bold uppercase tracking-[0.25em]" style={{ color: accent }}>
-          Flavour Boost
-        </span>
-        <span className="mt-2 h-8 w-8 rounded-full bg-white/20 blur-[2px]" />
-      </div>
-    </div>
-  );
-}
 
 export function ProductSlider() {
   const [index, setIndex] = useState(0);
@@ -116,9 +98,15 @@ export function ProductSlider() {
                     className="shrink-0 px-2 sm:px-3"
                     style={{ width: `${100 / perView}%` }}
                   >
-                    <div className="group flex h-full flex-col items-center rounded-[2rem] bg-white/55 p-6 pt-8 shadow-[0_18px_44px_rgba(20,56,15,0.12)] backdrop-blur transition hover:bg-white/75 sm:p-8">
-                      <Pouch tint={pack.tint} accent={pack.accent} />
-                      <h4 className="font-display mt-6 text-center text-lg leading-tight sm:text-xl">
+                    <div className="group flex h-full flex-col items-center rounded-[2rem] bg-white/55 p-4 pt-4 shadow-[0_18px_44px_rgba(20,56,15,0.12)] backdrop-blur transition hover:bg-white/75 sm:p-5">
+                      <div className="w-full overflow-hidden rounded-3xl">
+                        <img
+                          src={pack.image}
+                          alt={pack.alt}
+                          className="h-56 w-full object-cover transition-transform duration-500 group-hover:scale-105 sm:h-64"
+                        />
+                      </div>
+                      <h4 className="font-display mt-5 text-center text-lg leading-tight sm:text-xl">
                         {pack.name[0]}
                         <br />
                         {pack.name[1]}

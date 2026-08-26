@@ -15,63 +15,6 @@ function BuyButton({ className = "" }: { className?: string }) {
   );
 }
 
-/** Pure-CSS drawn protein can */
-function Can() {
-  return (
-    <div className="relative h-[300px] w-[190px] rotate-[14deg] sm:h-[360px] sm:w-[228px] lg:h-[420px] lg:w-[266px]">
-      {/* lid */}
-      <div className="absolute -top-3 left-1/2 h-12 w-[104%] -translate-x-1/2 rounded-[50%/60%] bg-[#eef2e6] shadow-[inset_0_-8px_14px_rgba(30,74,25,0.18)]" />
-      <div className="absolute -top-1 left-1/2 h-5 w-[104%] -translate-x-1/2 rounded-[50%/60%] bg-white" />
-      {/* body */}
-      <div className="absolute inset-x-0 bottom-0 top-4 overflow-hidden rounded-t-[64px] rounded-b-[26px] bg-gradient-to-b from-[#87984f] via-[#95a75d] to-[#7c8d49] shadow-[inset_-24px_0_36px_rgba(20,56,15,0.25),inset_18px_0_30px_rgba(255,255,255,0.14),0_30px_50px_rgba(20,56,15,0.28)]">
-        {/* label content */}
-        <div className="flex h-full flex-col items-center px-5 pt-10 text-center sm:pt-12">
-          <span className="font-script text-5xl leading-none text-[#f2f5e8] drop-shadow-sm sm:text-6xl">
-            more
-          </span>
-          <span className="font-display mt-3 text-lg leading-[1.05] text-white sm:text-xl">
-            PROTEIN
-            <br />
-            ICED MATCHA
-            <br />
-            LATTE
-          </span>
-          <span className="mt-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#e6eed7]">
-            Original Taste
-          </span>
-
-          {/* tiny iced matcha glass illustration */}
-          <div className="mt-5 flex items-end gap-1.5">
-            <div className="relative h-16 w-12 rounded-b-xl rounded-t-md border-2 border-[#e9efdb]/80 bg-gradient-to-b from-[#d9e8b6]/70 via-[#a9c26a]/80 to-[#6f8f3f]">
-              <div className="absolute inset-x-1.5 top-1.5 h-3 rounded-sm bg-white/50" />
-              <div className="absolute -right-3 bottom-2 h-8 w-1.5 rotate-[16deg] rounded-full bg-[#e4ead1]" />
-            </div>
-            <div className="flex flex-col gap-1 pb-1">
-              <span className="block h-1.5 w-8 rounded-full bg-white/40" />
-              <span className="block h-1.5 w-6 rounded-full bg-white/40" />
-              <span className="block h-1.5 w-7 rounded-full bg-white/40" />
-            </div>
-          </div>
-
-          {/* small badges row */}
-          <div className="mt-4 flex gap-2">
-            {["20G", "95%", "85MG"].map((b) => (
-              <span
-                key={b}
-                className="rounded-full border border-white/40 px-2 py-1 text-[8px] font-bold text-white/90"
-              >
-                {b}
-              </span>
-            ))}
-          </div>
-        </div>
-        {/* sheen */}
-        <div className="pointer-events-none absolute inset-y-0 left-4 w-10 rounded-full bg-white/15 blur-md" />
-      </div>
-    </div>
-  );
-}
-
 const stats = [
   { value: "20", unit: "G", label: "of Protein", pos: "left-[6%] top-[22%]", delay: "0s" },
   { value: "95", unit: "%", label: "less Sugar", pos: "left-[0%] top-[50%]", delay: "0.8s" },
@@ -133,16 +76,18 @@ export function Hero() {
 
         {/* lower hero grid */}
         <div className="mt-10 grid items-center gap-10 pb-16 sm:mt-14 lg:mt-6 lg:grid-cols-2 lg:gap-4 lg:pb-24">
-          {/* can composition */}
+          {/* can composition — real product photo */}
           <Reveal className="order-2 lg:order-1" delay={150}>
-            <div className="relative mx-auto aspect-[320/360] w-full max-w-[420px]">
+            <div className="relative mx-auto aspect-[4/5] w-full max-w-[440px]">
+              <img
+                src="/images/more/can.png"
+                alt="Protein iced matcha latte tub on a sage green backdrop"
+                className="absolute inset-0 h-full w-full rounded-[3rem] object-cover shadow-[0_30px_60px_rgba(20,56,15,0.28)]"
+              />
               <StatBubbles />
-              <div className="absolute left-[58%] top-[54%] -translate-x-1/2 -translate-y-1/2">
-                <Can />
-              </div>
               {/* handwritten note */}
-              <div className="absolute left-0 top-0 hidden -rotate-6 text-[var(--forest)] sm:block">
-                <p className="font-hand text-2xl leading-[0.95]">
+              <div className="absolute -left-4 -top-2 hidden -rotate-6 text-[var(--forest)] sm:block">
+                <p className="font-hand text-2xl leading-[0.95] drop-shadow-[0_1px_0_rgba(244,248,238,0.8)]">
                   Real Matcha,
                   <br />
                   Original Taste

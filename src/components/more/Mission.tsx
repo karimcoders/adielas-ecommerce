@@ -5,17 +5,20 @@ import { ArrowUpRight } from "./icons";
 const clips = [
   {
     title: "Shake it, sip it",
-    gradient: "from-[#7d9052] to-[#a9c26a]",
+    image: "/images/more/clip-shake.png",
+    alt: "Shaker bottle with creamy iced matcha latte",
     seconds: "0:14",
   },
   {
     title: "Morning ritual",
-    gradient: "from-[#5c7a3f] to-[#8fb35c]",
+    image: "/images/more/clip-morning.png",
+    alt: "Glass of iced matcha latte on a sunlit kitchen counter",
     seconds: "0:22",
   },
   {
     title: "Post-workout glow",
-    gradient: "from-[#94a75d] to-[#c2d5b2]",
+    image: "/images/more/clip-gym.png",
+    alt: "Athlete drinking a matcha protein smoothie after a workout",
     seconds: "0:31",
   },
 ];
@@ -39,13 +42,19 @@ export function Mission() {
             <Reveal key={clip.title} delay={i * 120}>
               <button
                 type="button"
-                className={`group relative flex h-56 w-full items-center justify-center overflow-hidden rounded-[2rem] bg-gradient-to-br ${clip.gradient} shadow-[0_18px_40px_rgba(20,56,15,0.18)] transition-transform duration-300 hover:-translate-y-1.5 sm:h-64`}
+                className="group relative flex h-56 w-full items-center justify-center overflow-hidden rounded-[2rem] shadow-[0_18px_40px_rgba(20,56,15,0.18)] transition-transform duration-300 hover:-translate-y-1.5 sm:h-64"
                 aria-label={`Play clip: ${clip.title}`}
               >
-                <span className="absolute left-4 top-4 rounded-full bg-black/25 px-3 py-1 text-xs font-semibold text-white">
+                <img
+                  src={clip.image}
+                  alt={clip.alt}
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <span className="absolute inset-0 bg-gradient-to-t from-[var(--forest-deep)]/55 via-transparent to-black/10" />
+                <span className="absolute left-4 top-4 rounded-full bg-black/40 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm">
                   {clip.seconds}
                 </span>
-                <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white/85 text-[var(--forest)] shadow-lg transition-transform duration-300 group-hover:scale-110">
+                <span className="relative flex h-16 w-16 items-center justify-center rounded-full bg-white/85 text-[var(--forest)] shadow-lg transition-transform duration-300 group-hover:scale-110">
                   <Play className="ml-0.5 h-6 w-6 fill-current" />
                 </span>
                 <span className="font-display absolute bottom-4 left-5 text-left text-xl text-white drop-shadow">
