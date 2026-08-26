@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Reveal } from "./Reveal";
 import { MaskedLines } from "./Reveal";
 import { Parallax } from "./motion";
@@ -67,9 +68,9 @@ export function CTA() {
         </h2>
 
         <Reveal delay={140}>
-          <a href="#shop" className="btn-pill group mt-8 px-7 py-3.5 text-lg">
+          <Link href="/shop" className="btn-pill group mt-8 inline-flex px-7 py-3.5 text-lg">
             Shop now
-          </a>
+          </Link>
           <p className="font-hand mt-10 rotate-[-3deg] text-xl text-[var(--forest)] sm:text-2xl">
             Safe, secure checkout
           </p>

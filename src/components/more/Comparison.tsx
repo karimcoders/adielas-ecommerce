@@ -1,4 +1,5 @@
-import { Check, X } from "lucide-react";
+import Link from "next/link";
+import { Check, X, ArrowUpRight } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { Squiggle } from "./icons";
 
@@ -50,8 +51,8 @@ export function Comparison() {
               {/* photo card */}
               <div className="relative overflow-hidden rounded-[1.4rem] bg-[var(--cloud)]">
                 <img
-                  src="/images/adielas/stage1.png"
-                  alt="ADIELAS Stage 1 pack on a kitchen counter"
+                  src="/images/adielas/jar-open.png"
+                  alt="ADIELAS jar opened to show sprouted grain powder with a wooden spoon"
                   loading="lazy"
                   className="h-full min-h-[320px] w-full object-cover"
                 />
@@ -125,8 +126,15 @@ export function Comparison() {
                   ))}
                 </div>
 
-                <div className="mt-6 flex justify-end text-[var(--forest)]">
-                  <Squiggle className="h-3 w-24" />
+                <div className="mt-6 flex items-center justify-between gap-4">
+                  <Link
+                    href="/shop/stage-1"
+                    className="btn-pill group px-5 py-2.5 text-sm sm:text-base"
+                  >
+                    Start with Stage 1
+                    <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:rotate-45" />
+                  </Link>
+                  <Squiggle className="h-3 w-24 shrink-0 text-[var(--forest)]" />
                 </div>
               </div>
             </div>

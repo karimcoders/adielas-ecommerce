@@ -2,6 +2,11 @@ import type { Metadata } from "next";
 import { Anton, Archivo, Yellowtail, Caveat } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { CartProvider } from "@/components/more/CartProvider";
+import { CartDrawer } from "@/components/more/CartDrawer";
+import { Navbar } from "@/components/more/Navbar";
+import { Footer } from "@/components/more/Footer";
+import { ScrollProgress } from "@/components/more/motion";
 
 const anton = Anton({
   variable: "--font-anton",
@@ -44,7 +49,15 @@ export default function RootLayout({
       <body
         className={`${anton.variable} ${archivo.variable} ${yellowtail.variable} ${caveat.variable} antialiased`}
       >
-        {children}
+        <CartProvider>
+          <div className="flex min-h-screen flex-col bg-[var(--sage)] text-[var(--forest)]">
+            <ScrollProgress />
+            <Navbar />
+            <main className="flex-1">{children}</main>
+            <Footer className="mt-auto" />
+            <CartDrawer />
+          </div>
+        </CartProvider>
         <Toaster />
       </body>
     </html>

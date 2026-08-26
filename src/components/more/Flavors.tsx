@@ -6,7 +6,7 @@ const floating = [
     src: "/images/adielas/extra2.png",
     label: "5 Months+",
     alt: "Happy child illustration",
-    pos: "left-[3%] top-[30%] w-[92px] sm:w-[120px]",
+    pos: "left-[0.5%] top-[16%] w-[64px] sm:w-[84px]",
     rotate: "-rotate-6",
     note: "left-[5%] top-[12%]",
     arrow: "rotate-[24deg]",
@@ -15,8 +15,8 @@ const floating = [
   {
     src: "/images/adielas/extra1.png",
     label: "1 Year+",
-    alt: "Hazelnut illustration",
-    pos: "right-[2%] top-[36%] w-[96px] sm:w-[124px]",
+    alt: "Almond illustration",
+    pos: "right-[0.5%] top-[22%] w-[68px] sm:w-[88px]",
     rotate: "rotate-6",
     note: "right-[4%] top-[16%]",
     arrow: "-rotate-[24deg]",
@@ -100,31 +100,31 @@ export function Flavors() {
         </div>
 
         {/* packs rising from the bottom edge */}
-        <Reveal variant="down" delay={120} className="absolute bottom-0 left-[10%] hidden w-[21%] sm:block">
+        <Reveal variant="down" delay={120} className="absolute bottom-0 left-[9%] hidden w-[24%] sm:block">
           <div className="translate-y-[16%] -rotate-6">
             <img
-              src="/images/adielas/stage1-cut.png"
-              alt="ADIELAS Stage 1 pack — from 5 months"
+              src="/images/adielas/jar-stage1-cut.png"
+              alt="ADIELAS Stage 1 sprouted ragi jar — from 5 months"
               loading="lazy"
               className="w-full drop-shadow-[0_30px_36px_rgba(69,31,34,0.26)]"
             />
           </div>
         </Reveal>
-        <Reveal variant="down" className="absolute bottom-0 left-1/2 z-10 w-[30%] -translate-x-1/2">
+        <Reveal variant="down" className="absolute bottom-0 left-1/2 z-10 w-[34%] -translate-x-1/2">
           <div className="translate-y-[12%]">
             <img
-              src="/images/adielas/stage2-cut.png"
-              alt="ADIELAS Stage 2 pack — from 6 months"
+              src="/images/adielas/jar-stage2-cut.png"
+              alt="ADIELAS Stage 2 multigrain jar — from 6 months"
               loading="lazy"
               className="w-full drop-shadow-[0_30px_40px_rgba(69,31,34,0.30)]"
             />
           </div>
         </Reveal>
-        <Reveal variant="down" delay={220} className="absolute bottom-0 right-[10%] hidden w-[21%] sm:block">
+        <Reveal variant="down" delay={220} className="absolute bottom-0 right-[9%] hidden w-[24%] sm:block">
           <div className="translate-y-[16%] rotate-6">
             <img
-              src="/images/adielas/stage3-cut.png"
-              alt="ADIELAS Stage 3 pack — from 1 year"
+              src="/images/adielas/jar-stage3-cut.png"
+              alt="ADIELAS Stage 3 dry-fruits jar — from 1 year"
               loading="lazy"
               className="w-full drop-shadow-[0_30px_36px_rgba(69,31,34,0.26)]"
             />

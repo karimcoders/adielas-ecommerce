@@ -125,12 +125,12 @@ export function Benefits() {
       </svg>
 
       <div className="relative">
-        {/* sticky pack riding the center of all scenes */}
+        {/* sticky jar riding the center of all scenes */}
         <div className="sticky top-[24vh] z-10 h-0">
-          <div className="pointer-events-none mx-auto -mt-6 w-[150px] sm:w-[190px]">
+          <div className="pointer-events-none mx-auto -mt-6 w-[170px] sm:w-[210px]">
             <div className="animate-sway">
               <img
-                src="/images/adielas/stage3-cut.png"
+                src="/images/adielas/jar-stage3-cut.png"
                 alt=""
                 aria-hidden="true"
                 className="w-full drop-shadow-[0_36px_40px_rgba(69,31,34,0.28)]"

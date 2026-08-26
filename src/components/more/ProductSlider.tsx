@@ -1,39 +1,22 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import Link from "next/link";
+import { Plus, ShoppingBag } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { Parallax } from "./motion";
 import { ArrowUpRight, CurvedArrow } from "./icons";
+import { useCart } from "./CartProvider";
+import { useToast } from "@/hooks/use-toast";
+import { formatINR, products } from "@/lib/products";
 
-const stages = [
-  {
-    name: ["STAGE 1", "FIRST WEANING"],
-    age: "5 months+",
-    image: "/images/adielas/stage1-cut.png",
-    alt: "ADIELAS Stage 1 pack",
-    price: "₹299",
-    note: "Sprouted ragi, gently introduced",
-  },
-  {
-    name: ["STAGE 2", "MULTIGRAIN"],
-    age: "6 months+",
-    image: "/images/adielas/stage2-cut.png",
-    alt: "ADIELAS Stage 2 pack",
-    price: "₹399",
-    note: "Ragi plus a multigrain medley",
-  },
-  {
-    name: ["STAGE 3", "DRY FRUITS"],
-    age: "1 year+",
-    image: "/images/adielas/stage3-cut.png",
-    alt: "ADIELAS Stage 3 pack",
-    price: "₹475",
-    note: "Multigrains with premium dry fruits",
-  },
-];
+/* the three stage jars rotate here; the trio lives on the shop page */
+const stages = products.filter((p) => p.slug !== "starter-trio");
 
 export function ProductSlider() {
-  const [index, setIndex] = useState(2);
+  const [index, setIndex] = useState(1);
+  const { add } = useCart();
+  const { toast } = useToast();
 
   const prev = useCallback(
     () => setIndex((i) => (i <= 0 ? stages.length - 1 : i - 1)),
@@ -56,6 +39,14 @@ export function ProductSlider() {
   }, [next]);
 
   const active = stages[index];
+
+  const quickAdd = useCallback(() => {
+    add(active.slug, 1, { open: false });
+    toast({
+      title: "Added to cart",
+      description: `${active.name} × 1 · ${formatINR(active.price)}`,
+    });
+  }, [add, active, toast]);
 
   return (
     <section
@@ -80,7 +71,7 @@ export function ProductSlider() {
               Clean, simple, age-wise nutrition
             </p>
             <p className="mx-auto mt-5 max-w-md text-sm font-medium leading-relaxed text-[var(--forest-deep)]/90 sm:text-base">
-              400 g packs of sprouted, sun-dried goodness — formulated by a
+              400 g jars of sprouted, sun-dried goodness — formulated by a
               pediatrician, free from pesticides, preservatives and sugar.
             </p>
           </div>
@@ -98,9 +89,9 @@ export function ProductSlider() {
               <CurvedArrow className="ml-8 mt-1 h-12 w-10 rotate-[115deg]" />
             </div>
 
-            {/* composition: bowl illustration + current stage pack */}
+            {/* composition: brand wordmark + current stage jar */}
             <div className="mt-14 flex items-center justify-center gap-6 sm:gap-14">
-              <div className="relative flex w-[38%] max-w-[300px] items-end justify-center">
+              <div className="relative flex w-[34%] max-w-[260px] items-end justify-center">
                 <img
                   src="/images/adielas/logo.png"
                   alt=""
@@ -113,39 +104,53 @@ export function ProductSlider() {
                 +
               </span>
 
-              <div className="relative flex w-[38%] max-w-[300px] items-end justify-center">
+              <div className="relative flex w-[44%] max-w-[320px] items-end justify-center">
                 <img
-                  key={active.image}
-                  src={active.image}
-                  alt={active.alt}
-                  className="w-[88%] rotate-[5deg] drop-shadow-[0_26px_34px_rgba(69,31,34,0.26)]"
+                  key={active.slug}
+                  src={active.cut ?? active.image}
+                  alt={active.name}
+                  className="w-full rotate-[5deg] drop-shadow-[0_26px_34px_rgba(69,31,34,0.26)]"
                 />
               </div>
             </div>
 
-            {/* stage label + buy + arrows */}
+            {/* stage label + buy/add + arrows */}
             <div className="mt-10 flex flex-col items-center gap-6 text-center">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--olive)]">
-                  {active.age}
+                  {active.ageLabel} · {active.weight}
                 </p>
                 <h3 className="font-display mt-1 text-3xl leading-[0.95] text-[var(--forest)] sm:text-4xl">
-                  {active.name[0]}
+                  {active.nameLines[0]}
                   <br />
-                  {active.name[1]}
+                  {active.nameLines[1]}
                 </h3>
-                <p className="mt-2 text-sm font-medium text-[var(--forest-deep)]/80">
-                  {active.note}
+                <p className="mt-2 max-w-sm text-sm font-medium text-[var(--forest-deep)]/80">
+                  {active.tagline}
                 </p>
               </div>
-              <div className="flex items-center gap-6">
-                <a href="#top" className="btn-pill group px-6 py-3 text-base">
-                  Buy now
-                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:rotate-45" />
-                </a>
-                <span className="text-lg font-bold text-[var(--forest)]">
-                  {active.price}
+              <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+                <span className="font-display text-2xl text-[var(--forest)]">
+                  {formatINR(active.price)}
                 </span>
+                <Link
+                  href={`/shop/${active.slug}`}
+                  className="btn-pill group px-6 py-3 text-base"
+                >
+                  View &amp; buy
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:rotate-45" />
+                </Link>
+                <button
+                  type="button"
+                  onClick={quickAdd}
+                  className="flex items-center gap-2 rounded-full border-2 border-[var(--forest)]/25 bg-white px-5 py-2.5 text-sm font-bold text-[var(--forest)] transition hover:-translate-y-0.5 hover:border-[var(--forest)] hover:bg-[var(--forest)] hover:text-[var(--cream)]"
+                >
+                  <ShoppingBag className="h-4 w-4" />
+                  Add
+                  <span className="sr-only">
+                    Add {active.name} to cart
+                  </span>
+                </button>
                 <div className="flex gap-2">
                   <button
                     type="button"
@@ -165,6 +170,12 @@ export function ProductSlider() {
                   </button>
                 </div>
               </div>
+              <Link
+                href="/shop"
+                className="text-sm font-bold uppercase tracking-[0.18em] text-[var(--olive)] underline underline-offset-4 hover:text-[var(--forest)]"
+              >
+                or shop all products →
+              </Link>
             </div>
           </div>
         </Reveal>

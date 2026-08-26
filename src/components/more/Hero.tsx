@@ -1,18 +1,19 @@
+import Link from "next/link";
 import { ArrowUpRight, CurvedArrow, Squiggle } from "./icons";
 import { MaskedLines, Reveal } from "./Reveal";
 import { Counter, Parallax } from "./motion";
 
 function BuyButton({ className = "" }: { className?: string }) {
   return (
-    <a
-      href="#shop"
+    <Link
+      href="/shop"
       className={`btn-pill group py-1.5 pl-1.5 pr-7 text-base sm:text-lg ${className}`}
     >
       <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--cream)] text-[var(--forest)] transition-transform duration-300 group-hover:rotate-45">
         <ArrowUpRight className="h-4 w-4" />
       </span>
       Shop now
-    </a>
+    </Link>
   );
 }
 
@@ -93,12 +94,12 @@ export function Hero() {
               />
               <StatBubbles />
 
-              {/* tilted pack cutout, floating over the ring */}
+              {/* tilted jar mockup, floating over the ring */}
               <Parallax speed={0.05} className="absolute inset-0">
-                <div className="animate-sway absolute left-1/2 top-1/2 w-[46%] -translate-x-1/2 -translate-y-[46%] sm:w-[50%]">
+                <div className="animate-sway absolute left-1/2 top-1/2 w-[56%] -translate-x-1/2 -translate-y-[46%] sm:w-[60%]">
                   <img
-                    src="/images/adielas/stage3-cut.png"
-                    alt="ADIELAS Stage 3 nutritional food pack"
+                    src="/images/adielas/jar-stage3-cut.png"
+                    alt="ADIELAS Stage 3 dry-fruits nutrition jar"
                     className="w-full -rotate-6 drop-shadow-[0_40px_44px_rgba(69,31,34,0.30)]"
                   />
                 </div>

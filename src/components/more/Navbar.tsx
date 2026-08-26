@@ -1,24 +1,34 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, InstagramIcon, TikTokIcon, YouTubeIcon } from "./icons";
+import Link from "next/link";
+import {
+  ArrowUpRight,
+  InstagramIcon,
+  TikTokIcon,
+  YouTubeIcon,
+} from "./icons";
+import { ShoppingBag, Menu, X } from "lucide-react";
+import { useCart } from "./CartProvider";
 
 const socials = [
-  { label: "Instagram", href: "#", Icon: InstagramIcon },
-  { label: "TikTok", href: "#", Icon: TikTokIcon },
-  { label: "YouTube", href: "#", Icon: YouTubeIcon },
+  { label: "Instagram", href: "https://www.instagram.com", Icon: InstagramIcon },
+  { label: "TikTok", href: "https://www.tiktok.com", Icon: TikTokIcon },
+  { label: "YouTube", href: "https://www.youtube.com", Icon: YouTubeIcon },
 ];
 
 const links = [
-  { label: "Why Adielas", href: "#why" },
-  { label: "Stages", href: "#stages" },
-  { label: "Doctor", href: "#doctor" },
+  { label: "Why Adielas", href: "/#why" },
+  { label: "Stages", href: "/#stages" },
+  { label: "Doctor", href: "/#doctor" },
 ];
 
 export function Navbar() {
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const lastY = useRef(0);
+  const { openCart, count } = useCart();
 
   useEffect(() => {
     let raf = 0;
@@ -56,12 +66,29 @@ export function Navbar() {
           scrolled ? "py-2" : "py-4"
         }`}
       >
-        {/* socials */}
-        <div className="flex items-center gap-2">
+        {/* mobile hamburger */}
+        <button
+          type="button"
+          onClick={() => setMenuOpen((v) => !v)}
+          aria-expanded={menuOpen}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--cream)] text-[var(--forest)] shadow-sm backdrop-blur transition hover:bg-[var(--forest)] hover:text-[var(--cream)] md:hidden"
+        >
+          {menuOpen ? (
+            <X className="h-4 w-4" />
+          ) : (
+            <Menu className="h-4 w-4" />
+          )}
+        </button>
+
+        {/* socials (desktop) */}
+        <div className="hidden items-center gap-2 md:flex">
           {socials.map(({ label, href, Icon }) => (
             <a
               key={label}
               href={href}
+              target="_blank"
+              rel="noreferrer noopener"
               aria-label={label}
               className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--cream)] text-[var(--forest)] shadow-sm backdrop-blur transition hover:scale-110 hover:bg-[var(--forest)] hover:text-[var(--cream)] sm:h-10 sm:w-10"
             >
@@ -70,26 +97,87 @@ export function Navbar() {
           ))}
         </div>
 
-        {/* center pills */}
+        {/* center pills (desktop) */}
         <div className="hidden items-center gap-2 md:flex">
           {links.map(({ label, href }) => (
-            <a key={label} href={href} className="nav-pill px-5 py-2.5 text-sm">
+            <Link
+              key={label}
+              href={href}
+              className="nav-pill px-5 py-2.5 text-sm"
+            >
               {label}
-            </a>
+            </Link>
           ))}
         </div>
 
-        {/* shop */}
-        <a
-          href="#shop"
-          className="flex items-center gap-2 rounded-full bg-[var(--cream)] py-1.5 pl-1.5 pr-5 text-sm font-semibold text-[var(--forest)] shadow-sm backdrop-blur transition hover:bg-[var(--forest)] hover:text-[var(--cream)]"
+        {/* wordmark (mobile) */}
+        <Link
+          href="/"
+          aria-label="ADIELAS home"
+          className="font-script select-none text-3xl leading-none text-[var(--forest)] md:hidden"
         >
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--forest)] text-[var(--cream)]">
-            <ArrowUpRight className="h-3.5 w-3.5" />
-          </span>
-          Shop now
-        </a>
+          adielas
+        </Link>
+
+        {/* right cluster */}
+        <div className="flex items-center gap-2">
+          <Link
+            href="/shop"
+            className="hidden items-center gap-2 rounded-full bg-[var(--cream)] py-1.5 pl-1.5 pr-5 text-sm font-semibold text-[var(--forest)] shadow-sm backdrop-blur transition hover:bg-[var(--forest)] hover:text-[var(--cream)] sm:flex"
+          >
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--forest)] text-[var(--cream)]">
+              <ArrowUpRight className="h-3.5 w-3.5" />
+            </span>
+            Shop now
+          </Link>
+
+          <button
+            type="button"
+            onClick={openCart}
+            aria-label={`Open cart (${count} item${count === 1 ? "" : "s"})`}
+            className="relative flex h-10 w-10 items-center justify-center rounded-full bg-[var(--forest)] text-[var(--cream)] shadow-sm transition hover:scale-110 hover:bg-[var(--forest-deep)] sm:h-11 sm:w-11"
+          >
+            <ShoppingBag className="h-4 w-4" />
+            {count > 0 && (
+              <span
+                key={count}
+                className="animate-pop absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full border-2 border-[var(--sage)] bg-[var(--sage-deep)] px-1 text-[10px] font-extrabold leading-none text-white"
+              >
+                {count > 20 ? "20+" : count}
+              </span>
+            )}
+          </button>
+        </div>
       </nav>
+
+      {/* mobile menu sheet */}
+      <div
+        className={`overflow-hidden px-4 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] md:hidden ${
+          menuOpen ? "max-h-[420px] opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="mt-1 rounded-3xl border border-[var(--forest)]/10 bg-[var(--cream)] p-3 shadow-[0_24px_50px_rgba(69,31,34,0.22)]">
+          {[...links, { label: "Shop All", href: "/shop" }].map(
+            ({ label, href }) => (
+              <Link
+                key={label}
+                href={href}
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center justify-between rounded-2xl px-4 py-3 text-base font-semibold text-[var(--forest)] transition hover:bg-[var(--cloud)]"
+              >
+                {label}
+                <ArrowUpRight className="h-4 w-4 text-[var(--olive)]" />
+              </Link>
+            ),
+          )}
+          <a
+            href="tel:+919845379428"
+            className="mt-1 block rounded-2xl px-4 pb-2 pt-3 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--olive)]"
+          >
+            Questions? +91 98453 79428
+          </a>
+        </div>
+      </div>
     </header>
   );
 }

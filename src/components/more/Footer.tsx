@@ -1,9 +1,10 @@
 import { ArrowUpRight, InstagramIcon, TikTokIcon, YouTubeIcon } from "./icons";
+import Link from "next/link";
 import { Reveal } from "./Reveal";
 
-export function Footer() {
+export function Footer({ className = "" }: { className?: string }) {
   return (
-    <footer className="relative overflow-hidden bg-[var(--sage)]">
+    <footer className={`relative overflow-hidden bg-[var(--sage)] ${className}`}>
       <div className="mx-auto max-w-7xl px-4 pb-40 pt-16 sm:px-6 sm:pb-48 lg:px-10">
         <div className="grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
           {/* big brand card */}
@@ -18,21 +19,21 @@ export function Footer() {
               </h2>
               <div className="pointer-events-none relative mx-auto mt-6 flex w-fit items-end justify-center">
                 <img
-                  src="/images/adielas/stage1-cut.png"
+                  src="/images/adielas/jar-stage1-cut.png"
                   alt=""
                   aria-hidden="true"
                   className="w-20 -rotate-6 sm:w-24"
                 />
                 <img
-                  src="/images/adielas/stage3-cut.png"
-                  alt="ADIELAS Stage 3 nutritional food pack"
+                  src="/images/adielas/jar-stage3-cut.png"
+                  alt="ADIELAS nutrition jars"
                   className="-ml-4 w-28 sm:w-32"
                 />
               </div>
-              <a href="#shop" className="btn-pill group relative mt-6 px-6 py-3 text-base">
+              <Link href="/shop" className="btn-pill group relative mt-6 inline-flex px-6 py-3 text-base">
                 Buy now
                 <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:rotate-45" />
-              </a>
+              </Link>
             </div>
           </Reveal>
 
@@ -41,7 +42,7 @@ export function Footer() {
             <Reveal variant="left" delay={100}>
               <div className="flex gap-4">
                 <a
-                  href="#shop"
+                  href="/shop"
                   className="flex w-36 flex-col items-center gap-2 rounded-2xl bg-white px-4 py-5 text-center shadow-[0_16px_36px_rgba(69,31,34,0.12)] transition hover:-translate-y-1"
                 >
                   <svg viewBox="0 0 40 40" className="h-9 w-9" aria-hidden="true">
@@ -56,7 +57,7 @@ export function Footer() {
                   </span>
                 </a>
                 <a
-                  href="#doctor"
+                  href="/#doctor"
                   className="flex w-36 flex-col items-center gap-2 rounded-2xl bg-white px-4 py-5 text-center shadow-[0_16px_36px_rgba(69,31,34,0.12)] transition hover:-translate-y-1"
                 >
                   <svg viewBox="0 0 40 40" className="h-9 w-9" aria-hidden="true">
@@ -86,16 +87,22 @@ export function Footer() {
             <Reveal variant="left" delay={220}>
               <nav aria-label="Footer" className="flex flex-col gap-2.5">
                 <a
-                  href="#why"
+                  href="/#why"
                   className="w-fit text-sm font-semibold text-[var(--forest)] underline underline-offset-4 hover:text-[var(--forest-deep)]"
                 >
                   Why ADIELAS
                 </a>
                 <a
-                  href="#stages"
+                  href="/shop"
                   className="w-fit text-sm font-semibold text-[var(--forest)] underline underline-offset-4 hover:text-[var(--forest-deep)]"
                 >
                   Shop Stages
+                </a>
+                <a
+                  href="mailto:Info@adielas.com"
+                  className="w-fit text-sm font-semibold text-[var(--forest)] underline underline-offset-4 hover:text-[var(--forest-deep)]"
+                >
+                  Contact us
                 </a>
               </nav>
             </Reveal>
@@ -104,9 +111,20 @@ export function Footer() {
               <address className="text-sm not-italic leading-relaxed text-[var(--forest-deep)]/85">
                 649, 6th C Main, 14th Cross, JP Nagar 3rd Phase,
                 <br />
-                Bangalore 560078 · +91 98453 79428
-                <br />
-                Info@adielas.com
+                Bangalore 560078 ·{" "}
+                <a
+                  href="tel:+919845379428"
+                  className="underline underline-offset-4 hover:text-[var(--forest)]"
+                >
+                  +91 98453 79428
+                </a>{" "}
+                ·{" "}
+                <a
+                  href="mailto:Info@adielas.com"
+                  className="underline underline-offset-4 hover:text-[var(--forest)]"
+                >
+                  Info@adielas.com
+                </a>
               </address>
             </Reveal>
 
@@ -119,7 +137,15 @@ export function Footer() {
                 ].map(({ label, Icon }) => (
                   <a
                     key={label}
-                    href="#"
+                    href={
+                      label === "Instagram"
+                        ? "https://www.instagram.com"
+                        : label === "TikTok"
+                          ? "https://www.tiktok.com"
+                          : "https://www.youtube.com"
+                    }
+                    target="_blank"
+                    rel="noreferrer noopener"
                     aria-label={label}
                     className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[var(--forest)] shadow-sm transition hover:scale-110 hover:bg-[var(--forest)] hover:text-[var(--cream)]"
                   >

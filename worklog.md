@@ -68,3 +68,23 @@ Work Log:
 
 Stage Summary:
 - ADIELAS revamp complete: same scroll-animation template system, full rebrand with their assets + factual content, all fresh marketing copy
+
+---
+Task ID: 6
+Agent: Super Z (main agent)
+Task: Product jar mockups + clean "Why settle" section + full working e-commerce (shop/PDP/cart/checkout)
+
+Work Log:
+- Generated 5 AI packaging mockups (scripts/gen-jars.mjs): jar-stage1/2/3.png (butter-yellow, terracotta, maroon lids + "adielas STAGE n" labels), jar-open.png (open jar + spoon), jar-trio.png (3 jars), all on brand ivory studio bg
+- Cut transparent versions with rembg (scripts/rembg-jars.py): jar-stageN-cut.png + jar-trio-cut.png
+- Swapped imagery everywhere: Hero ring jar, Benefits sticky rider, Flavors rising trio (repositioned floating illustrations to stop overlap), ProductSlider active jar, Comparison open-jar photo, Footer minis, Mission arch frame
+- Rewrote Mission section cleanly: eyebrow chip -> handwritten kicker "Why settle for complicated labels?" -> display "YOUR CHILD DESERVES SIMPLE, HONEST FOOD." -> arch-framed jar + floating 0g-sugar bubble + polaroid chip -> 3-item checklist -> CTAs
+- Built commerce layer: src/lib/products.ts (4 SKUs: Stage 1 Rs.299 / Stage 2 Rs.399 / Stage 3 Rs.475 / Starter Trio Rs.999, MRP, nutrition, ingredients, howTo); CartProvider (localStorage "adielas-cart-v1", add/remove/qty/clear, drawer open state); CartDrawer (slide-over, qty steppers, free-shipping progress bar >= Rs.499, subtotal, esc/backdrop close, closes on route change)
+- Navbar: cart button + animated count badge, mobile hamburger menu sheet, all anchor links now "/#..." so they work from any route; layout.tsx hosts global chrome (ScrollProgress, Navbar, Footer mt-auto, CartDrawer, CartProvider)
+- New pages: /shop ("The Jar Wall" grid, quick-add toasts, trust strip, help band), /shop/[slug] (generateStaticParams+metadata, gallery with thumbs, qty stepper, Add-to-cart + Buy now -> checkout, assurance badges, 5 accordions, related products), /checkout (validated form, UPI/Card/COD, sticky order summary, free-shipping logic, success screen with order id ADL-xxxxxx + ETA, clears cart, empty-cart state)
+- Wired every CTA: Hero/Mission/CTA/Footer -> /shop, ProductSlider -> PDP + quick add, Comparison -> /shop/stage-1, footer tel:/mailto:, socials -> real platform URLs
+- Fixed: react-hooks set-state-in-effect (hydration via setTimeout), unused eslint-disable; added .animate-pop badge keyframes
+- Verified agent-browser: desktop full purchase flow (shop grid -> quick add x2 -> drawer -> checkout -> filled form -> ORDER CONFIRMED ADL-302275, badge cleared), PDP (gallery switch, qty 2, add -> drawer Rs.598), mobile 390px (nav menu, cart persistence via localStorage badge), all routes 200 + bad slug 404, dev.log clean, ESLint clean; 3 residual empty "errors" CLI entries proven to be agent-browser session artifacts (appear even on about:blank), console/network/runtime verified clean
+
+Stage Summary:
+- ADIELAS is now a fully working single-product-brand demo store: jar mockups sitewide, clean Why section, shop + PDP + cart drawer + demo checkout with order confirmation, every button/link functional
