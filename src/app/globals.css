@@ -330,6 +330,36 @@ body {
   transform: translateY(-1px);
 }
 
+/* ===== PICK A STAGE — section bg morphs to the active stage colour ===== */
+.stage-morph {
+  background-color: var(--stage-bg, var(--cream-page));
+  transition: background-color 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+}
+/* decorative ring tints itself toward the stage accent */
+.stage-ring {
+  border-color: #ffffff; /* fallback for browsers without color-mix */
+  border-color: color-mix(in srgb, var(--stage-accent, #b5793b) 28%, #ffffff);
+  transition: border-color 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+}
+/* pack pops in when the stage changes */
+@keyframes pack-swap-in {
+  0% {
+    opacity: 0;
+    transform: translateY(34px) scale(0.93);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.pack-swap {
+  animation: pack-swap-in 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+/* stage colour dots */
+.stage-dot {
+  box-shadow: 0 2px 6px rgb(69 31 34 / 0.28);
+}
+
 /* custom scrollbar for product slider */
 .slider-scroll {
   scrollbar-width: none;
@@ -352,6 +382,13 @@ body {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+  .stage-morph,
+  .stage-ring {
+    transition: none;
+  }
+  .pack-swap {
+    animation: none;
   }
 }
 

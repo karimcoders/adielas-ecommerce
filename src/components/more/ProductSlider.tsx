@@ -1,6 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useState,
+  type CSSProperties,
+} from "react";
 import Link from "next/link";
 import { Plus, ShoppingBag } from "lucide-react";
 import { Reveal } from "./Reveal";
@@ -51,14 +56,20 @@ export function ProductSlider() {
   return (
     <section
       id="shop"
-      className="relative overflow-x-clip bg-[var(--cream-page)] pb-24 pt-20 sm:pb-32 sm:pt-28"
+      className="stage-morph relative overflow-x-clip pb-24 pt-20 sm:pb-32 sm:pt-28"
+      style={
+        {
+          "--stage-bg": active.wash ?? "var(--cream-page)",
+          "--stage-accent": active.accent,
+        } as CSSProperties
+      }
     >
-      {/* big ring arc on the right */}
+      {/* big ring arc on the right — tints itself to the active stage colour */}
       <Parallax
         speed={0.1}
         className="pointer-events-none absolute -right-40 top-24 h-[520px] w-[520px] sm:-right-24"
       >
-        <div className="h-full w-full rounded-full border-[46px] border-white" />
+        <div className="stage-ring h-full w-full rounded-full border-[46px]" />
       </Parallax>
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
@@ -104,9 +115,11 @@ export function ProductSlider() {
                 +
               </span>
 
-              <div className="relative flex w-[44%] max-w-[320px] items-end justify-center">
+              <div
+                key={active.slug}
+                className="pack-swap relative flex w-[44%] max-w-[320px] items-end justify-center"
+              >
                 <img
-                  key={active.slug}
                   src={active.cut ?? active.image}
                   alt={active.name}
                   className="w-full rotate-[5deg] drop-shadow-[0_26px_34px_rgba(69,31,34,0.26)]"
@@ -151,7 +164,30 @@ export function ProductSlider() {
                     Add {active.name} to cart
                   </span>
                 </button>
-                <div className="flex gap-2">
+                <div className="flex items-center gap-3 sm:gap-4">
+                  {/* stage colour dots — the section bg follows this colour */}
+                  <div
+                    className="flex items-center gap-2"
+                    role="group"
+                    aria-label="Choose a stage"
+                  >
+                    {stages.map((s, i) => (
+                      <button
+                        key={s.slug}
+                        type="button"
+                        onClick={() => setIndex(i)}
+                        aria-label={`Show ${s.name}`}
+                        aria-pressed={i === index}
+                        style={{ backgroundColor: s.accent }}
+                        className={`stage-dot h-4 w-4 rounded-full transition duration-300 sm:h-5 sm:w-5 ${
+                          i === index
+                            ? "scale-125 ring-2 ring-[var(--forest)]/70 ring-offset-2 ring-offset-transparent"
+                            : "opacity-55 hover:scale-110 hover:opacity-100"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <span className="h-6 w-px bg-[var(--forest)]/15" aria-hidden="true" />
                   <button
                     type="button"
                     onClick={prev}

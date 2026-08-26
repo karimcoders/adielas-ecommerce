@@ -106,3 +106,21 @@ Work Log:
 
 Stage Summary:
 - Header carries the real logo centred; hero is a compact single-window split; the product jar rides the white curve centred in the viewport through Benefits; real product photography and generated jar art both live sitewide; checkout section shows real Indian payment logos
+
+---
+Task ID: 8
+Agent: Super Z (main agent)
+Task: T8 — PICK A STAGE section background morphs to the active product's colour
+
+Work Log:
+- Added optional `wash` field to Product type (products.ts) with per-stage bg washes derived from real pack colours: Stage 1 #EFDCA4 (wheat gold), Stage 2 #F2CD96 (caramel/apricot), Stage 3 #EBC9BF (rosewood blush)
+- ProductSlider (#shop): section now sets --stage-bg / --stage-accent CSS vars from the active product and uses .stage-morph (background-color transition 0.9s cubic-bezier(0.4,0,0.2,1)); removed static bg-[var(--cream-page)]
+- Right decorative ring arc now self-tints via .stage-ring (color-mix accent 28% into white, white fallback, same transition)
+- Pack swap: key + .pack-swap moved to wrapper div (pop-in 0.7s cubic-bezier(0.16,1,0.3,1), ends at identity so the img's rotate-[5deg] is untouched)
+- New stage colour dots (3 swatches filled with each stage's accent, active ringed) next to prev/next arrows — clicking a dot jumps to that stage and the bg follows; aria-labels "Show <name>"
+- globals.css: .stage-morph / .stage-ring / .pack-swap keyframes / .stage-dot + prefers-reduced-motion guards (transition:none, animation:none)
+- Verified agent-browser: desktop 1440 exact pairing via dot clicks (STAGE 1->rgb(239,220,164), STAGE 3->rgb(235,201,191), STAGE 2->rgb(242,205,150)); mobile 390 same pairing + dot interaction; maroon text readable on all three washes; auto-advance keeps cycling the colours until first interaction
+- ESLint exit 0; zero page errors; console only HMR logs; dev.log all 200
+
+Stage Summary:
+- #shop section is now colour-morphing: whichever stage pack is live, the whole section bg (+ ring) eases to that product's colour; users can click colour dots to force stages

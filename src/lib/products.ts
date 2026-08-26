@@ -17,6 +17,8 @@ export type Product = {
   image: string;
   cut?: string;
   accent: string;
+  /** soft background wash derived from the pack colour — drives the stage-picker section bg */
+  wash?: string;
   rating: number;
   reviews: number;
 };
@@ -59,6 +61,7 @@ export const products: Product[] = [
     image: "/images/adielas/stage1.png",
     cut: "/images/adielas/stage1-cut.png",
     accent: "#D9A441",
+    wash: "#EFDCA4",
     rating: 4.9,
     reviews: 128,
   },
@@ -96,6 +99,7 @@ export const products: Product[] = [
     image: "/images/adielas/stage2.png",
     cut: "/images/adielas/stage2-cut.png",
     accent: "#B5793B",
+    wash: "#F2CD96",
     rating: 4.8,
     reviews: 96,
   },
@@ -133,6 +137,7 @@ export const products: Product[] = [
     image: "/images/adielas/stage3.png",
     cut: "/images/adielas/stage3-cut.png",
     accent: "#5C2B2E",
+    wash: "#EBC9BF",
     rating: 5.0,
     reviews: 141,
   },
