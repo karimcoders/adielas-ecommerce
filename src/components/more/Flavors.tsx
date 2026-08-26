@@ -99,34 +99,34 @@ export function Flavors() {
           </svg>
         </div>
 
-        {/* packs rising from the bottom edge */}
-        <Reveal variant="down" delay={120} className="absolute bottom-0 left-[9%] hidden w-[24%] sm:block">
-          <div className="translate-y-[16%] -rotate-6">
+        {/* real product packs rising from the bottom edge */}
+        <Reveal variant="down" delay={120} className="absolute bottom-0 left-[8%] hidden w-[25%] sm:block">
+          <div className="translate-y-[14%] -rotate-3">
             <img
-              src="/images/adielas/jar-stage1-cut.png"
-              alt="ADIELAS Stage 1 sprouted ragi jar — from 5 months"
+              src="/images/adielas/stage1-cut.png"
+              alt="ADIELAS Stage 1 sprouted ragi pack — from 5 months"
               loading="lazy"
-              className="w-full drop-shadow-[0_30px_36px_rgba(69,31,34,0.26)]"
+              className="w-full drop-shadow-[0_30px_36px_rgba(69,31,34,0.30)]"
             />
           </div>
         </Reveal>
-        <Reveal variant="down" className="absolute bottom-0 left-1/2 z-10 w-[34%] -translate-x-1/2">
+        <Reveal variant="down" className="absolute bottom-0 left-1/2 z-10 w-[32%] -translate-x-1/2">
           <div className="translate-y-[12%]">
             <img
-              src="/images/adielas/jar-stage2-cut.png"
-              alt="ADIELAS Stage 2 multigrain jar — from 6 months"
+              src="/images/adielas/stage2-cut.png"
+              alt="ADIELAS Stage 2 multigrain pack — from 6 months"
               loading="lazy"
-              className="w-full drop-shadow-[0_30px_40px_rgba(69,31,34,0.30)]"
+              className="w-full drop-shadow-[0_30px_40px_rgba(69,31,34,0.34)]"
             />
           </div>
         </Reveal>
-        <Reveal variant="down" delay={220} className="absolute bottom-0 right-[9%] hidden w-[24%] sm:block">
-          <div className="translate-y-[16%] rotate-6">
+        <Reveal variant="down" delay={220} className="absolute bottom-0 right-[8%] hidden w-[25%] sm:block">
+          <div className="translate-y-[14%] rotate-3">
             <img
-              src="/images/adielas/jar-stage3-cut.png"
-              alt="ADIELAS Stage 3 dry-fruits jar — from 1 year"
+              src="/images/adielas/stage3-cut.png"
+              alt="ADIELAS Stage 3 dry-fruits pack — from 1 year"
               loading="lazy"
-              className="w-full drop-shadow-[0_30px_36px_rgba(69,31,34,0.26)]"
+              className="w-full drop-shadow-[0_30px_36px_rgba(69,31,34,0.30)]"
             />
           </div>
         </Reveal>

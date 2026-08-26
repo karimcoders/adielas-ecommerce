@@ -62,17 +62,32 @@ export function Navbar() {
     >
       <nav
         aria-label="Main"
-        className={`flex items-center justify-between gap-3 px-4 transition-[padding] duration-500 sm:px-6 lg:px-10 ${
-          scrolled ? "py-2" : "py-4"
+        className={`relative flex items-center justify-between gap-3 px-4 transition-[padding] duration-500 sm:px-6 lg:px-10 ${
+          scrolled ? "py-1.5" : "py-3"
         }`}
       >
+        {/* brand logo — pinned dead-centre of the header */}
+        <Link
+          href="/"
+          aria-label="ADIELAS home"
+          className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 transition-transform duration-500 hover:scale-[1.04]"
+        >
+          <img
+            src="/images/adielas/logo.png"
+            alt="ADIELAS"
+            className={`w-auto transition-[height] duration-500 ${
+              scrolled ? "h-11 sm:h-12" : "h-12 sm:h-14"
+            } drop-shadow-[0_10px_22px_rgba(69,31,34,0.22)]`}
+          />
+        </Link>
+
         {/* mobile hamburger */}
         <button
           type="button"
           onClick={() => setMenuOpen((v) => !v)}
           aria-expanded={menuOpen}
           aria-label={menuOpen ? "Close menu" : "Open menu"}
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--cream)] text-[var(--forest)] shadow-sm backdrop-blur transition hover:bg-[var(--forest)] hover:text-[var(--cream)] md:hidden"
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--cream)] text-[var(--forest)] shadow-sm backdrop-blur transition hover:bg-[var(--forest)] hover:text-[var(--cream)] lg:hidden"
         >
           {menuOpen ? (
             <X className="h-4 w-4" />
@@ -97,30 +112,20 @@ export function Navbar() {
           ))}
         </div>
 
-        {/* center pills (desktop) */}
-        <div className="hidden items-center gap-2 md:flex">
-          {links.map(({ label, href }) => (
-            <Link
-              key={label}
-              href={href}
-              className="nav-pill px-5 py-2.5 text-sm"
-            >
-              {label}
-            </Link>
-          ))}
-        </div>
-
-        {/* wordmark (mobile) */}
-        <Link
-          href="/"
-          aria-label="ADIELAS home"
-          className="font-script select-none text-3xl leading-none text-[var(--forest)] md:hidden"
-        >
-          adielas
-        </Link>
-
-        {/* right cluster */}
+        {/* pills + shop (desktop, right of the centred logo) */}
         <div className="flex items-center gap-2">
+          <div className="hidden items-center gap-2 lg:flex">
+            {links.map(({ label, href }) => (
+              <Link
+                key={label}
+                href={href}
+                className="nav-pill px-5 py-2.5 text-sm"
+              >
+                {label}
+              </Link>
+            ))}
+          </div>
+
           <Link
             href="/shop"
             className="hidden items-center gap-2 rounded-full bg-[var(--cream)] py-1.5 pl-1.5 pr-5 text-sm font-semibold text-[var(--forest)] shadow-sm backdrop-blur transition hover:bg-[var(--forest)] hover:text-[var(--cream)] sm:flex"
@@ -152,7 +157,7 @@ export function Navbar() {
 
       {/* mobile menu sheet */}
       <div
-        className={`overflow-hidden px-4 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] md:hidden ${
+        className={`overflow-hidden px-4 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] lg:hidden ${
           menuOpen ? "max-h-[420px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >

@@ -23,7 +23,7 @@ export function Mission() {
   return (
     <section
       id="why"
-      className="relative z-0 -mt-24 overflow-x-clip rounded-t-[50%_70px] bg-[var(--cream-page)] pb-24 pt-32 sm:-mt-36 sm:rounded-t-[50%_120px] sm:pb-28 sm:pt-44"
+      className="relative z-0 -mt-16 overflow-x-clip rounded-t-[50%_70px] bg-[var(--cream-page)] pb-24 pt-28 sm:-mt-24 sm:rounded-t-[50%_120px] sm:pb-28 sm:pt-40"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
         {/* eyebrow */}

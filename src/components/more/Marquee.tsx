@@ -8,9 +8,9 @@ export function Marquee() {
   return (
     <section
       aria-hidden="true"
-      className="relative z-10 -mt-2 h-[240px] overflow-hidden sm:h-[300px]"
+      className="relative z-10 mt-8 h-[280px] overflow-hidden sm:mt-12 sm:h-[360px]"
     >
-      <div className="animate-spin-slower absolute left-1/2 top-6 h-[1400px] w-[1400px] -translate-x-1/2 sm:top-10">
+      <div className="animate-spin-slower absolute left-1/2 top-0 h-[1400px] w-[1400px] -translate-x-1/2 sm:top-2">
         <svg viewBox="0 0 1400 1400" className="h-full w-full">
           <defs>
             <path

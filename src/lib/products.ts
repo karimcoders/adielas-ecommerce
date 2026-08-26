@@ -56,8 +56,8 @@ export const products: Product[] = [
     ],
     howTo:
       "Mix 2 tbsp with warm water or milk to a smooth paste, then cook on low heat for 2–3 minutes stirring gently. Cool to body temperature before feeding. Always taste before serving.",
-    image: "/images/adielas/jar-stage1.png",
-    cut: "/images/adielas/jar-stage1-cut.png",
+    image: "/images/adielas/stage1.png",
+    cut: "/images/adielas/stage1-cut.png",
     accent: "#D9A441",
     rating: 4.9,
     reviews: 128,
@@ -93,8 +93,8 @@ export const products: Product[] = [
     ],
     howTo:
       "Whisk 2–3 tbsp into 120 ml water or milk until lump-free. Cook on low flame for 3–4 minutes until it thickens, stir in a spoon of ghee if you like. Serve warm, not hot.",
-    image: "/images/adielas/jar-stage2.png",
-    cut: "/images/adielas/jar-stage2-cut.png",
+    image: "/images/adielas/stage2.png",
+    cut: "/images/adielas/stage2-cut.png",
     accent: "#B5793B",
     rating: 4.8,
     reviews: 96,
@@ -130,8 +130,8 @@ export const products: Product[] = [
     ],
     howTo:
       "Stir 3 tbsp into 150 ml milk or water, cook for 3–4 minutes till creamy, and top with mashed banana or stewed apple for older toddlers. Serve lukewarm.",
-    image: "/images/adielas/jar-stage3.png",
-    cut: "/images/adielas/jar-stage3-cut.png",
+    image: "/images/adielas/stage3.png",
+    cut: "/images/adielas/stage3-cut.png",
     accent: "#5C2B2E",
     rating: 5.0,
     reviews: 141,

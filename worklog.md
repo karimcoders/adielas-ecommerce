@@ -88,3 +88,21 @@ Work Log:
 
 Stage Summary:
 - ADIELAS is now a fully working single-product-brand demo store: jar mockups sitewide, clean Why section, shop + PDP + cart drawer + demo checkout with order confirmation, every button/link functional
+
+---
+Task ID: 7
+Agent: Super Z (main agent)
+Task: T7 feedback round — header logo, compact hero, line-riding product, both image sets, real payment logos, arc spacing
+
+Work Log:
+- Fetched 8 real payment logo PNGs (UPI/Paytm/PhonePe/RuPay/Google Pay/Visa/Mastercard/Amazon Pay) via z-ai image-search + Wikimedia Commons Special:FilePath (rate-limit retries); cropped UPI tagline; saved to public/images/pay/
+- Navbar: real ADIELAS logo crest now pinned dead-centre of the header (absolute center, shrink-on-scroll), pills moved right (lg+), hamburger/menu sheet bumped to lg breakpoint so md range keeps navigation
+- Hero rebuilt compact: fits one window (lg:min-h calc(100svh-110px)), product ring LEFT / script wordmark + ANCIENT GRAINS MEET GROWING KIDS + copy + CTA RIGHT, ANCIENT recoloured olive for cream-bg contrast, sugar-free bubble moved clear of the jar, smaller bubbles, floor shadow
+- Marquee: positive top margin (mt-8/12) + taller section (280/360px) + dial top-0 so the GROW EVERY DAY arc is fully visible; Mission overlap reduced (-mt-16/24)
+- Benefits LineRider: client component samples the white SVG path (560 getPointAtLength samples), sticky jar stays vertically centred in viewport while x follows the curve at current scroll depth (continuity-biased nearest-sample + lerp + tangent tilt + opacity fade at travel edges); fixed initial pathRef scoping bug (DOM query instead)
+- Both image sets: catalog switched to real adielas.com packshots (products.ts image/cut -> stage1/2/3(-cut).png) flowing into Stages trio, PICK A STAGE slider, PDP galleries, cart drawer, checkout; generated jar mockups remain in hero ring, Benefits rider, Mission arch/polaroid, Comparison, Footer; verified real pack cutouts are clean (transparency, no trim needed)
+- CTA: text payment bubbles replaced with real logo pills (per-logo height caps, responsive: 2-row grid on mobile, scattered pills on desktop) under "Safe, secure checkout"
+- Verified: agent-browser 1440px (hero/arc/trio/rider tracking/CTA/shop-slider) + 390px (hero one-window, benefits rider, CTA grid, shop, PDP); ESLint clean (exit 0); console clean; all routes 200 (2 historical 500s from the transient pathRef bug immediately after start)
+
+Stage Summary:
+- Header carries the real logo centred; hero is a compact single-window split; the product jar rides the white curve centred in the viewport through Benefits; real product photography and generated jar art both live sitewide; checkout section shows real Indian payment logos

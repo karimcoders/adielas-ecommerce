@@ -18,9 +18,9 @@ function BuyButton({ className = "" }: { className?: string }) {
 }
 
 const stats = [
-  { to: 100, unit: "%", label: "Organic Grains", pos: "left-[54%] top-[3%]", delay: 300 },
-  { to: 0, unit: "", label: "Added Sugar", pos: "left-[16%] top-[30%]", delay: 600 },
-  { to: 35, unit: "+", label: "Yrs Expertise", pos: "left-[0%] top-[62%]", delay: 900 },
+  { to: 100, unit: "%", label: "Organic Grains", pos: "left-[56%] top-[1%]", delay: 300 },
+  { to: 0, unit: "", label: "Added Sugar", pos: "left-[2%] top-[30%]", delay: 600 },
+  { to: 35, unit: "+", label: "Yrs Expertise", pos: "left-[4%] top-[66%]", delay: 900 },
 ];
 
 /* bubbles parked along the big white ring path */
@@ -35,14 +35,14 @@ function StatBubbles() {
           className={`absolute z-10 ${s.pos}`}
         >
           <div
-            className="flex h-[84px] w-[84px] animate-floaty flex-col items-center justify-center rounded-full bg-[var(--cream)] text-center text-[var(--forest)] shadow-[0_14px_30px_rgba(69,31,34,0.12)] sm:h-[104px] sm:w-[104px]"
+            className="flex h-[72px] w-[72px] animate-floaty flex-col items-center justify-center rounded-full bg-[var(--cream)] text-center text-[var(--forest)] shadow-[0_14px_30px_rgba(69,31,34,0.14)] sm:h-[92px] sm:w-[92px]"
             style={{ animationDelay: `${i * 0.8}s` }}
           >
-            <span className="font-display text-2xl leading-none sm:text-3xl">
+            <span className="font-display text-xl leading-none sm:text-2xl">
               <Counter to={s.to} />
-              <span className="align-top text-base sm:text-lg">{s.unit}</span>
+              <span className="align-top text-sm sm:text-base">{s.unit}</span>
             </span>
-            <span className="mt-1 px-2 text-[10px] font-semibold leading-tight sm:text-[11px]">
+            <span className="mt-1 px-1.5 text-[9px] font-semibold leading-tight sm:text-[11px]">
               {s.label}
             </span>
           </div>
@@ -54,107 +54,102 @@ function StatBubbles() {
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden pt-24 sm:pt-28" id="top">
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
-        {/* brand crest + giant script wordmark */}
-        <div className="flex flex-col items-center text-center">
-          <Reveal variant="zoom">
-            <img
-              src="/images/adielas/logo.png"
-              alt="ADIELAS"
-              className="h-14 w-auto sm:h-20"
+    <section className="relative overflow-hidden pt-[84px] sm:pt-[96px]" id="top">
+      {/* soft warm glow behind the whole hero */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[86%] w-[120%] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(closest-side,rgba(230,217,180,0.55),transparent)]"
+      />
+
+      <div className="relative mx-auto grid max-w-7xl items-center gap-4 px-4 pb-6 sm:px-6 lg:min-h-[calc(100svh-110px)] lg:grid-cols-[1.02fr_1fr] lg:gap-6 lg:pb-8 lg:px-10">
+        {/* LEFT — pack + ring composition */}
+        <Reveal className="order-2 lg:order-1" delay={150} variant="right">
+          <div className="relative mx-auto aspect-square w-full max-w-[360px] sm:max-w-[440px] lg:max-w-[520px]">
+            {/* big white ring */}
+            <div
+              aria-hidden="true"
+              className="absolute left-[7%] top-[5%] h-[90%] w-[90%] rounded-full border-[22px] border-white sm:border-[30px]"
             />
-          </Reveal>
-          <h1 className="text-center">
+            <StatBubbles />
+
+            {/* tilted jar mockup, floating over the ring */}
+            <Parallax speed={0.05} className="absolute inset-0">
+              <div className="animate-sway absolute left-1/2 top-1/2 w-[54%] -translate-x-1/2 -translate-y-[47%] sm:w-[58%]">
+                <img
+                  src="/images/adielas/jar-stage3-cut.png"
+                  alt="ADIELAS Stage 3 dry-fruits nutrition jar"
+                  className="w-full -rotate-6 drop-shadow-[0_40px_44px_rgba(69,31,34,0.30)]"
+                />
+                {/* floor shadow */}
+                <div
+                  aria-hidden="true"
+                  className="mx-auto mt-[-6%] h-[9%] w-[62%] rounded-[50%] bg-[rgba(69,31,34,0.16)] blur-md"
+                />
+              </div>
+            </Parallax>
+
+            {/* handwritten note */}
+            <div className="absolute -left-1 top-[2%] hidden -rotate-6 text-[var(--forest)] sm:block">
+              <p className="font-hand text-xl leading-[0.95] sm:text-2xl">
+                Sprouted Ragi,
+                <br />
+                Sun-Dried
+              </p>
+              <CurvedArrow className="ml-2 mt-1 h-8 w-14 -scale-x-100" />
+            </div>
+          </div>
+        </Reveal>
+
+        {/* RIGHT — brand + headline + copy + CTA */}
+        <div className="order-1 pt-2 text-center lg:order-2 lg:pt-0">
+          <MaskedLines
+            lines={[
+              <span
+                key="mark"
+                className="font-script select-none text-[clamp(2.6rem,6vw,4.6rem)] leading-[1] text-[var(--forest)]"
+              >
+                adielas
+              </span>,
+            ]}
+          />
+          <h2 className="mt-1 text-center sm:mt-2">
             <MaskedLines
+              startDelay={140}
               lines={[
                 <span
-                  key="mark"
-                  className="font-script select-none text-[clamp(4.5rem,13vw,11rem)] leading-[0.95] text-[var(--forest)]"
+                  key="l1"
+                  className="font-display block text-[clamp(2.3rem,4.6vw,4rem)] leading-[0.95] text-[var(--olive)]"
                 >
-                  adielas
+                  ANCIENT
+                </span>,
+                <span
+                  key="l2"
+                  className="font-display block text-[clamp(2.3rem,4.6vw,4rem)] leading-[0.95] text-[var(--forest)]"
+                >
+                  GRAINS MEET
+                </span>,
+                <span
+                  key="l3"
+                  className="font-display block text-[clamp(2.3rem,4.6vw,4rem)] leading-[0.95] text-[var(--forest)]"
+                >
+                  GROWING KIDS
                 </span>,
               ]}
             />
-          </h1>
-          <Reveal delay={220} variant="down" className="mt-1 sm:mt-2">
-            <BuyButton />
-          </Reveal>
-        </div>
-
-        {/* lower hero grid */}
-        <div className="mt-8 grid items-start gap-6 pb-10 sm:mt-4 lg:grid-cols-2 lg:gap-2 lg:pb-0">
-          {/* pack + ring composition */}
-          <Reveal className="order-2 lg:order-1" delay={150} variant="right">
-            <div className="relative mx-auto aspect-square w-full max-w-[560px]">
-              {/* big white ring */}
-              <div
-                aria-hidden="true"
-                className="absolute left-[6%] top-[4%] h-[92%] w-[92%] rounded-full border-[26px] border-white sm:border-[34px]"
-              />
-              <StatBubbles />
-
-              {/* tilted jar mockup, floating over the ring */}
-              <Parallax speed={0.05} className="absolute inset-0">
-                <div className="animate-sway absolute left-1/2 top-1/2 w-[56%] -translate-x-1/2 -translate-y-[46%] sm:w-[60%]">
-                  <img
-                    src="/images/adielas/jar-stage3-cut.png"
-                    alt="ADIELAS Stage 3 dry-fruits nutrition jar"
-                    className="w-full -rotate-6 drop-shadow-[0_40px_44px_rgba(69,31,34,0.30)]"
-                  />
-                </div>
-              </Parallax>
-
-              {/* handwritten note */}
-              <div className="absolute -left-2 top-[6%] hidden -rotate-6 text-[var(--forest)] sm:block">
-                <p className="font-hand text-2xl leading-[0.95]">
-                  Sprouted Ragi,
-                  <br />
-                  Sun-Dried
-                </p>
-                <CurvedArrow className="ml-2 mt-1 h-10 w-16 -scale-x-100" />
-              </div>
+          </h2>
+          <Reveal delay={200}>
+            <p className="mx-auto mt-4 max-w-md text-sm font-medium leading-relaxed text-[var(--forest-deep)] sm:mt-5 sm:text-base lg:text-lg">
+              Wholesome everyday nutrition for little ones — sprouted millets,
+              multigrains and dry fruits, blended with clinical care. Clean
+              labels, happy tummies, zero shortcuts.
+            </p>
+            <div className="mt-3 flex justify-center text-[var(--forest)]">
+              <Squiggle className="h-3.5 w-28" />
             </div>
-          </Reveal>
-
-          {/* headline */}
-          <div className="order-1 pt-4 text-center lg:order-2 lg:pt-24 lg:text-center">
-            <h2 className="text-center">
-              <MaskedLines
-                startDelay={140}
-                lines={[
-                  <span
-                    key="l1"
-                    className="font-display block text-[clamp(2.8rem,6.5vw,5.4rem)] leading-[0.95] text-white drop-shadow-[0_2px_0_rgba(69,31,34,0.10)]"
-                  >
-                    ANCIENT
-                  </span>,
-                  <span
-                    key="l2"
-                    className="font-display block text-[clamp(2.8rem,6.5vw,5.4rem)] leading-[0.95] text-[var(--forest)]"
-                  >
-                    GRAINS MEET
-                  </span>,
-                  <span
-                    key="l3"
-                    className="font-display block text-[clamp(2.8rem,6.5vw,5.4rem)] leading-[0.95] text-[var(--forest)]"
-                  >
-                    GROWING KIDS
-                  </span>,
-                ]}
-              />
-            </h2>
-            <Reveal delay={200}>
-              <p className="mx-auto mt-6 max-w-md text-base font-medium leading-relaxed text-[var(--forest-deep)] sm:text-lg">
-                Wholesome everyday nutrition for little ones — sprouted
-                millets, multigrains and dry fruits, blended with clinical
-                care. Clean labels, happy tummies, zero shortcuts.
-              </p>
-              <div className="mt-4 flex justify-center text-[var(--forest)]">
-                <Squiggle className="h-4 w-32" />
-              </div>
+            <Reveal delay={260} variant="down" className="mt-5">
+              <BuyButton />
             </Reveal>
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>

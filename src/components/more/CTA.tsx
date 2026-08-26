@@ -3,23 +3,38 @@ import { Reveal } from "./Reveal";
 import { MaskedLines } from "./Reveal";
 import { Parallax } from "./motion";
 
+/* real payment-method logos floating in white pills */
+const payLogos = [
+  { src: "/images/pay/upi.png", alt: "UPI", h: "h-14 sm:h-16", imgH: "h-[30%]", max: "max-w-[74px] sm:max-w-[86px]", pos: "left-[4%] top-0 sm:left-[3%] sm:top-6", speed: 0.1 },
+  { src: "/images/pay/paytm.png", alt: "Paytm", h: "h-14 sm:h-20", imgH: "h-[32%] sm:h-[30%]", max: "max-w-[84px] sm:max-w-[112px]", pos: "left-[36%] top-0 sm:left-[15%] sm:top-20", speed: 0.05 },
+  { src: "/images/pay/phonepe.png", alt: "PhonePe", h: "h-14 sm:h-16", imgH: "h-[46%]", max: "max-w-[70px] sm:max-w-[88px]", pos: "left-[68%] top-0 sm:left-[32%] sm:top-28", speed: 0.12 },
+  { src: "/images/pay/rupay.png", alt: "RuPay", h: "h-14 sm:h-20", imgH: "h-[36%] sm:h-[34%]", max: "max-w-[84px] sm:max-w-[112px]", pos: "left-[4%] top-[76px] sm:left-[47%] sm:top-4", speed: 0.07 },
+  { src: "/images/pay/gpay.png", alt: "Google Pay", h: "h-14 sm:h-16", imgH: "h-[32%]", max: "max-w-[78px] sm:max-w-[100px]", pos: "left-[36%] top-[76px] sm:left-[63%] sm:top-24", speed: 0.11 },
+  { src: "/images/pay/visa.png", alt: "Visa", h: "h-14 sm:h-20", imgH: "h-[28%] sm:h-[26%]", max: "max-w-[76px] sm:max-w-[104px]", pos: "left-[68%] top-[76px] sm:left-[77%] sm:top-12", speed: 0.06 },
+  { src: "/images/pay/mastercard.png", alt: "Mastercard", h: "h-14 sm:h-16", imgH: "h-[56%]", max: "max-w-[64px] sm:max-w-[76px]", pos: "left-[90%] top-28 hidden md:flex", speed: 0.09 },
+  { src: "/images/pay/amazonpay.png", alt: "Amazon Pay", h: "h-14 sm:h-16", imgH: "h-[46%]", max: "max-w-[70px] sm:max-w-[82px]", pos: "left-[23%] top-40 hidden sm:flex", speed: 0.08 },
+];
+
 function PayBubble({
-  label,
-  size,
-  className = "",
+  src,
+  alt,
+  h,
+  imgH,
+  max,
+  pos,
   speed = 0.06,
-}: {
-  label: string;
-  size: string;
-  className?: string;
-  speed?: number;
-}) {
+}: (typeof payLogos)[number]) {
   return (
-    <Parallax speed={speed} className={`absolute ${className}`}>
+    <Parallax speed={speed} className={`absolute ${pos}`}>
       <span
-        className={`${size} flex items-center justify-center rounded-full bg-white text-center text-sm font-bold tracking-tight text-[#1a1a1a] shadow-[0_18px_36px_rgba(69,31,34,0.10)] sm:text-base`}
+        className={`${h} flex items-center justify-center rounded-full bg-white px-5 shadow-[0_18px_36px_rgba(69,31,34,0.12)] ring-1 ring-[var(--forest)]/5 sm:px-6`}
       >
-        {label}
+        <img
+          src={src}
+          alt={alt}
+          loading="lazy"
+          className={`${imgH} w-auto ${max} object-contain`}
+        />
       </span>
     </Parallax>
   );
@@ -77,16 +92,18 @@ export function CTA() {
         </Reveal>
       </div>
 
-      {/* payment bubbles */}
-      <div className="relative mt-14 h-[170px] sm:h-[210px]">
-        <PayBubble label="UPI" size="h-20 w-20" className="left-[3%] top-2 sm:h-24 sm:w-24" speed={0.1} />
-        <PayBubble label="Paytm" size="h-24 w-24 sm:h-28 sm:w-28" className="left-[16%] top-16" speed={0.05} />
-        <PayBubble label="PhonePe" size="h-20 w-20 sm:h-24 sm:w-24" className="left-[33%] top-24" speed={0.12} />
-        <PayBubble label="RuPay" size="h-24 w-24 sm:h-28 sm:w-28" className="left-[47%] top-6" speed={0.07} />
-        <PayBubble label="G Pay" size="h-20 w-20 sm:h-24 sm:w-24" className="left-[65%] top-20" speed={0.11} />
-        <PayBubble label="VISA" size="h-24 w-24 sm:h-28 sm:w-28" className="left-[79%] top-10" speed={0.06} />
-        <PayBubble label="Mastercard" size="h-20 w-24 sm:h-24 sm:w-28" className="left-[90%] top-24 hidden md:flex" speed={0.09} />
+      {/* real payment logos */}
+      <div className="relative mx-auto mt-12 h-[168px] max-w-6xl px-4 sm:mt-16 sm:h-[240px]">
+        {payLogos.map((p) => (
+          <PayBubble key={p.alt} {...p} />
+        ))}
       </div>
+
+      <Reveal>
+        <p className="relative mx-auto mt-8 text-center text-[11px] font-bold uppercase tracking-[0.24em] text-[var(--forest)]/70">
+          UPI · Cards · Wallets · Cash on delivery
+        </p>
+      </Reveal>
     </section>
   );
 }

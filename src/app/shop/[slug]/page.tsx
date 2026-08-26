@@ -62,7 +62,7 @@ export default async function ProductPage({
     : 0;
 
   const gallery = [
-    { src: product.image, alt: `${product.name} — packaging mockup` },
+    { src: product.image, alt: `${product.name} — product pack` },
     { src: jarOpenPath, alt: "Open jar with sprouted grain powder and spoon" },
     { src: "/images/adielas/jar-trio.png", alt: "All three ADIELAS stages together" },
   ];
