@@ -26,6 +26,8 @@ import {
   defaultReviews,
   defaultSettings,
 } from "@/lib/cms-defaults";
+import { AdminLayout } from "@/components/admin/AdminLayout";
+
 
 export default function AdminCmsPage() {
   const router = useRouter();
@@ -126,53 +128,37 @@ export default function AdminCmsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--cream-page)] pb-24 pt-24 sm:pt-28">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
-        {/* Header */}
-        <div className="flex flex-col justify-between gap-4 rounded-[2rem] bg-[var(--forest-deep)] p-6 text-white shadow-xl sm:flex-row sm:items-center sm:p-8">
-          <div>
-            <Link
-              href="/admin"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--cream)]/80 hover:text-white mb-2"
-            >
-              <ArrowLeft className="h-3.5 w-3.5" />
-              Back to Operations Dashboard
-            </Link>
-            <div className="flex items-center gap-2">
-              <span className="rounded-full bg-amber-400/20 px-3 py-0.5 text-[10px] font-extrabold uppercase tracking-widest text-amber-300">
-                100% EDITABLE
-              </span>
-              <h1 className="font-display text-3xl sm:text-4xl text-[var(--cream)]">
-                WEBSITE CMS &amp; CONTENT EDITOR
-              </h1>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <Link
-              href="/"
-              target="_blank"
-              className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2.5 text-xs font-bold text-white transition hover:bg-white/20"
-            >
-              <Eye className="h-3.5 w-3.5" />
-              Preview Live Site
-            </Link>
-            <button
-              onClick={saveCurrentSection}
-              disabled={saving}
-              className="flex items-center gap-2 rounded-full bg-amber-400 px-5 py-2.5 text-xs font-extrabold text-[var(--forest-deep)] shadow-md transition hover:bg-amber-300 disabled:opacity-50"
-            >
-              {saving ? (
-                <RefreshCw className="h-3.5 w-3.5 animate-spin" />
-              ) : savedSuccess ? (
-                <Check className="h-3.5 w-3.5 text-emerald-800" />
-              ) : (
-                <Save className="h-3.5 w-3.5" />
-              )}
-              {savedSuccess ? "Saved Successfully!" : "Save Section Changes"}
-            </button>
-          </div>
+    <AdminLayout
+      title="Website CMS & Content Editor"
+      subtitle="100% full content management for all pages & sections"
+      actions={
+        <div className="flex items-center gap-2">
+          <Link
+            href="/"
+            target="_blank"
+            className="flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs font-bold text-gray-700 hover:bg-gray-50"
+          >
+            <Eye className="h-3.5 w-3.5" />
+            Live Preview
+          </Link>
+          <button
+            onClick={saveCurrentSection}
+            disabled={saving}
+            className="flex items-center gap-1.5 rounded-lg bg-[var(--forest)] px-4 py-2 text-xs font-extrabold text-[var(--cream)] shadow-sm hover:bg-[var(--forest-deep)] disabled:opacity-50"
+          >
+            {saving ? (
+              <RefreshCw className="h-3.5 w-3.5 animate-spin" />
+            ) : savedSuccess ? (
+              <Check className="h-3.5 w-3.5 text-emerald-400" />
+            ) : (
+              <Save className="h-3.5 w-3.5" />
+            )}
+            {savedSuccess ? "Saved Successfully!" : "Save Section Changes"}
+          </button>
         </div>
+      }
+    >
+
 
         {/* CMS Tab Nav */}
         <div className="mt-8 flex flex-wrap gap-2 border-b border-[var(--forest)]/10 pb-4">
@@ -814,7 +800,8 @@ export default function AdminCmsPage() {
             </div>
           )}
         </div>
-      </div>
-    </div>
+    </AdminLayout>
+
   );
 }
+

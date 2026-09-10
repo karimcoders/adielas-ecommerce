@@ -36,10 +36,38 @@ export async function POST(req: Request) {
     const orderId = `ADL-${Math.floor(100000 + Math.random() * 900000)}`;
     const total = subtotal + shippingFee;
 
+    let targetUserId = user?.id || null;
+    if (!targetUserId) {
+      const existingUser = await db.user.findUnique({
+        where: { email: customerEmail.toLowerCase().trim() },
+      });
+      if (existingUser) {
+        targetUserId = existingUser.id;
+      } else {
+        try {
+          const newCust = await db.user.create({
+            data: {
+              email: customerEmail.toLowerCase().trim(),
+              name: customerName.trim(),
+              password: "", // guest customer
+              phone: customerPhone.trim(),
+              address: address.trim(),
+              city: city.trim(),
+              pincode: pincode.trim(),
+              role: "CUSTOMER",
+            },
+          });
+          targetUserId = newCust.id;
+        } catch (e) {
+          // continue if duplicate email
+        }
+      }
+    }
+
     const order = await db.order.create({
       data: {
         id: orderId,
-        userId: user?.id || null,
+        userId: targetUserId,
         customerName: customerName.trim(),
         customerEmail: customerEmail.toLowerCase().trim(),
         customerPhone: customerPhone.trim(),

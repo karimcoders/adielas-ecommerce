@@ -69,8 +69,34 @@ model Product {
   stockCount  Int      @default(100)
   rating      Float    @default(5.0)
   reviews     Int      @default(0)
+  description String?
+  ingredients String?
+  howTo       String?
+  image       String?
+  accent      String?
+  wash        String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model Coupon {
+  id        String   @id @default(cuid())
+  code      String   @unique
+  discount  Float    // e.g. 10 for 10% or 100 for ₹100 flat
+  type      String   @default("PERCENTAGE") // "PERCENTAGE" or "FLAT"
+  minOrder  Float    @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model CustomPage {
+  id        String   @id @default(cuid())
+  slug      String   @unique // e.g. "privacy-policy", "shipping-policy", "about-us"
+  title     String
+  content   String
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model SiteContent {

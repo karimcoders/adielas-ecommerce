@@ -85,26 +85,67 @@ export function Footer({ className = "" }: { className?: string }) {
             </Reveal>
 
             <Reveal variant="left" delay={220}>
-              <nav aria-label="Footer" className="flex flex-col gap-2.5">
-                <a
-                  href="/#why"
-                  className="w-fit text-sm font-semibold text-[var(--forest)] underline underline-offset-4 hover:text-[var(--forest-deep)]"
-                >
-                  Why ADIELAS
-                </a>
-                <a
-                  href="/shop"
-                  className="w-fit text-sm font-semibold text-[var(--forest)] underline underline-offset-4 hover:text-[var(--forest-deep)]"
-                >
-                  Shop Stages
-                </a>
-                <a
-                  href="mailto:Info@adielas.com"
-                  className="w-fit text-sm font-semibold text-[var(--forest)] underline underline-offset-4 hover:text-[var(--forest-deep)]"
-                >
-                  Contact us
-                </a>
-              </nav>
+              <div className="grid grid-cols-2 gap-x-6 gap-y-2">
+                <div className="flex flex-col gap-2">
+                  <span className="text-[11px] font-extrabold uppercase tracking-wider text-[var(--forest)]/60">
+                    Explore
+                  </span>
+                  <a
+                    href="/#why"
+                    className="w-fit text-xs font-semibold text-[var(--forest)] underline underline-offset-4 hover:text-[var(--forest-deep)]"
+                  >
+                    Why ADIELAS
+                  </a>
+                  <a
+                    href="/shop"
+                    className="w-fit text-xs font-semibold text-[var(--forest)] underline underline-offset-4 hover:text-[var(--forest-deep)]"
+                  >
+                    Shop Stages
+                  </a>
+                  <Link
+                    href="/p/about-us"
+                    className="w-fit text-xs font-semibold text-[var(--forest)] underline underline-offset-4 hover:text-[var(--forest-deep)]"
+                  >
+                    Our Story
+                  </Link>
+                  <Link
+                    href="/p/faq"
+                    className="w-fit text-xs font-semibold text-[var(--forest)] underline underline-offset-4 hover:text-[var(--forest-deep)]"
+                  >
+                    FAQs
+                  </Link>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <span className="text-[11px] font-extrabold uppercase tracking-wider text-[var(--forest)]/60">
+                    Policies
+                  </span>
+                  <Link
+                    href="/p/shipping-policy"
+                    className="w-fit text-xs font-semibold text-[var(--forest)] underline underline-offset-4 hover:text-[var(--forest-deep)]"
+                  >
+                    Shipping & Delivery
+                  </Link>
+                  <Link
+                    href="/p/refund-policy"
+                    className="w-fit text-xs font-semibold text-[var(--forest)] underline underline-offset-4 hover:text-[var(--forest-deep)]"
+                  >
+                    Refund & Returns
+                  </Link>
+                  <Link
+                    href="/p/privacy-policy"
+                    className="w-fit text-xs font-semibold text-[var(--forest)] underline underline-offset-4 hover:text-[var(--forest-deep)]"
+                  >
+                    Privacy Policy
+                  </Link>
+                  <a
+                    href="mailto:Info@adielas.com"
+                    className="w-fit text-xs font-semibold text-[var(--forest)] underline underline-offset-4 hover:text-[var(--forest-deep)]"
+                  >
+                    Contact Us
+                  </a>
+                </div>
+              </div>
             </Reveal>
 
             <Reveal variant="left" delay={280}>
@@ -160,7 +201,15 @@ export function Footer({ className = "" }: { className?: string }) {
         {/* legal line */}
         <div className="mt-14 flex flex-col items-start justify-between gap-2 text-xs font-medium text-[var(--forest)]/80 sm:flex-row">
           <p>© {new Date().getFullYear()} ADIELAS. All rights reserved. · GST: 29ADFPV3524L3ZZ</p>
-          <p>Demo redesign for internal preview.</p>
+          <div className="flex items-center gap-4">
+            <Link href="/account" className="underline underline-offset-2 hover:text-[var(--forest-deep)]">
+              Customer Account
+            </Link>
+            <span>·</span>
+            <Link href="/admin" className="underline underline-offset-2 font-bold text-amber-800 hover:text-amber-900">
+              Admin CMS
+            </Link>
+          </div>
         </div>
       </div>
 
