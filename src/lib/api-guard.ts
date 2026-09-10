@@ -7,8 +7,9 @@ import { NextResponse } from "next/server";
 export function dbStatus(): { ok: boolean; reason: "ok" | "missing" | "malformed" } {
   const url = (process.env.DATABASE_URL ?? "").trim();
   if (url === "") return { ok: false, reason: "missing" };
-  // Prisma postgres datasource requires postgres:// or postgresql:// scheme.
-  if (!/^postgres(ql)?:\/\//i.test(url)) return { ok: false, reason: "malformed" };
+  // Production: Prisma postgres datasource needs postgres:// or postgresql://.
+  // Local development: file: URLs (SQLite) are perfectly fine.
+  if (!/^(postgres(ql)?:\/\/|file:)/i.test(url)) return { ok: false, reason: "malformed" };
   return { ok: true, reason: "ok" };
 }
 
