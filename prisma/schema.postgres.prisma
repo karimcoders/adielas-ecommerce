@@ -1,0 +1,145 @@
+// PostgreSQL variant of the Prisma schema for production (Vercel + Neon/Supabase).
+// Usage:
+//   1. Point DATABASE_URL at your Postgres connection string
+//   2. Run: npx prisma db push --schema prisma/schema.postgres.prisma
+//      (or temporarily swap the provider in schema.prisma)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Editable site content (CMS) — JSON blobs per section key
+model SiteContent {
+  key       String   @id // "settings" | "hero" | "marquee" | "mission" | "benefits" | "flavors" | "comparison" | "reviews" | "shop" | "footer"
+  data      String // JSON string of section content
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  name         String
+  phone        String?
+  role         String    @default("CUSTOMER") // ADMIN | CUSTOMER
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  addresses Address[]
+  orders    Order[]
+}
+
+model Address {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  label     String   @default("Home")
+  fullName  String
+  phone     String
+  line1     String
+  line2     String?
+  city      String
+  state     String
+  pincode   String
+  isDefault Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  nameLine1   String
+  nameLine2   String
+  stageLabel  String
+  ageLabel    String
+  price       Int
+  mrp         Int?
+  weight      String
+  tagline     String
+  description String // JSON string[]
+  highlights  String // JSON string[]
+  ingredients String
+  nutrition   String // JSON {label,value}[]
+  howTo       String
+  image       String
+  cut         String?
+  accent      String   @default("#5C2B2E")
+  wash        String?
+  rating      Float    @default(4.9)
+  reviews     Int      @default(0)
+  stock       Int      @default(100)
+  active      Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  orderItems OrderItem[]
+}
+
+model Order {
+  id            String   @id @default(cuid())
+  orderNumber   String   @unique
+  userId        String?
+  user          User?    @relation(fields: [userId], references: [id])
+  email         String
+  customerName  String
+  phone         String
+  addressLine1  String
+  addressLine2  String?
+  city          String
+  state         String
+  pincode       String
+  paymentMethod String // UPI | CARD | COD
+  paymentStatus String   @default("PENDING") // PENDING | PAID | FAILED
+  status        String   @default("PLACED") // PLACED | CONFIRMED | SHIPPED | DELIVERED | CANCELLED
+  subtotal      Int
+  shipping      Int      @default(0)
+  discount      Int      @default(0)
+  total         Int
+  couponCode    String?
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  items OrderItem[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model OrderItem {
+  id        String   @id @default(cuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String?
+  product   Product? @relation(fields: [productId], references: [id])
+  slug      String
+  name      String
+  price     Int
+  qty       Int
+  image     String?
+
+  @@index([orderId])
+}
+
+model Coupon {
+  id          String    @id @default(cuid())
+  code        String    @unique
+  type        String    @default("PERCENT") // PERCENT | FLAT
+  value       Int // percent (1-100) or flat rupees
+  minOrder    Int       @default(0)
+  maxDiscount Int?
+  active      Boolean   @default(true)
+  expiresAt   DateTime?
+  usedCount   Int       @default(0)
+  createdAt   DateTime  @default(now())
+}
