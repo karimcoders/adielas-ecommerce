@@ -18,8 +18,17 @@ if [ -n "$DATABASE_URL" ]; then
   if npx prisma db push --schema prisma/schema.postgres.prisma --skip-generate --accept-data-loss; then
     echo "── Schema push OK → seeding demo data (failures are non-fatal)"
     npx tsx prisma/seed.ts || echo "⚠ Seed skipped/failed (non-fatal — store runs with built-in defaults)"
+  elif [ "$DB_FORCE_RESET" = "1" ]; then
+    echo "── Normal push failed (schema drift) → DB_FORCE_RESET=1 → one-time force reset of a fresh database"
+    if npx prisma db push --schema prisma/schema.postgres.prisma --skip-generate --accept-data-loss --force-reset; then
+      echo "── Force reset + push OK → seeding demo data"
+      npx tsx prisma/seed.ts || echo "⚠ Seed skipped/failed (non-fatal — store runs with built-in defaults)"
+    else
+      echo "⚠ Force reset also failed → skipping seed (site still deploys)"
+    fi
   else
-    echo "⚠ DATABASE_URL is set but unreachable/wrong → skipping schema push + seed (site still deploys)"
+    echo "⚠ DATABASE_URL is set but schema push failed (drift?) → skipping seed (site still deploys)"
+    echo "  → Tip: set env DB_FORCE_RESET=1 once to allow a one-time force reset of a FRESH/EMPTY database."
   fi
 else
   echo "⚠ Step 2/3 skipped: DATABASE_URL is NOT set yet."
