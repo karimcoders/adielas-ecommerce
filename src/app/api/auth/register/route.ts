@@ -2,6 +2,7 @@ import { requireDb } from "@/lib/api-guard";
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { hashPassword, signSession, setSessionCookie } from "@/lib/auth";
+import { recordAuthEvent } from "@/lib/analytics-server";
 
 export async function POST(req: NextRequest) {
   const denied = requireDb();
@@ -52,6 +53,15 @@ export async function POST(req: NextRequest) {
       role: "CUSTOMER",
     });
     await setSessionCookie(token);
+
+    // analytics: new-account event with geo (server-side)
+    await recordAuthEvent(db, req, {
+      event: "register",
+      userId: user.id,
+      email: user.email,
+      name: user.name,
+      path: "/register",
+    });
 
     return NextResponse.json({
       user: { id: user.id, email: user.email, name: user.name, role: user.role },

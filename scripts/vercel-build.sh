@@ -18,11 +18,14 @@ if [ -n "$DATABASE_URL" ]; then
   if npx prisma db push --schema prisma/schema.postgres.prisma --skip-generate --accept-data-loss; then
     echo "── Schema push OK → seeding demo data (failures are non-fatal)"
     npx tsx prisma/seed.ts || echo "⚠ Seed skipped/failed (non-fatal — store runs with built-in defaults)"
+    echo "── Analytics backfill (only if the events table is empty)"
+    npx tsx prisma/backfill-analytics.ts || echo "⚠ Analytics backfill skipped (non-fatal)"
   elif [ "$DB_FORCE_RESET" = "1" ]; then
     echo "── Normal push failed (schema drift) → DB_FORCE_RESET=1 → one-time force reset of a fresh database"
     if npx prisma db push --schema prisma/schema.postgres.prisma --skip-generate --accept-data-loss --force-reset; then
       echo "── Force reset + push OK → seeding demo data"
       npx tsx prisma/seed.ts || echo "⚠ Seed skipped/failed (non-fatal — store runs with built-in defaults)"
+      npx tsx prisma/backfill-analytics.ts || echo "⚠ Analytics backfill skipped (non-fatal)"
     else
       echo "⚠ Force reset also failed → skipping seed (site still deploys)"
     fi
