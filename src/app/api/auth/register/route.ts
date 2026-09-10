@@ -58,6 +58,17 @@ export async function POST(req: NextRequest) {
     });
   } catch (err) {
     console.error("[register]", err);
+    const code = (err as { code?: string })?.code ?? "";
+    if (["P1001", "P1012", "P2021", "P1003"].includes(code)) {
+      return NextResponse.json(
+        {
+          error: "The store's database is temporarily unreachable.",
+          hint: "Store owner: check your Neon database status (Vercel → Storage) — it may be paused. Opening the Neon console once usually resumes it.",
+          dbDown: true,
+        },
+        { status: 503 },
+      );
+    }
     return NextResponse.json({ error: "Something went wrong. Please try again." }, { status: 500 });
   }
 }

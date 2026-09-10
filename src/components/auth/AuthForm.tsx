@@ -15,6 +15,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [hint, setHint] = useState<string | null>(null);
   const [adminBlock, setAdminBlock] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -22,6 +23,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    setHint(null);
     setAdminBlock(false);
     try {
       const res = await fetch(isLogin ? "/api/auth/login" : "/api/auth/register", {
@@ -34,6 +36,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
       const data = await res.json();
       if (!res.ok) {
         setError(data.error ?? "Something went wrong.");
+        setHint(data.hint ?? null);
         setAdminBlock(Boolean(data.adminPortal));
         return;
       }
@@ -136,6 +139,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
         {error && (
           <div role="alert" className="space-y-2 rounded-xl bg-[#fbeaea] px-4 py-3 text-sm font-semibold text-[#b3352f]">
             <p>{error}</p>
+            {hint && <p className="text-xs font-medium leading-relaxed text-[#8a4a46]">{hint}</p>}
             {adminBlock && (
               <a
                 href="/admin/login"
