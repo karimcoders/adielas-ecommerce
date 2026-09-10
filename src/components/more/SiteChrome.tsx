@@ -7,6 +7,7 @@ import { Footer } from "@/components/more/Footer";
 import { CartDrawer } from "@/components/more/CartDrawer";
 import { ScrollProgress } from "@/components/more/motion";
 import { AnalyticsTracker } from "@/components/analytics/AnalyticsTracker";
+import { AdminStorefrontBar } from "@/components/admin/AdminStorefrontBar";
 
 /**
  * Storefront chrome (navbar, footer, cart drawer) — hidden on /admin routes
@@ -38,6 +39,7 @@ export function SiteChrome({
         cms={{ footer: cmsFooter as never, settings: cmsSettings as never }}
       />
       <CartDrawer />
+      <AdminStorefrontBar />
     </>
   );
 }

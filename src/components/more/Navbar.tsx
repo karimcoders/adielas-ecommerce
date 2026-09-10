@@ -8,8 +8,9 @@ import {
   TikTokIcon,
   YouTubeIcon,
 } from "./icons";
-import { ShoppingBag, Menu, X, UserRound } from "lucide-react";
+import { ShoppingBag, Menu, X, UserRound, ShieldCheck } from "lucide-react";
 import { useCart } from "./CartProvider";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 const socials = [
   { label: "Instagram", href: "https://www.instagram.com", Icon: InstagramIcon },
@@ -29,6 +30,7 @@ export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const lastY = useRef(0);
   const { openCart, count } = useCart();
+  const { isAdmin } = useCurrentUser();
 
   useEffect(() => {
     let raf = 0;
@@ -136,6 +138,18 @@ export function Navbar() {
             Shop now
           </Link>
 
+          {isAdmin && (
+            <Link
+              href="/admin"
+              className="flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-[#17241b] px-3 py-1.5 text-xs font-black tracking-wider text-amber-300 shadow-md transition hover:bg-[#0f1711] hover:scale-105 active:scale-95 sm:px-3.5"
+              title="Open Admin Dashboard"
+            >
+              <ShieldCheck className="h-3.5 w-3.5 text-amber-400" />
+              <span className="hidden min-[480px]:inline">Admin Panel</span>
+              <span className="min-[480px]:hidden">Admin</span>
+            </Link>
+          )}
+
           <Link
             href="/account"
             aria-label="Your account"
@@ -166,10 +180,23 @@ export function Navbar() {
       {/* mobile menu sheet */}
       <div
         className={`overflow-hidden px-4 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] lg:hidden ${
-          menuOpen ? "max-h-[420px] opacity-100" : "max-h-0 opacity-0"
+          menuOpen ? "max-h-[460px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
         <div className="mt-1 rounded-3xl border border-[var(--forest)]/10 bg-[var(--cream)] p-3 shadow-[0_24px_50px_rgba(69,31,34,0.22)]">
+          {isAdmin && (
+            <Link
+              href="/admin"
+              onClick={() => setMenuOpen(false)}
+              className="mb-1.5 flex items-center justify-between rounded-2xl border border-amber-400/40 bg-[#1e2a22] px-4 py-3 text-base font-bold text-amber-300 shadow-sm transition hover:bg-[#152019]"
+            >
+              <span className="flex items-center gap-2">
+                <ShieldCheck className="h-4 w-4 text-amber-400" />
+                Admin Dashboard
+              </span>
+              <ArrowUpRight className="h-4 w-4 text-amber-400" />
+            </Link>
+          )}
           {[
             ...links,
             { label: "Shop All", href: "/shop" },

@@ -3,16 +3,20 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
+  AlertCircle,
   Loader2,
   LogOut,
   MapPin,
   Package,
   Plus,
+  ShieldCheck,
   Star,
   Trash2,
   UserRound,
+  XCircle,
 } from "lucide-react";
 import { formatINR } from "@/lib/products";
+import { toast } from "@/hooks/use-toast";
 
 type User = { id: string; name: string; email: string; phone: string | null; role: string };
 
@@ -94,6 +98,49 @@ export default function AccountPage() {
     router.refresh();
   };
 
+  const [cancellingId, setCancellingId] = useState<string | null>(null);
+
+  const cancelOrder = async (order: Order) => {
+    const ok = window.confirm(
+      `Are you sure you want to cancel order ${order.orderNumber}?\n\nThis will immediately cancel your order and restore items to stock.`
+    );
+    if (!ok) return;
+
+    setCancellingId(order.id);
+    try {
+      const res = await fetch(`/api/orders/${order.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "CANCELLED" }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setOrders((prev) =>
+          prev.map((o) => (o.id === order.id ? { ...o, status: "CANCELLED" } : o))
+        );
+        toast({
+          title: "Order Cancelled",
+          description: `Order ${order.orderNumber} has been successfully cancelled.`,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Cancellation Failed",
+          description: data.error || "Could not cancel order.",
+          variant: "destructive",
+        });
+      }
+    } catch {
+      toast({
+        title: "Network Error",
+        description: "Failed to connect to server.",
+        variant: "destructive",
+      });
+    } finally {
+      setCancellingId(null);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
@@ -137,6 +184,29 @@ export default function AccountPage() {
             </button>
           </div>
         </div>
+
+        {/* admin access banner */}
+        {user?.role === "ADMIN" && (
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-[1.6rem] border border-amber-400/40 bg-[#17241b] p-4 text-amber-300 shadow-md">
+            <div className="flex items-center gap-3">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-400/20 text-amber-400">
+                <ShieldCheck className="h-5 w-5" />
+              </span>
+              <div>
+                <p className="text-sm font-extrabold text-amber-200">Administrator Privileges Active</p>
+                <p className="text-xs font-medium text-amber-300/75">
+                  You are signed in as an admin and have full access to manage store orders and catalog.
+                </p>
+              </div>
+            </div>
+            <a
+              href="/admin"
+              className="flex items-center gap-1.5 rounded-full bg-amber-400 px-4 py-2 text-xs font-black uppercase tracking-wider text-[#17241b] shadow-sm transition hover:bg-amber-300 hover:scale-105 active:scale-95"
+            >
+              Go to Admin Dashboard →
+            </a>
+          </div>
+        )}
 
         {/* tabs */}
         <div className="mt-6 flex gap-2">
@@ -236,6 +306,13 @@ export default function AccountPage() {
                       </div>
                     )}
 
+                    {cancelled && (
+                      <div className="mt-3 flex items-center gap-2 rounded-2xl bg-red-50 px-3.5 py-2.5 text-xs font-semibold text-red-700">
+                        <AlertCircle className="h-4 w-4 shrink-0 text-red-500" />
+                        <span>Order cancelled · Items and inventory stock have been restored.</span>
+                      </div>
+                    )}
+
                     {/* items */}
                     <ul className="mt-4 space-y-2.5 border-t border-[var(--forest)]/8 pt-4">
                       {o.items.map((it) => (
@@ -256,11 +333,30 @@ export default function AccountPage() {
                       ))}
                     </ul>
 
-                    <div className="mt-4 flex items-center justify-between border-t border-[var(--forest)]/8 pt-3">
-                      <span className="text-xs font-semibold text-[var(--forest-deep)]/65">
-                        {o.discount > 0 && <>You saved {formatINR(o.discount)} · </>}
-                        {o.shipping === 0 ? "Free shipping" : `Shipping ${formatINR(o.shipping)}`}
-                      </span>
+                    <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--forest)]/8 pt-3">
+                      <div>
+                        <span className="text-xs font-semibold text-[var(--forest-deep)]/65">
+                          {o.discount > 0 && <>You saved {formatINR(o.discount)} · </>}
+                          {o.shipping === 0 ? "Free shipping" : `Shipping ${formatINR(o.shipping)}`}
+                        </span>
+                        {(o.status === "PLACED" || o.status === "CONFIRMED") && (
+                          <div className="mt-2">
+                            <button
+                              type="button"
+                              onClick={() => cancelOrder(o)}
+                              disabled={cancellingId === o.id}
+                              className="inline-flex items-center gap-1.5 rounded-full border border-red-300 bg-red-50/80 px-3.5 py-1.5 text-xs font-bold text-red-700 transition hover:bg-red-100 hover:border-red-400 active:scale-95 disabled:opacity-60"
+                            >
+                              {cancellingId === o.id ? (
+                                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                              ) : (
+                                <XCircle className="h-3.5 w-3.5 text-red-500" />
+                              )}
+                              Cancel order
+                            </button>
+                          </div>
+                        )}
+                      </div>
                       <span className="text-lg font-extrabold text-[var(--forest)]">{formatINR(o.total)}</span>
                     </div>
                   </div>
