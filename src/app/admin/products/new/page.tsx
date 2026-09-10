@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Check, Plus, Save, Sparkles, Upload } from "lucide-react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
+import { ImageUpload } from "@/components/admin/ImageUpload";
 
 export default function NewProductPage() {
   const router = useRouter();
@@ -252,23 +253,17 @@ export default function NewProductPage() {
           </div>
         </div>
 
-        {/* Image URL & Status */}
+        {/* Image Upload with Cloudinary & Status */}
         <div className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm space-y-4">
           <h2 className="text-sm font-extrabold text-gray-900 mb-2">
             Media &amp; Stock Status
           </h2>
-          <div>
-            <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-gray-500">
-              Product Image URL / Path
-            </label>
-            <input
-              type="text"
-              value={form.image}
-              onChange={update("image")}
-              placeholder="/images/adielas/stage1.png"
-              className="w-full rounded-xl border border-gray-200 p-3 text-sm font-mono text-gray-900 outline-none focus:border-amber-400"
-            />
-          </div>
+          <ImageUpload
+            value={form.image}
+            onChange={(url) => setForm((f) => ({ ...f, image: url }))}
+            folder="adielas-products"
+            label="Product Photo (Cloudinary CDN)"
+          />
           <div className="flex items-center gap-3 pt-2">
             <input
               type="checkbox"

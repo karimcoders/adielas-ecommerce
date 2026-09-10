@@ -57,18 +57,18 @@ export function AdminLayout({
       .then((res) => res.json())
       .then((data) => {
         if (!data.user || data.user.role !== "ADMIN") {
-          router.push("/login");
+          router.push("/admin/login");
         } else {
           setUser(data.user);
         }
       })
-      .catch(() => router.push("/login"))
+      .catch(() => router.push("/admin/login"))
       .finally(() => setLoading(false));
   }, [router]);
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
-    router.push("/login");
+    router.push("/admin/login");
     router.refresh();
   };
 

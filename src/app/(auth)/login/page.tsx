@@ -56,30 +56,10 @@ export default function LoginPage() {
             Welcome Back
           </span>
           <h1 className="font-display mt-4 text-4xl text-[var(--forest)] sm:text-5xl">
-            SIGN IN TO <span className="text-[var(--sage-deep)]">ADIELAS</span>
+            CUSTOMER <span className="text-[var(--sage-deep)]">SIGN IN</span>
           </h1>
           <p className="mt-2 text-sm font-medium text-[var(--forest-deep)]/80">
-            Access your orders, saved delivery addresses, or admin panel.
-          </p>
-        </div>
-
-        {/* Demo Credentials Quick Fill */}
-        <div className="mt-6 rounded-2xl border border-[var(--sage-deep)]/40 bg-[var(--cloud)]/70 p-4 text-xs font-semibold text-[var(--forest)] shadow-sm">
-          <div className="flex items-center justify-between">
-            <span className="flex items-center gap-1.5 font-bold">
-              <Sparkles className="h-4 w-4 text-[var(--sage-deep)]" />
-              Demo Admin Credentials:
-            </span>
-            <button
-              type="button"
-              onClick={fillAdmin}
-              className="rounded-full bg-[var(--forest)] px-3 py-1 text-[11px] font-bold text-[var(--cream)] transition hover:opacity-90"
-            >
-              Fill Admin
-            </button>
-          </div>
-          <p className="mt-1 font-mono text-[11px] text-[var(--forest-deep)]/75">
-            admin@adielas.com / admin123
+            Track your orders, delivery status, and saved addresses.
           </p>
         </div>
 
@@ -137,7 +117,7 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <div className="mt-6 border-t border-[var(--forest)]/10 pt-5 text-center">
+          <div className="mt-6 space-y-3 border-t border-[var(--forest)]/10 pt-5 text-center">
             <p className="text-xs font-medium text-[var(--forest-deep)]/80">
               Don't have an account yet?{" "}
               <Link
@@ -145,6 +125,15 @@ export default function LoginPage() {
                 className="font-bold text-[var(--forest)] underline hover:text-[var(--sage-deep)]"
               >
                 Create Account
+              </Link>
+            </p>
+            <p className="text-[11px] font-semibold text-[var(--olive)]">
+              Store Owner or Manager?{" "}
+              <Link
+                href="/admin/login"
+                className="font-bold text-amber-800 underline hover:text-amber-900"
+              >
+                Admin Control Portal →
               </Link>
             </p>
           </div>
