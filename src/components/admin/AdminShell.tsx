@@ -20,12 +20,12 @@ import type { ReactNode } from "react";
 
 const nav = [
   { href: "/admin", label: "Dashboard", Icon: LayoutDashboard },
-  { href: "/admin/analytics", label: "Traffic & Analyzer", Icon: Activity },
   { href: "/admin/cms", label: "Website CMS", Icon: PenSquare },
   { href: "/admin/products", label: "Products", Icon: Package },
   { href: "/admin/orders", label: "Orders", Icon: ShoppingCart },
   { href: "/admin/customers", label: "Customers", Icon: Users },
   { href: "/admin/coupons", label: "Coupons", Icon: TicketPercent },
+  { href: "/admin/analytics", label: "Traffic & Analyzer", Icon: Activity },
 ];
 
 export function AdminShell({ children }: { children: ReactNode }) {
