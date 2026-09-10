@@ -75,7 +75,10 @@ function weightedDevice(): string {
 
 async function main() {
   const existing = await db.analyticsEvent.count();
-  if (existing > 0) {
+  // Top-up mode: stores with (almost) no tracked history get a 30-day demo
+  // baseline so the analyzer is immediately useful. Real traffic quickly
+  // pushes the count past the threshold and backfill stops running.
+  if (existing >= 100) {
     console.log(`⏭️  ${existing} analytics events already exist — backfill skipped`);
     return;
   }
