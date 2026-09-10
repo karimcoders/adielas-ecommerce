@@ -533,7 +533,7 @@ export default function CheckoutPage() {
                       onKeyDown={(e) => e.key === "Enter" && applyCoupon()}
                       placeholder="Coupon code"
                       aria-label="Coupon code"
-                      className="min-w-0 flex-1 rounded-xl border-2 border-[var(--forest)]/15 bg-white px-3 py-2 text-sm font-bold uppercase tracking-wide text-[var(--forest)] outline-none placeholder:normal-case placeholder:font-medium placeholder:text-[var(--forest)]/35 focus:border-[var(--sage-deep)]"
+                      className="min-w-0 flex-1 rounded-xl border-2 border-[var(--forest)]/15 bg-white px-3 py-2 text-base font-bold uppercase tracking-wide text-[var(--forest)] outline-none placeholder:normal-case placeholder:font-medium placeholder:text-[var(--forest)]/35 focus:border-[var(--sage-deep)] sm:text-sm"
                     />
                     <button
                       type="button"

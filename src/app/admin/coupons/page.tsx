@@ -87,7 +87,7 @@ export default function AdminCouponsPage() {
   };
 
   const field =
-    "w-full rounded-xl border-2 border-[var(--forest)]/15 bg-white px-3.5 py-2.5 text-sm font-medium text-[var(--forest)] outline-none transition focus:border-[var(--sage-deep)]";
+    "w-full rounded-xl border-2 border-[var(--forest)]/15 bg-white px-3.5 py-2.5 text-base font-medium text-[var(--forest)] outline-none transition focus:border-[var(--sage-deep)] sm:text-sm";
   const label = "mb-1 block text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--olive)]";
 
   return (

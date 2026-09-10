@@ -116,7 +116,7 @@ export default function AdminOrdersPage() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search order / name / phone…"
-          className="w-full rounded-full border-2 border-[var(--forest)]/12 bg-white px-5 py-2.5 text-sm font-medium outline-none focus:border-[var(--sage-deep)] sm:w-72"
+          className="w-full rounded-full border-2 border-[var(--forest)]/12 bg-white px-5 py-2.5 text-base font-medium outline-none focus:border-[var(--sage-deep)] sm:w-72 sm:text-sm"
         />
       </div>
 

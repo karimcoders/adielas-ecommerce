@@ -180,69 +180,77 @@ export default function AdminCmsPage() {
 
   return (
     <div className="min-h-screen bg-[#f6f3ec] text-[#3d1f27]">
-      {/* top bar */}
-      <header className="sticky top-0 z-30 border-b border-[#3d1f27]/10 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
-          <div className="flex items-center gap-3">
-            <Link
-              href="/admin"
-              className="flex h-9 items-center gap-1.5 rounded-full border border-[#3d1f27]/15 px-3 text-sm font-bold text-[#3d1f27] transition hover:bg-[#3d1f27]/5"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Dashboard
-            </Link>
-            <div>
-              <h1 className="font-display text-lg font-black uppercase leading-none tracking-wide">
-                Content CMS
-              </h1>
-              <p className="text-xs font-medium text-[#3d1f27]/60">
-                Edit any page of the live site — changes apply instantly after saving.
-              </p>
+      {/* top bar — static on mobile (admin shell bars are fixed), sticky on desktop */}
+      <header className="border-b border-[#3d1f27]/10 bg-white/90 backdrop-blur lg:sticky lg:top-0 lg:z-30">
+        <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6">
+          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+            <div className="flex min-w-0 flex-1 items-center gap-3 sm:flex-1">
+              <Link
+                href="/admin"
+                className="flex h-9 shrink-0 items-center gap-1.5 rounded-full border border-[#3d1f27]/15 px-3 text-sm font-bold text-[#3d1f27] transition hover:bg-[#3d1f27]/5"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Dashboard
+              </Link>
+              <div className="hidden min-w-0 flex-1 sm:block">
+                <h1 className="font-display truncate text-lg font-black uppercase leading-none tracking-wide">
+                  Content CMS
+                </h1>
+                <p className="text-xs font-medium text-[#3d1f27]/60">
+                  Edit any page of the live site — changes apply instantly after saving.
+                </p>
+              </div>
             </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <a
-              href="/"
-              target="_blank"
-              rel="noreferrer"
-              className="flex h-9 items-center gap-1.5 rounded-full border border-[#3d1f27]/15 px-3 text-sm font-bold text-[#3d1f27] transition hover:bg-[#3d1f27]/5"
-            >
-              <ExternalLink className="h-4 w-4" />
-              View site
-            </a>
-            <button
-              type="button"
-              onClick={saveSection}
-              disabled={saving}
-              className="flex h-9 items-center gap-1.5 rounded-full bg-[#3f6b3f] px-4 text-sm font-bold text-white transition hover:bg-[#355a35] disabled:opacity-60"
-            >
-              {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-              Save
-            </button>
+            <div className="flex shrink-0 items-center gap-2">
+              <a
+                href="/"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="View live site"
+                className="flex h-9 items-center gap-1.5 rounded-full border border-[#3d1f27]/15 px-3 text-sm font-bold text-[#3d1f27] transition hover:bg-[#3d1f27]/5"
+              >
+                <ExternalLink className="h-4 w-4" />
+                <span className="hidden sm:inline">View site</span>
+              </a>
+              <button
+                type="button"
+                onClick={saveSection}
+                disabled={saving}
+                className="flex h-9 items-center gap-1.5 rounded-full bg-[#3f6b3f] px-4 text-sm font-bold text-white transition hover:bg-[#355a35] disabled:opacity-60"
+              >
+                {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+                Save
+              </button>
+            </div>
+            <h1 className="font-display w-full text-lg font-black uppercase leading-none tracking-wide sm:hidden">
+              Content CMS
+            </h1>
           </div>
         </div>
       </header>
 
       <div className="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[240px_1fr]">
-        {/* section rail */}
-        <aside className="lg:sticky lg:top-[76px] lg:self-start">
+        {/* section rail — horizontal scroll chips on mobile, sidebar list on desktop */}
+        <aside className="min-w-0 lg:sticky lg:top-[76px] lg:self-start">
           <div className="rounded-2xl border border-[#3d1f27]/10 bg-white p-2 shadow-sm">
-            {TABS.map((t) => (
-              <button
-                key={t.id}
-                type="button"
-                onClick={() => setActiveTab(t.id)}
-                className={`flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left text-sm font-bold transition ${
-                  activeTab === t.id
-                    ? "bg-[#3f6b3f] text-white"
-                    : "text-[#3d1f27] hover:bg-[#3d1f27]/5"
-                }`}
-              >
-                <Layers className="h-4 w-4 shrink-0" />
-                {t.label}
-                {activeTab === t.id && <Check className="ml-auto h-4 w-4" />}
-              </button>
-            ))}
+            <div className="flex gap-1 overflow-x-auto pb-1 max-lg:-mx-1 max-lg:px-1 lg:flex-col lg:overflow-visible lg:pb-0">
+              {TABS.map((t) => (
+                <button
+                  key={t.id}
+                  type="button"
+                  onClick={() => setActiveTab(t.id)}
+                  className={`flex shrink-0 items-center gap-2 whitespace-nowrap rounded-xl px-3 py-2.5 text-left text-sm font-bold transition lg:w-full lg:shrink lg:whitespace-normal ${
+                    activeTab === t.id
+                      ? "bg-[#3f6b3f] text-white"
+                      : "text-[#3d1f27] hover:bg-[#3d1f27]/5"
+                  }`}
+                >
+                  <Layers className="h-4 w-4 shrink-0" />
+                  {t.label}
+                  {activeTab === t.id && <Check className="ml-auto hidden h-4 w-4 lg:block" />}
+                </button>
+              ))}
+            </div>
           </div>
           <button
             type="button"
@@ -256,7 +264,7 @@ export default function AdminCmsPage() {
         </aside>
 
         {/* editor */}
-        <main className="rounded-2xl border border-[#3d1f27]/10 bg-white p-5 shadow-sm sm:p-7">
+        <main className="min-w-0 rounded-2xl border border-[#3d1f27]/10 bg-white p-5 shadow-sm sm:p-7">
           <div className="mb-6 border-b border-[#3d1f27]/10 pb-4">
             <h2 className="font-display text-2xl font-black uppercase tracking-wide">
               {active.label}
@@ -358,7 +366,7 @@ export function Field({
         value={value}
         placeholder={placeholder}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-xl border border-[#3d1f27]/15 bg-[#faf8f3] px-3.5 py-2.5 text-sm font-medium outline-none transition focus:border-[#3f6b3f] focus:bg-white"
+        className="w-full rounded-xl border border-[#3d1f27]/15 bg-[#faf8f3] px-3.5 py-2.5 text-base font-medium outline-none transition focus:border-[#3f6b3f] focus:bg-white sm:text-sm"
       />
       {hint && <span className="mt-1 block text-[11px] font-medium text-[#3d1f27]/50">{hint}</span>}
     </label>
@@ -387,7 +395,7 @@ export function AreaField({
         rows={rows}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-xl border border-[#3d1f27]/15 bg-[#faf8f3] px-3.5 py-2.5 text-sm font-medium outline-none transition focus:border-[#3f6b3f] focus:bg-white"
+        className="w-full rounded-xl border border-[#3d1f27]/15 bg-[#faf8f3] px-3.5 py-2.5 text-base font-medium outline-none transition focus:border-[#3f6b3f] focus:bg-white sm:text-sm"
       />
       {hint && <span className="mt-1 block text-[11px] font-medium text-[#3d1f27]/50">{hint}</span>}
     </label>
