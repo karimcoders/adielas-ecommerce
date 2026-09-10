@@ -40,7 +40,7 @@ export function Comparison({ cms }: { cms?: ComparisonCms }) {
     <section className="relative bg-[var(--cream-page)] py-20 sm:py-28">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-10">
         <Reveal variant="zoom">
-          <div className="relative rounded-[2rem] bg-white p-5 shadow-[0_30px_70px_rgba(69,31,34,0.12)] sm:p-8 lg:p-10">
+          <div className="relative rounded-[2rem] bg-white p-4 shadow-[0_30px_70px_rgba(69,31,34,0.12)] sm:p-8 lg:p-10">
             <Smiley />
 
             <div className="mt-6 grid gap-8 lg:grid-cols-2 lg:gap-12">
@@ -50,7 +50,7 @@ export function Comparison({ cms }: { cms?: ComparisonCms }) {
                   src="/images/adielas/jar-open.png"
                   alt="ADIELAS jar opened to show sprouted grain powder with a wooden spoon"
                   loading="lazy"
-                  className="h-full min-h-[320px] w-full object-cover"
+                  className="h-full min-h-[260px] w-full object-cover sm:min-h-[320px]"
                 />
                 <svg
                   viewBox="0 0 400 500"
@@ -70,7 +70,7 @@ export function Comparison({ cms }: { cms?: ComparisonCms }) {
 
               {/* table */}
               <div>
-                <h2 className="text-3xl font-semibold leading-tight tracking-tight text-[var(--forest)] sm:text-4xl">
+                <h2 className="text-2xl font-semibold leading-tight tracking-tight text-[var(--forest)] sm:text-4xl">
                   {c.headingLine1}
                   <br />
                   <span className="text-[var(--sage-deep)]">
@@ -78,16 +78,16 @@ export function Comparison({ cms }: { cms?: ComparisonCms }) {
                   </span>
                 </h2>
 
-                <div className="mt-8">
+                <div className="mt-6 sm:mt-8">
                   {/* head */}
-                  <div className="grid grid-cols-[1.6fr_0.8fr_1fr] items-end gap-2 border-b-2 border-[var(--forest)]/70 pb-3">
-                    <span className="text-xs font-semibold text-[var(--olive)]">
+                  <div className="grid grid-cols-[1.5fr_0.8fr_0.8fr] items-end gap-1.5 border-b-2 border-[var(--forest)]/70 pb-3 sm:gap-2">
+                    <span className="text-[11px] font-semibold text-[var(--olive)] sm:text-xs">
                       {c.colLeft}
                     </span>
-                    <span className="font-script text-center text-2xl leading-none text-[var(--forest)]">
+                    <span className="font-script text-center text-xl leading-none text-[var(--forest)] sm:text-2xl">
                       {c.colMid}
                     </span>
-                    <span className="text-center text-xs font-semibold text-[var(--olive)]">
+                    <span className="text-center text-[11px] font-semibold text-[var(--olive)] sm:text-xs">
                       {c.colRight}
                     </span>
                   </div>
@@ -99,21 +99,21 @@ export function Comparison({ cms }: { cms?: ComparisonCms }) {
                       variant="left"
                       className="border-b border-[var(--forest)]/12"
                     >
-                      <div className="grid grid-cols-[1.6fr_0.8fr_1fr] items-center gap-2 py-3.5">
-                        <span className="text-sm font-semibold text-[var(--forest-deep)]">
+                      <div className="grid grid-cols-[1.5fr_0.8fr_0.8fr] items-center gap-1.5 py-2.5 sm:gap-2 sm:py-3.5">
+                        <span className="text-xs font-semibold text-[var(--forest-deep)] sm:text-sm">
                           {label}
                         </span>
                         <span className="flex justify-center">
-                          <span className="flex h-9 w-16 items-center justify-center rounded-lg bg-[var(--cloud)]">
+                          <span className="flex h-8 w-11 items-center justify-center rounded-lg bg-[var(--cloud)] sm:h-9 sm:w-16">
                             <Check
-                              className="h-4 w-4 text-[var(--forest)]"
+                              className="h-3.5 w-3.5 text-[var(--forest)] sm:h-4 sm:w-4"
                               strokeWidth={3}
                             />
                           </span>
                         </span>
                         <span className="flex justify-center">
                           <X
-                            className="h-4 w-4 text-[var(--forest)]/70"
+                            className="h-3.5 w-3.5 text-[var(--forest)]/70 sm:h-4 sm:w-4"
                             strokeWidth={3}
                           />
                         </span>

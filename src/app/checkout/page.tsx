@@ -5,6 +5,8 @@ import Link from "next/link";
 import {
   Banknote,
   Check,
+  ChevronDown,
+  ChevronUp,
   CreditCard,
   Loader2,
   Smartphone,
@@ -87,6 +89,7 @@ export default function CheckoutPage() {
   const [errors, setErrors] = useState<Partial<Fields>>({});
   const [method, setMethod] = useState<PayMethod>("upi");
   const [order, setOrder] = useState<PlacedOrder | null>(null);
+  const [summaryOpen, setSummaryOpen] = useState(false);
 
   // coupon state
   const [couponInput, setCouponInput] = useState("");
@@ -364,11 +367,115 @@ export default function CheckoutPage() {
           </h1>
         </div>
 
-        <div className="mt-12 grid gap-8 lg:grid-cols-[1.25fr_1fr] lg:gap-12">
+        {/* mobile collapsible order summary banner (under lg) */}
+        <div className="mt-6 overflow-hidden rounded-2xl border border-[var(--forest)]/12 bg-white shadow-xs lg:hidden">
+          <button
+            type="button"
+            onClick={() => setSummaryOpen((v) => !v)}
+            className="flex w-full items-center justify-between bg-[var(--cream)] px-4 py-3 text-left text-sm font-bold text-[var(--forest)] transition"
+          >
+            <span className="flex items-center gap-1.5">
+              <ShoppingBag className="h-4 w-4 text-[var(--sage-deep)]" />
+              <span>{summaryOpen ? "Hide order summary" : "Show order summary"}</span>
+              <span className="text-xs font-semibold text-[var(--olive)]">
+                ({lines.reduce((n, l) => n + l.item.qty, 0)})
+              </span>
+              {summaryOpen ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
+            </span>
+            <span className="font-display text-lg text-[var(--forest)]">{formatINR(total)}</span>
+          </button>
+
+          {summaryOpen && (
+            <div className="space-y-3 border-t border-[var(--forest)]/10 p-4">
+              <ul className="space-y-2.5">
+                {lines.map(({ item, product }) => (
+                  <li key={item.slug} className="flex items-center gap-3">
+                    <span className="relative block h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-[var(--cloud)]">
+                      <img src={product!.image} alt="" className="h-full w-full object-cover" />
+                      <span className="absolute -right-1 -top-1 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-[var(--forest)] text-[10px] font-extrabold text-[var(--cream)]">
+                        {item.qty}
+                      </span>
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-xs font-bold text-[var(--forest)]">
+                        {product!.nameLines[0]} · {product!.nameLines[1]}
+                      </span>
+                      <span className="block text-[11px] font-semibold text-[var(--forest-deep)]/70">
+                        {product!.weight}
+                      </span>
+                    </span>
+                    <span className="text-xs font-extrabold text-[var(--forest)]">
+                      {formatINR(product!.price * item.qty)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+
+              {/* coupon input in mobile accordion */}
+              <div className="rounded-xl bg-[var(--cream-page)] p-2.5">
+                {coupon ? (
+                  <div className="flex items-center justify-between">
+                    <span className="flex items-center gap-1.5 text-xs font-bold text-[var(--forest)]">
+                      <Tag className="h-3.5 w-3.5 text-[var(--sage-deep)]" />
+                      {coupon.code} — {formatINR(coupon.discount)} off
+                    </span>
+                    <button type="button" onClick={removeCoupon} className="text-xs font-bold text-[#8c2f39]">
+                      Remove
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex gap-2">
+                    <input
+                      value={couponInput}
+                      onChange={(e) => {
+                        setCouponInput(e.target.value.toUpperCase());
+                        setCouponMsg(null);
+                      }}
+                      placeholder="Coupon code"
+                      className="min-w-0 flex-1 rounded-lg border border-[var(--forest)]/15 bg-white px-2.5 py-1.5 text-xs font-bold uppercase tracking-wider text-[var(--forest)] outline-none"
+                    />
+                    <button
+                      type="button"
+                      onClick={applyCoupon}
+                      disabled={checkingCoupon || !couponInput.trim()}
+                      className="rounded-lg bg-[var(--forest)] px-3.5 py-1.5 text-xs font-bold text-white disabled:opacity-50"
+                    >
+                      {checkingCoupon ? <Loader2 className="h-3 w-3 animate-spin" /> : "Apply"}
+                    </button>
+                  </div>
+                )}
+                {couponMsg && (
+                  <p className={`mt-1.5 text-[11px] font-semibold ${couponMsg.ok ? "text-[var(--sage-deep)]" : "text-[#b3352f]"}`}>
+                    {couponMsg.text}
+                  </p>
+                )}
+              </div>
+
+              <dl className="space-y-1 border-t border-[var(--forest)]/10 pt-2 text-xs font-semibold">
+                <div className="flex justify-between text-[var(--forest-deep)]">
+                  <dt>Subtotal</dt>
+                  <dd>{formatINR(subtotal)}</dd>
+                </div>
+                {discount > 0 && (
+                  <div className="flex justify-between text-[var(--sage-deep)]">
+                    <dt>Coupon discount</dt>
+                    <dd>−{formatINR(discount)}</dd>
+                  </div>
+                )}
+                <div className="flex justify-between text-[var(--forest-deep)]">
+                  <dt>Shipping</dt>
+                  <dd>{shipping === 0 ? "FREE" : formatINR(shipping)}</dd>
+                </div>
+              </dl>
+            </div>
+          )}
+        </div>
+
+        <div className="mt-6 grid gap-8 lg:mt-12 lg:grid-cols-[1.25fr_1fr] lg:gap-12">
           {/* form */}
           <Reveal variant="left">
-            <div className="rounded-[1.8rem] bg-white p-6 shadow-[0_18px_44px_rgba(69,31,34,0.10)] sm:p-8">
-              <h2 className="text-xl font-extrabold tracking-tight text-[var(--forest)]">
+            <div className="rounded-[1.6rem] bg-white p-5 shadow-[0_18px_44px_rgba(69,31,34,0.10)] sm:rounded-[1.8rem] sm:p-8">
+              <h2 className="text-lg font-extrabold tracking-tight text-[var(--forest)] sm:text-xl">
                 Delivery details
               </h2>
               <div className="mt-5 grid gap-4 sm:grid-cols-2">

@@ -51,18 +51,18 @@ export function Footer({
 
           {/* info column */}
           <div className="flex flex-col items-start gap-6 lg:pt-2">
-            <Reveal variant="left" delay={100}>
-              <div className="flex gap-4">
+            <Reveal variant="left" delay={100} className="w-full sm:w-auto">
+              <div className="grid grid-cols-2 gap-3 w-full sm:flex sm:w-auto">
                 <a
                   href="/shop"
-                  className="flex w-36 flex-col items-center gap-2 rounded-2xl bg-white px-4 py-5 text-center shadow-[0_16px_36px_rgba(69,31,34,0.12)] transition hover:-translate-y-1"
+                  className="flex flex-col items-center gap-2 rounded-2xl bg-white px-3 py-4 text-center shadow-[0_16px_36px_rgba(69,31,34,0.12)] transition hover:-translate-y-1 sm:w-36 sm:px-4 sm:py-5"
                 >
-                  <svg viewBox="0 0 40 40" className="h-9 w-9" aria-hidden="true">
+                  <svg viewBox="0 0 40 40" className="h-8 w-8 sm:h-9 sm:w-9" aria-hidden="true">
                     <rect x="7" y="12" width="16" height="20" rx="3" fill="none" stroke="var(--olive)" strokeWidth="2.4" />
                     <rect x="11" y="7" width="16" height="20" rx="3" fill="none" stroke="var(--olive)" strokeWidth="2.4" />
                     <rect x="15" y="3" width="16" height="20" rx="3" fill="none" stroke="var(--olive)" strokeWidth="2.4" />
                   </svg>
-                  <span className="font-display text-sm leading-tight text-[var(--forest)]">
+                  <span className="font-display text-xs sm:text-sm leading-tight text-[var(--forest)]">
                     SHOP ALL
                     <br />
                     PRODUCTS
@@ -70,7 +70,7 @@ export function Footer({
                 </a>
                 <a
                   href="/#doctor"
-                  className="flex w-36 flex-col items-center gap-2 rounded-2xl bg-white px-4 py-5 text-center shadow-[0_16px_36px_rgba(69,31,34,0.12)] transition hover:-translate-y-1"
+                  className="flex flex-col items-center gap-2 rounded-2xl bg-white px-3 py-4 text-center shadow-[0_16px_36px_rgba(69,31,34,0.12)] transition hover:-translate-y-1 sm:w-36 sm:px-4 sm:py-5"
                 >
                   <svg viewBox="0 0 40 40" className="h-9 w-9" aria-hidden="true">
                     <circle cx="20" cy="13" r="7" fill="none" stroke="var(--olive)" strokeWidth="2.4" />

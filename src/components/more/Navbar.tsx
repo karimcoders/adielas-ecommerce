@@ -62,8 +62,8 @@ export function Navbar() {
     >
       <nav
         aria-label="Main"
-        className={`relative flex items-center justify-between gap-3 px-4 transition-[padding] duration-500 sm:px-6 lg:px-10 ${
-          scrolled ? "py-1.5" : "py-3"
+        className={`relative flex items-center justify-between gap-2 px-3 transition-[padding] duration-500 sm:gap-3 sm:px-6 lg:px-10 ${
+          scrolled ? "py-1.5" : "py-2 sm:py-3"
         }`}
       >
         {/* brand logo — pinned dead-centre of the header */}
@@ -76,7 +76,7 @@ export function Navbar() {
             src="/images/adielas/logo.png"
             alt="ADIELAS"
             className={`w-auto transition-[height] duration-500 ${
-              scrolled ? "h-11 sm:h-12" : "h-12 sm:h-14"
+              scrolled ? "h-9 sm:h-11 md:h-12" : "h-10 sm:h-12 md:h-14"
             } drop-shadow-[0_10px_22px_rgba(69,31,34,0.22)]`}
           />
         </Link>
@@ -87,7 +87,7 @@ export function Navbar() {
           onClick={() => setMenuOpen((v) => !v)}
           aria-expanded={menuOpen}
           aria-label={menuOpen ? "Close menu" : "Open menu"}
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--cream)] text-[var(--forest)] shadow-sm backdrop-blur transition hover:bg-[var(--forest)] hover:text-[var(--cream)] lg:hidden"
+          className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--cream)] text-[var(--forest)] shadow-sm backdrop-blur transition hover:bg-[var(--forest)] hover:text-[var(--cream)] sm:h-10 sm:w-10 lg:hidden"
         >
           {menuOpen ? (
             <X className="h-4 w-4" />
@@ -113,7 +113,7 @@ export function Navbar() {
         </div>
 
         {/* pills + shop (desktop, right of the centred logo) */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           <div className="hidden items-center gap-2 lg:flex">
             {links.map(({ label, href }) => (
               <Link
@@ -139,7 +139,7 @@ export function Navbar() {
           <Link
             href="/account"
             aria-label="Your account"
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--cream)] text-[var(--forest)] shadow-sm transition hover:scale-110 hover:bg-[var(--forest)] hover:text-[var(--cream)] sm:h-11 sm:w-11"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--cream)] text-[var(--forest)] shadow-sm transition hover:scale-110 hover:bg-[var(--forest)] hover:text-[var(--cream)] sm:h-11 sm:w-11"
           >
             <UserRound className="h-4 w-4" />
           </Link>
@@ -148,7 +148,7 @@ export function Navbar() {
             type="button"
             onClick={openCart}
             aria-label={`Open cart (${count} item${count === 1 ? "" : "s"})`}
-            className="relative flex h-10 w-10 items-center justify-center rounded-full bg-[var(--forest)] text-[var(--cream)] shadow-sm transition hover:scale-110 hover:bg-[var(--forest-deep)] sm:h-11 sm:w-11"
+            className="relative flex h-9 w-9 items-center justify-center rounded-full bg-[var(--forest)] text-[var(--cream)] shadow-sm transition hover:scale-110 hover:bg-[var(--forest-deep)] sm:h-11 sm:w-11"
           >
             <ShoppingBag className="h-4 w-4" />
             {count > 0 && (

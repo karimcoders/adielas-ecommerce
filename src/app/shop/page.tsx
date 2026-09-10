@@ -59,7 +59,7 @@ export default async function ShopPage() {
 
         {/* trust strip */}
         <Reveal delay={120}>
-          <div className="mt-16 grid grid-cols-2 gap-3 rounded-[1.6rem] bg-white/70 p-5 shadow-[0_16px_40px_rgba(69,31,34,0.08)] sm:grid-cols-4 sm:gap-4 sm:p-6">
+          <div className="mt-12 sm:mt-16 grid grid-cols-1 min-[420px]:grid-cols-2 gap-2.5 rounded-[1.6rem] bg-white/70 p-4 shadow-[0_16px_40px_rgba(69,31,34,0.08)] sm:grid-cols-4 sm:gap-4 sm:p-6">
             {trustLabels.map((label, i) => {
               const Icon = TRUST_ICONS[i] ?? ShieldCheck;
               return (

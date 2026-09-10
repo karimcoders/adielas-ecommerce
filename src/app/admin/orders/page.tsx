@@ -121,13 +121,13 @@ export default function AdminOrdersPage() {
       </div>
 
       {/* status filter pills */}
-      <div className="flex flex-wrap gap-2">
+      <div className="no-scrollbar flex gap-1.5 overflow-x-auto pb-1 sm:flex-wrap">
         {["ALL", ...STATUSES].map((s) => (
           <button
             key={s}
             type="button"
             onClick={() => setFilter(s)}
-            className={`rounded-full px-4 py-2 text-xs font-extrabold uppercase tracking-wide transition ${
+            className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-extrabold uppercase tracking-wide transition ${
               filter === s
                 ? "bg-[var(--forest)] text-[var(--cream)]"
                 : "bg-white text-[var(--forest)]/60 hover:bg-[var(--cloud)]"
@@ -138,8 +138,86 @@ export default function AdminOrdersPage() {
         ))}
       </div>
 
-      {/* table */}
-      <div className="overflow-x-auto rounded-3xl bg-white shadow-[0_10px_30px_rgba(69,31,34,0.07)]">
+      {/* mobile card list (under 768px) */}
+      <div className="space-y-3 md:hidden">
+        {loading ? (
+          <div className="rounded-2xl bg-white p-8 text-center shadow-xs">
+            <Loader2 className="mx-auto h-5 w-5 animate-spin text-[var(--olive)]" />
+            <p className="mt-2 text-xs font-semibold text-[var(--forest-deep)]/60">Loading orders…</p>
+          </div>
+        ) : filtered.length === 0 ? (
+          <div className="rounded-2xl bg-white p-8 text-center font-semibold text-[var(--forest-deep)]/60 shadow-xs">
+            No orders here yet.
+          </div>
+        ) : (
+          filtered.map((o) => (
+            <div
+              key={o.id}
+              className="rounded-2xl border border-[var(--forest)]/10 bg-white p-4 shadow-sm"
+            >
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <p className="font-extrabold text-[var(--forest)]">{o.orderNumber}</p>
+                  <p className="text-xs font-semibold text-[var(--forest-deep)]/55">
+                    {new Date(o.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })}
+                  </p>
+                </div>
+                <span className={`rounded-full px-2.5 py-1 text-[11px] font-extrabold uppercase tracking-wide ${STATUS_STYLE[o.status]}`}>
+                  {o.status}
+                </span>
+              </div>
+
+              <div className="mt-3 grid grid-cols-2 gap-2 border-y border-[var(--forest)]/8 py-2.5 text-xs">
+                <div>
+                  <span className="block font-bold text-[var(--olive)] uppercase tracking-wider text-[10px]">Customer</span>
+                  <span className="font-bold text-[var(--forest)] truncate block">{o.customerName}</span>
+                  <span className="text-[var(--forest-deep)]/60 truncate block">{o.phone}</span>
+                </div>
+                <div>
+                  <span className="block font-bold text-[var(--olive)] uppercase tracking-wider text-[10px]">Total</span>
+                  <span className="text-base font-black text-[var(--forest)]">{formatINR(o.total)}</span>
+                  <span className={`inline-block rounded px-1.5 py-0.5 text-[10px] font-extrabold uppercase ${PAY_STYLE[o.paymentStatus] ?? ""}`}>
+                    {o.paymentMethod} · {o.paymentStatus}
+                  </span>
+                </div>
+              </div>
+
+              <div className="mt-3 flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs font-bold text-[var(--forest-deep)]/70">Change status:</span>
+                  {updating === o.id ? (
+                    <Loader2 className="h-4 w-4 animate-spin text-[var(--olive)]" />
+                  ) : (
+                    <select
+                      value={o.status}
+                      onChange={(e) => updateStatus(o, e.target.value)}
+                      aria-label={`Status for ${o.orderNumber}`}
+                      className={`cursor-pointer rounded-full px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wide outline-none ${STATUS_STYLE[o.status]}`}
+                    >
+                      {STATUSES.map((s) => (
+                        <option key={s} value={s}>
+                          {s}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setDetail(o)}
+                  className="flex items-center gap-1 rounded-full bg-[var(--forest)] px-3.5 py-1.5 text-xs font-bold text-[var(--cream)] transition active:scale-95"
+                >
+                  <Eye className="h-3.5 w-3.5" /> Details
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* desktop table (md+) */}
+      <div className="hidden overflow-x-auto rounded-3xl bg-white shadow-[0_10px_30px_rgba(69,31,34,0.07)] md:block">
         <table className="w-full min-w-[860px] text-sm">
           <thead>
             <tr className="border-b border-[var(--forest)]/8 text-left text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--olive)]">

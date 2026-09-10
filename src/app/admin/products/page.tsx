@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Loader2, Pencil, Plus, Power, Search, Trash2 } from "lucide-react";
+import { Loader2, Pencil, Plus, Power, Search, Trash2, X } from "lucide-react";
 import { formatINR } from "@/lib/products";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
 
@@ -142,7 +142,7 @@ export default function AdminProductsPage() {
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-extrabold tracking-tight text-[var(--forest)] sm:text-3xl">Products</h1>
           <p className="mt-1 text-sm font-medium text-[var(--forest-deep)]/70">
@@ -150,27 +150,118 @@ export default function AdminProductsPage() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <div className="relative">
+          <div className="relative min-w-0 flex-1 sm:w-56 sm:flex-initial">
             <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--forest)]/35" />
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search…"
-              className="w-44 rounded-full border-2 border-[var(--forest)]/12 bg-white py-2.5 pl-10 pr-4 text-sm font-medium outline-none focus:border-[var(--sage-deep)] sm:w-56"
+              placeholder="Search products…"
+              className="w-full rounded-full border-2 border-[var(--forest)]/12 bg-white py-2 pl-10 pr-4 text-sm font-medium outline-none transition focus:border-[var(--sage-deep)]"
             />
           </div>
           <button
             type="button"
             onClick={openCreate}
-            className="flex items-center gap-1.5 rounded-full bg-[var(--forest)] px-4 py-2.5 text-sm font-bold text-[var(--cream)] transition hover:bg-[var(--forest-deep)]"
+            className="flex shrink-0 items-center gap-1.5 rounded-full bg-[var(--forest)] px-4 py-2 text-sm font-bold text-[var(--cream)] transition hover:bg-[var(--forest-deep)]"
           >
-            <Plus className="h-4 w-4" /> New product
+            <Plus className="h-4 w-4" /> <span className="hidden min-[400px]:inline">New product</span><span className="min-[400px]:hidden">Add</span>
           </button>
         </div>
       </div>
 
-      {/* table */}
-      <div className="overflow-x-auto rounded-3xl bg-white shadow-[0_10px_30px_rgba(69,31,34,0.07)]">
+      {/* mobile card list (under 768px) */}
+      <div className="space-y-3 md:hidden">
+        {loading ? (
+          <div className="rounded-2xl bg-white p-8 text-center shadow-xs">
+            <Loader2 className="mx-auto h-5 w-5 animate-spin text-[var(--olive)]" />
+            <p className="mt-2 text-xs font-semibold text-[var(--forest-deep)]/60">Loading products…</p>
+          </div>
+        ) : filtered.length === 0 ? (
+          <div className="rounded-2xl bg-white p-8 text-center font-semibold text-[var(--forest-deep)]/60 shadow-xs">
+            No products found.
+          </div>
+        ) : (
+          filtered.map((p) => (
+            <div
+              key={p.id}
+              className="rounded-2xl border border-[var(--forest)]/10 bg-white p-3.5 shadow-sm transition"
+            >
+              <div className="flex items-start gap-3">
+                <img
+                  src={p.image}
+                  alt=""
+                  className="h-14 w-14 shrink-0 rounded-xl object-cover bg-[var(--cloud)]"
+                />
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-start justify-between gap-1.5">
+                    <p className="truncate text-sm font-extrabold text-[var(--forest)]">{p.name}</p>
+                    <span
+                      className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wide ${
+                        p.active ? "bg-[#e8eedd] text-[#5c7a3f]" : "bg-[var(--cloud)] text-[var(--forest-deep)]/60"
+                      }`}
+                    >
+                      {p.active ? "Live" : "Hidden"}
+                    </span>
+                  </div>
+                  <p className="text-xs font-semibold text-[var(--forest-deep)]/55">
+                    /{p.slug} · {p.weight}
+                  </p>
+                  <div className="mt-1 flex items-baseline gap-2">
+                    <span className="text-sm font-extrabold text-[var(--forest)]">{formatINR(p.price)}</span>
+                    {p.mrp ? (
+                      <span className="text-xs font-medium text-[var(--forest-deep)]/45 line-through">
+                        {formatINR(p.mrp)}
+                      </span>
+                    ) : null}
+                    <span
+                      className={`ml-auto rounded-full px-2 py-0.5 text-[10px] font-extrabold ${
+                        p.stock === 0
+                          ? "bg-[#fbeaea] text-[#b3352f]"
+                          : p.stock <= 20
+                            ? "bg-[#fdf3d7] text-[#8a6a2f]"
+                            : "bg-[var(--sage-soft)] text-[var(--forest)]"
+                      }`}
+                    >
+                      {p.stock} in stock
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-3 flex items-center justify-between border-t border-[var(--forest)]/8 pt-2.5">
+                <button
+                  type="button"
+                  onClick={() => toggleActive(p)}
+                  className="flex items-center gap-1.5 rounded-lg px-2 py-1 text-xs font-bold text-[var(--forest)]/80 hover:bg-[var(--cloud)] active:scale-95"
+                >
+                  <Power className="h-3.5 w-3.5" />
+                  {p.active ? "Hide from store" : "Make live"}
+                </button>
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => openEdit(p)}
+                    className="flex items-center gap-1 rounded-lg bg-[var(--cloud)] px-3 py-1.5 text-xs font-bold text-[var(--forest)] hover:bg-[var(--forest)] hover:text-white active:scale-95 transition"
+                  >
+                    <Pencil className="h-3.5 w-3.5" /> Edit
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => remove(p)}
+                    className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#fbeaea] text-[#b3352f] hover:bg-[#b3352f] hover:text-white active:scale-95 transition"
+                    title="Delete"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* desktop table (md+) */}
+      <div className="hidden overflow-x-auto rounded-3xl bg-white shadow-[0_10px_30px_rgba(69,31,34,0.07)] md:block">
         <table className="w-full min-w-[760px] text-sm">
           <thead>
             <tr className="border-b border-[var(--forest)]/8 text-left text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--olive)]">
@@ -199,7 +290,7 @@ export default function AdminProductsPage() {
                 <tr key={p.id} className="hover:bg-[var(--cream-page)]/60">
                   <td className="px-5 py-3">
                     <div className="flex items-center gap-3">
-                      <img src={p.image} alt="" className="h-12 w-12 rounded-xl object-cover" />
+                      <img src={p.image} alt="" className="h-12 w-12 rounded-xl object-cover bg-[var(--cloud)]" />
                       <div>
                         <p className="font-extrabold text-[var(--forest)]">{p.name}</p>
                         <p className="text-xs font-semibold text-[var(--forest-deep)]/55">
@@ -272,12 +363,21 @@ export default function AdminProductsPage() {
       {/* create/edit dialog */}
       {dialogOpen && (
         <div className="fixed inset-0 z-[80] flex items-end justify-center bg-black/45 p-0 backdrop-blur-sm sm:items-center sm:p-6">
-          <div className="max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-t-[2rem] bg-[var(--cream)] p-6 shadow-2xl sm:rounded-[2rem] sm:p-8">
-            <h2 className="text-xl font-extrabold text-[var(--forest)]">
-              {editing ? `Edit — ${editing.name}` : "New product"}
-            </h2>
+          <div className="max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-t-[2rem] bg-[var(--cream)] p-5 shadow-2xl sm:rounded-[2rem] sm:p-8">
+            <div className="sticky top-0 z-10 -mx-5 -mt-5 flex items-center justify-between border-b border-[var(--forest)]/10 bg-[var(--cream)] px-5 py-4 sm:-mx-8 sm:-mt-8 sm:px-8">
+              <h2 className="text-lg font-extrabold text-[var(--forest)] sm:text-xl">
+                {editing ? `Edit — ${editing.name}` : "New product"}
+              </h2>
+              <button
+                type="button"
+                onClick={() => setDialogOpen(false)}
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[var(--forest)] shadow-xs transition hover:bg-[var(--cloud)]"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
 
-            <div className="mt-5 grid gap-4 sm:grid-cols-2">
+            <div className="mt-5 grid gap-3.5 sm:grid-cols-2">
               <label>
                 <span className={label}>Name</span>
                 <input className={field} value={form.name ?? ""} onChange={set("name")} placeholder="Stage 1 · Sprouted Ragi" />
@@ -362,11 +462,11 @@ export default function AdminProductsPage() {
               </p>
             )}
 
-            <div className="mt-6 flex justify-end gap-3">
+            <div className="sticky bottom-0 z-10 -mx-5 -mb-5 mt-6 flex justify-end gap-2.5 border-t border-[var(--forest)]/10 bg-[var(--cream)]/95 px-5 py-3.5 backdrop-blur-sm sm:-mx-8 sm:-mb-8 sm:px-8">
               <button
                 type="button"
                 onClick={() => setDialogOpen(false)}
-                className="rounded-full border-2 border-[var(--forest)]/20 px-6 py-3 text-sm font-bold text-[var(--forest)] transition hover:bg-[var(--cloud)]"
+                className="rounded-full border-2 border-[var(--forest)]/20 px-5 py-2.5 text-xs font-bold text-[var(--forest)] transition hover:bg-[var(--cloud)] sm:text-sm"
               >
                 Cancel
               </button>
@@ -374,7 +474,7 @@ export default function AdminProductsPage() {
                 type="button"
                 onClick={save}
                 disabled={saving}
-                className="flex items-center gap-2 rounded-full bg-[var(--forest)] px-7 py-3 text-sm font-bold text-[var(--cream)] transition hover:bg-[var(--forest-deep)] disabled:opacity-60"
+                className="flex items-center gap-2 rounded-full bg-[var(--forest)] px-6 py-2.5 text-xs font-bold text-[var(--cream)] transition hover:bg-[var(--forest-deep)] disabled:opacity-60 sm:text-sm"
               >
                 {saving && <Loader2 className="h-4 w-4 animate-spin" />}
                 {editing ? "Save changes" : "Create product"}

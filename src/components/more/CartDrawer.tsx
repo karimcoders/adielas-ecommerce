@@ -224,7 +224,7 @@ export function CartDrawer() {
 
         {/* footer */}
         {items.length > 0 && (
-          <div className="border-t border-[var(--forest)]/12 bg-white/70 px-5 py-4">
+          <div className="border-t border-[var(--forest)]/12 bg-white/80 px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
             <div className="flex items-baseline justify-between">
               <span className="text-sm font-semibold text-[var(--olive)]">
                 Subtotal
@@ -236,7 +236,7 @@ export function CartDrawer() {
             <p className="mt-0.5 text-[11px] font-medium text-[var(--forest-deep)]/70">
               Taxes included · Shipping calculated at checkout
             </p>
-            <div className="mt-3 grid grid-cols-[1fr_auto] gap-2">
+            <div className="mt-3 flex flex-col gap-2 min-[380px]:grid min-[380px]:grid-cols-[1fr_auto]">
               <Link
                 href="/checkout"
                 tabIndex={isOpen ? 0 : -1}
@@ -249,7 +249,7 @@ export function CartDrawer() {
                 type="button"
                 onClick={closeCart}
                 tabIndex={isOpen ? 0 : -1}
-                className="rounded-full border border-[var(--forest)]/25 px-5 py-3.5 text-base font-semibold text-[var(--forest)] transition hover:bg-[var(--cloud)]"
+                className="rounded-full border border-[var(--forest)]/25 px-5 py-3 text-sm font-semibold text-[var(--forest)] transition hover:bg-[var(--cloud)]"
               >
                 Keep shopping
               </button>

@@ -31,46 +31,48 @@ export function ProductPurchase({ product }: { product: Product }) {
 
   return (
     <div>
-      <div className="flex flex-wrap items-stretch gap-3">
-        {/* qty stepper */}
-        <div className="flex items-center gap-1 rounded-full border-2 border-[var(--forest)]/20 bg-white p-1.5">
+      <div className="flex flex-col gap-2.5 sm:flex-row sm:items-stretch sm:gap-3">
+        <div className="flex items-center gap-2.5">
+          {/* qty stepper */}
+          <div className="flex items-center gap-0.5 rounded-full border-2 border-[var(--forest)]/20 bg-white p-1">
+            <button
+              type="button"
+              onClick={() => setQty((q) => clamped(q - 1))}
+              aria-label="Decrease quantity"
+              className="flex h-9 w-9 items-center justify-center rounded-full text-[var(--forest)] transition hover:bg-[var(--cloud)] active:scale-95"
+            >
+              <Minus className="h-3.5 w-3.5" />
+            </button>
+            <span
+              aria-live="polite"
+              className="w-8 text-center text-base font-extrabold text-[var(--forest)]"
+            >
+              {qty}
+            </span>
+            <button
+              type="button"
+              onClick={() => setQty((q) => clamped(q + 1))}
+              aria-label="Increase quantity"
+              className="flex h-9 w-9 items-center justify-center rounded-full text-[var(--forest)] transition hover:bg-[var(--cloud)] active:scale-95"
+            >
+              <Plus className="h-3.5 w-3.5" />
+            </button>
+          </div>
+
           <button
             type="button"
-            onClick={() => setQty((q) => clamped(q - 1))}
-            aria-label="Decrease quantity"
-            className="flex h-10 w-10 items-center justify-center rounded-full text-[var(--forest)] transition hover:bg-[var(--cloud)]"
+            onClick={addToCart}
+            className="btn-pill group flex-1 justify-center px-4 py-3 text-sm sm:px-6 sm:py-3.5 sm:text-base"
           >
-            <Minus className="h-4 w-4" />
-          </button>
-          <span
-            aria-live="polite"
-            className="w-10 text-center text-lg font-extrabold text-[var(--forest)]"
-          >
-            {qty}
-          </span>
-          <button
-            type="button"
-            onClick={() => setQty((q) => clamped(q + 1))}
-            aria-label="Increase quantity"
-            className="flex h-10 w-10 items-center justify-center rounded-full text-[var(--forest)] transition hover:bg-[var(--cloud)]"
-          >
-            <Plus className="h-4 w-4" />
+            <ShoppingBag className="h-4 w-4" />
+            Add to cart · {formatINR(product.price * qty)}
           </button>
         </div>
 
         <button
           type="button"
-          onClick={addToCart}
-          className="btn-pill group flex-1 justify-center px-6 py-3.5 text-base"
-        >
-          <ShoppingBag className="h-4.5 w-4.5" />
-          Add to cart · {formatINR(product.price * qty)}
-        </button>
-
-        <button
-          type="button"
           onClick={buyNow}
-          className="flex flex-1 items-center justify-center gap-2 rounded-full border-2 border-[var(--forest)] bg-transparent px-6 py-3.5 text-base font-semibold text-[var(--forest)] transition hover:bg-[var(--forest)] hover:text-[var(--cream)]"
+          className="flex items-center justify-center gap-2 rounded-full border-2 border-[var(--forest)] bg-transparent px-6 py-3 text-sm font-bold text-[var(--forest)] transition hover:bg-[var(--forest)] hover:text-[var(--cream)] active:scale-98 sm:flex-1 sm:py-3.5 sm:text-base"
         >
           <Zap className="h-4 w-4 fill-current" />
           Buy now

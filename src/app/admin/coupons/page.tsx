@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Loader2, Plus, Power, Trash2 } from "lucide-react";
+import { Loader2, Plus, Power, Trash2, X } from "lucide-react";
 import { formatINR } from "@/lib/products";
 
 type Coupon = {
@@ -108,7 +108,78 @@ export default function AdminCouponsPage() {
         </button>
       </div>
 
-      <div className="overflow-x-auto rounded-3xl bg-white shadow-[0_10px_30px_rgba(69,31,34,0.07)]">
+      {/* mobile card list (under 768px) */}
+      <div className="space-y-3 md:hidden">
+        {loading ? (
+          <div className="rounded-2xl bg-white p-8 text-center shadow-xs">
+            <Loader2 className="mx-auto h-5 w-5 animate-spin text-[var(--olive)]" />
+            <p className="mt-2 text-xs font-semibold text-[var(--forest-deep)]/60">Loading coupons…</p>
+          </div>
+        ) : coupons.length === 0 ? (
+          <div className="rounded-2xl bg-white p-8 text-center font-semibold text-[var(--forest-deep)]/60 shadow-xs">
+            No coupons yet — create your first promo.
+          </div>
+        ) : (
+          coupons.map((c) => (
+            <div
+              key={c.id}
+              className="rounded-2xl border border-[var(--forest)]/10 bg-white p-4 shadow-sm"
+            >
+              <div className="flex items-center justify-between gap-2">
+                <span className="rounded-lg bg-[var(--forest)] px-3 py-1 font-mono text-xs font-black tracking-widest text-[var(--cream)]">
+                  {c.code}
+                </span>
+                <span
+                  className={`rounded-full px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wide ${
+                    c.active ? "bg-[#e8eedd] text-[#5c7a3f]" : "bg-[var(--cloud)] text-[var(--forest-deep)]/60"
+                  }`}
+                >
+                  {c.active ? "Active" : "Paused"}
+                </span>
+              </div>
+
+              <div className="mt-3 grid grid-cols-2 gap-2 border-y border-[var(--forest)]/8 py-2.5 text-xs">
+                <div>
+                  <span className="block text-[10px] font-bold uppercase tracking-wider text-[var(--olive)]">Discount</span>
+                  <span className="font-extrabold text-[var(--forest)] text-sm">
+                    {c.type === "PERCENT" ? `${c.value}% off` : `${formatINR(c.value)} off`}
+                  </span>
+                  {c.maxDiscount ? (
+                    <span className="block text-[10px] text-[var(--forest-deep)]/50">cap {formatINR(c.maxDiscount)}</span>
+                  ) : null}
+                </div>
+                <div>
+                  <span className="block text-[10px] font-bold uppercase tracking-wider text-[var(--olive)]">Usage & Min</span>
+                  <span className="font-bold text-[var(--forest)]">Used: {c.usedCount}×</span>
+                  <span className="block text-[10px] text-[var(--forest-deep)]/60">Min: {c.minOrder > 0 ? formatINR(c.minOrder) : "None"}</span>
+                </div>
+              </div>
+
+              <div className="mt-3 flex items-center justify-between">
+                <button
+                  type="button"
+                  onClick={() => toggle(c)}
+                  className="flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-bold text-[var(--forest)] hover:bg-[var(--cloud)] active:scale-95"
+                >
+                  <Power className="h-3.5 w-3.5" />
+                  {c.active ? "Pause code" : "Activate code"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => remove(c)}
+                  className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#fbeaea] text-[#b3352f] hover:bg-[#b3352f] hover:text-white active:scale-95 transition"
+                  title="Delete"
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* desktop table (md+) */}
+      <div className="hidden overflow-x-auto rounded-3xl bg-white shadow-[0_10px_30px_rgba(69,31,34,0.07)] md:block">
         <table className="w-full min-w-[720px] text-sm">
           <thead>
             <tr className="border-b border-[var(--forest)]/8 text-left text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--olive)]">
@@ -186,9 +257,19 @@ export default function AdminCouponsPage() {
       {/* create dialog */}
       {dialogOpen && (
         <div className="fixed inset-0 z-[80] flex items-end justify-center bg-black/45 backdrop-blur-sm sm:items-center sm:p-6">
-          <div className="w-full max-w-lg rounded-t-[2rem] bg-[var(--cream)] p-6 shadow-2xl sm:rounded-[2rem] sm:p-8">
-            <h2 className="text-xl font-extrabold text-[var(--forest)]">New coupon</h2>
-            <div className="mt-5 grid gap-4 sm:grid-cols-2">
+          <div className="max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-t-[2rem] bg-[var(--cream)] p-5 shadow-2xl sm:rounded-[2rem] sm:p-8">
+            <div className="sticky top-0 z-10 -mx-5 -mt-5 flex items-center justify-between border-b border-[var(--forest)]/10 bg-[var(--cream)] px-5 py-4 sm:-mx-8 sm:-mt-8 sm:px-8">
+              <h2 className="text-lg font-extrabold text-[var(--forest)] sm:text-xl">New coupon</h2>
+              <button
+                type="button"
+                onClick={() => setDialogOpen(false)}
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[var(--forest)] shadow-xs transition hover:bg-[var(--cloud)]"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="mt-5 grid gap-3.5 sm:grid-cols-2">
               <label className="sm:col-span-2">
                 <span className={label}>Code</span>
                 <input
@@ -257,11 +338,11 @@ export default function AdminCouponsPage() {
               </p>
             )}
 
-            <div className="mt-6 flex justify-end gap-3">
+            <div className="sticky bottom-0 z-10 -mx-5 -mb-5 mt-6 flex justify-end gap-2.5 border-t border-[var(--forest)]/10 bg-[var(--cream)]/95 px-5 py-3.5 backdrop-blur-sm sm:-mx-8 sm:-mb-8 sm:px-8">
               <button
                 type="button"
                 onClick={() => setDialogOpen(false)}
-                className="rounded-full border-2 border-[var(--forest)]/20 px-6 py-3 text-sm font-bold text-[var(--forest)] transition hover:bg-[var(--cloud)]"
+                className="rounded-full border-2 border-[var(--forest)]/20 px-5 py-2.5 text-xs font-bold text-[var(--forest)] transition hover:bg-[var(--cloud)] sm:text-sm"
               >
                 Cancel
               </button>
@@ -269,7 +350,7 @@ export default function AdminCouponsPage() {
                 type="button"
                 onClick={create}
                 disabled={saving}
-                className="flex items-center gap-2 rounded-full bg-[var(--forest)] px-7 py-3 text-sm font-bold text-[var(--cream)] transition hover:bg-[var(--forest-deep)] disabled:opacity-60"
+                className="flex items-center gap-2 rounded-full bg-[var(--forest)] px-6 py-2.5 text-xs font-bold text-[var(--cream)] transition hover:bg-[var(--forest-deep)] disabled:opacity-60 sm:text-sm"
               >
                 {saving && <Loader2 className="h-4 w-4 animate-spin" />}
                 Create coupon
