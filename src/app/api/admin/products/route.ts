@@ -1,3 +1,4 @@
+import { requireDb } from "@/lib/api-guard";
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getAdminSession } from "@/lib/auth";
@@ -11,6 +12,9 @@ function slugify(s: string) {
 
 /** POST /api/admin/products — create product. */
 export async function POST(req: NextRequest) {
+  const denied = requireDb();
+  if (denied) return denied;
+
   const session = await getAdminSession();
   if (!session) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
@@ -62,6 +66,9 @@ export async function POST(req: NextRequest) {
 
 /** GET /api/admin/products — full list incl. inactive. */
 export async function GET() {
+  const denied = requireDb();
+  if (denied) return denied;
+
   const session = await getAdminSession();
   if (!session) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   const products = await db.product.findMany({ orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }] });

@@ -1,3 +1,4 @@
+import { requireDb } from "@/lib/api-guard";
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getSession } from "@/lib/auth";
@@ -6,6 +7,9 @@ const STATUSES = ["PLACED", "CONFIRMED", "SHIPPED", "DELIVERED", "CANCELLED"];
 
 /** GET /api/orders/[id] — owner or admin. */
 export async function GET(_req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
+  const denied = requireDb();
+  if (denied) return denied;
+
   const { id } = await ctx.params;
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -24,6 +28,9 @@ export async function GET(_req: NextRequest, ctx: { params: Promise<{ id: string
 
 /** PATCH /api/orders/[id] — admin updates status / payment status. */
 export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
+  const denied = requireDb();
+  if (denied) return denied;
+
   const { id } = await ctx.params;
   const session = await getSession();
   if (!session || session.role !== "ADMIN") {

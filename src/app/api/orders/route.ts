@@ -1,3 +1,4 @@
+import { requireDb } from "@/lib/api-guard";
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getSession } from "@/lib/auth";
@@ -18,6 +19,9 @@ function makeOrderNumber() {
 
 /** POST /api/orders — create a new order from checkout. */
 export async function POST(req: NextRequest) {
+  const denied = requireDb();
+  if (denied) return denied;
+
   try {
     const body = await req.json();
     const session = await getSession();
@@ -168,6 +172,9 @@ export async function POST(req: NextRequest) {
 
 /** GET /api/orders — admin sees all (with ?status= filter), customers see their own. */
 export async function GET(req: NextRequest) {
+  const denied = requireDb();
+  if (denied) return denied;
+
   try {
     const session = await getSession();
     if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

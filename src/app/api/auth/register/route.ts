@@ -1,8 +1,12 @@
+import { requireDb } from "@/lib/api-guard";
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { hashPassword, signSession, setSessionCookie } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
+  const denied = requireDb();
+  if (denied) return denied;
+
   try {
     const body = await req.json();
     const name = String(body?.name ?? "").trim();

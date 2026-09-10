@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Loader2, Pencil, Plus, Power, Search, Trash2 } from "lucide-react";
 import { formatINR } from "@/lib/products";
+import { ImageUploadField } from "@/components/admin/ImageUploadField";
 
 type AdminProduct = {
   id: string;
@@ -325,10 +326,14 @@ export default function AdminProductsPage() {
                 <span className={label}>Section wash</span>
                 <input type="color" className={`${field} h-[42px] p-1`} value={form.wash ?? "#EFDCA4"} onChange={set("wash")} />
               </label>
-              <label className="sm:col-span-2">
-                <span className={label}>Image path</span>
-                <input className={field} value={form.image ?? ""} onChange={set("image")} placeholder="/images/adielas/stage1.png" />
-              </label>
+              <div className="sm:col-span-2">
+                <ImageUploadField
+                  label="Product image (Cloudinary)"
+                  value={form.image ?? ""}
+                  onChange={(url) => setForm((f) => ({ ...f, image: url }))}
+                  placeholder="/images/adielas/stage1.png or https://res.cloudinary.com/…"
+                />
+              </div>
               <label className="sm:col-span-2">
                 <span className={label}>Tagline</span>
                 <input className={field} value={form.tagline ?? ""} onChange={set("tagline")} />

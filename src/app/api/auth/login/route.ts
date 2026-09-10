@@ -1,12 +1,18 @@
+import { requireDb } from "@/lib/api-guard";
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { verifyPassword, signSession, setSessionCookie } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
+  const denied = requireDb();
+  if (denied) return denied;
+
   try {
     const body = await req.json();
     const email = String(body?.email ?? "").trim().toLowerCase();
     const password = String(body?.password ?? "");
+    // Which login page submitted the request: "customer" (default) or "admin".
+    const portal = body?.portal === "admin" ? "admin" : "customer";
 
     if (!email || !password) {
       return NextResponse.json({ error: "Email and password are required." }, { status: 400 });
@@ -17,7 +23,23 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Invalid email or password." }, { status: 401 });
     }
 
-    const role = user.role === "ADMIN" ? "ADMIN" : "CUSTOMER";
+    const isAdmin = user.role === "ADMIN";
+
+    // Keep the two logins strictly separate.
+    if (portal === "admin" && !isAdmin) {
+      return NextResponse.json(
+        { error: "This is a customer account — use the customer login instead.", customerPortal: true },
+        { status: 403 },
+      );
+    }
+    if (portal === "customer" && isAdmin) {
+      return NextResponse.json(
+        { error: "This is an admin account — use the Admin Login page.", adminPortal: true },
+        { status: 403 },
+      );
+    }
+
+    const role = isAdmin ? "ADMIN" : "CUSTOMER";
     const token = await signSession({
       sub: user.id,
       email: user.email,

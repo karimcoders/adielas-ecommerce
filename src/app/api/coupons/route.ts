@@ -1,9 +1,13 @@
+import { requireDb } from "@/lib/api-guard";
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getAdminSession } from "@/lib/auth";
 
 /** GET /api/coupons — admin list. */
 export async function GET() {
+  const denied = requireDb();
+  if (denied) return denied;
+
   const session = await getAdminSession();
   if (!session) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   const coupons = await db.coupon.findMany({ orderBy: { createdAt: "desc" } });
@@ -12,6 +16,9 @@ export async function GET() {
 
 /** POST /api/coupons — admin create. */
 export async function POST(req: NextRequest) {
+  const denied = requireDb();
+  if (denied) return denied;
+
   const session = await getAdminSession();
   if (!session) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 

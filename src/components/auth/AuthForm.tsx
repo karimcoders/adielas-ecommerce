@@ -15,24 +15,29 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [adminBlock, setAdminBlock] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    setAdminBlock(false);
     try {
       const res = await fetch(isLogin ? "/api/auth/login" : "/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(isLogin ? { email, password } : { name, email, phone, password }),
+        body: JSON.stringify(
+          isLogin ? { email, password, portal: "customer" } : { name, email, phone, password },
+        ),
       });
       const data = await res.json();
       if (!res.ok) {
         setError(data.error ?? "Something went wrong.");
+        setAdminBlock(Boolean(data.adminPortal));
         return;
       }
-      router.push(params.get("next") || (data.user?.role === "ADMIN" ? "/admin" : "/account"));
+      router.push(params.get("next") || data.redirect || "/account");
       router.refresh();
     } catch {
       setError("Network error — please try again.");
@@ -129,9 +134,17 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
         </label>
 
         {error && (
-          <p role="alert" className="rounded-xl bg-[#fbeaea] px-4 py-3 text-sm font-semibold text-[#b3352f]">
-            {error}
-          </p>
+          <div role="alert" className="space-y-2 rounded-xl bg-[#fbeaea] px-4 py-3 text-sm font-semibold text-[#b3352f]">
+            <p>{error}</p>
+            {adminBlock && (
+              <a
+                href="/admin/login"
+                className="inline-flex items-center gap-1 rounded-full bg-[var(--forest)] px-4 py-2 text-xs font-bold text-[var(--cream)] transition hover:bg-[var(--forest-deep)]"
+              >
+                Go to Admin Login →
+              </a>
+            )}
+          </div>
         )}
 
         <button

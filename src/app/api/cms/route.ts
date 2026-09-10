@@ -1,3 +1,4 @@
+import { requireDb } from "@/lib/api-guard";
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
@@ -51,6 +52,9 @@ export async function GET(req: Request) {
 
 /** Admin-only write — upserts one section as a JSON blob. */
 export async function PATCH(req: Request) {
+  const denied = requireDb();
+  if (denied) return denied;
+
   try {
     const user = await getCurrentUser();
     if (!user || user.role !== "ADMIN") {
@@ -84,6 +88,9 @@ export async function PATCH(req: Request) {
 
 /** Admin-only reset — delete a section override so defaults kick back in. */
 export async function DELETE(req: Request) {
+  const denied = requireDb();
+  if (denied) return denied;
+
   try {
     const user = await getCurrentUser();
     if (!user || user.role !== "ADMIN") {

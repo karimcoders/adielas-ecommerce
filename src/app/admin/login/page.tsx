@@ -28,7 +28,7 @@ function AdminLoginForm() {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, portal: "admin" }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -125,7 +125,7 @@ function AdminLoginForm() {
           </form>
 
           <p className="mt-6 rounded-xl bg-[var(--cloud)] px-4 py-3 text-center text-xs font-semibold leading-relaxed text-[var(--forest-deep)]/80">
-            Demo credentials — <b>admin@adielas.com</b> / <b>Admin@123</b>
+            Store-owner area — customers please use the login at the top menu.
           </p>
         </div>
       </div>

@@ -1,8 +1,12 @@
+import { requireDb } from "@/lib/api-guard";
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 
 /** POST /api/coupons/validate — public: check a coupon against a subtotal. */
 export async function POST(req: NextRequest) {
+  const denied = requireDb();
+  if (denied) return denied;
+
   try {
     const { code, subtotal } = await req.json();
     const clean = String(code ?? "").trim().toUpperCase();

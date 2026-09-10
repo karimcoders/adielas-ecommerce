@@ -1,9 +1,13 @@
+import { requireDb } from "@/lib/api-guard";
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getAdminSession } from "@/lib/auth";
 
 /** GET /api/admin/stats — dashboard KPIs, 30-day revenue series, recent orders, low stock. */
 export async function GET() {
+  const denied = requireDb();
+  if (denied) return denied;
+
   const session = await getAdminSession();
   if (!session) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
