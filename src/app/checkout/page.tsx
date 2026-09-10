@@ -32,6 +32,7 @@ type PlacedOrder = {
   orderNumber: string;
   total: number;
   discount: number;
+  account?: { created: boolean; email?: string; tempPassword?: string };
 };
 
 const payOptions: { id: PayMethod; label: string; hint: string; Icon: typeof Smartphone }[] = [
@@ -206,6 +207,7 @@ export default function CheckoutPage() {
         orderNumber: data.order.orderNumber,
         total: data.order.total,
         discount: data.order.discount,
+        account: data.account ?? { created: false },
       });
       clear();
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -267,6 +269,37 @@ export default function CheckoutPage() {
                 <dd className="text-[var(--forest)]">{eta}</dd>
               </div>
             </dl>
+
+            {order.account?.created && order.account.email && order.account.tempPassword && (
+              <div className="mt-4 rounded-2xl border-2 border-dashed border-[var(--sage-deep)]/45 bg-[var(--cloud)] p-4">
+                <p className="text-sm font-extrabold text-[var(--forest)]">
+                  🎉 Your ADIELAS account is ready!
+                </p>
+                <p className="mt-1 text-xs font-medium leading-relaxed text-[var(--forest-deep)]/80">
+                  We created it automatically so you can track this order, see your
+                  full history and reorder in a tap. Save these login details:
+                </p>
+                <div className="mt-3 space-y-1.5 rounded-xl bg-white px-3.5 py-3 font-mono text-xs">
+                  <p>
+                    <span className="mr-2 font-sans font-bold text-[var(--olive)]">Email</span>
+                    <span className="font-bold text-[var(--forest)]">{order.account.email}</span>
+                  </p>
+                  <p>
+                    <span className="mr-2 font-sans font-bold text-[var(--olive)]">Password</span>
+                    <span className="font-bold tracking-wider text-[var(--forest)]">
+                      {order.account.tempPassword}
+                    </span>
+                  </p>
+                </div>
+                <Link
+                  href={`/login?next=/account`}
+                  className="btn-pill mt-3 flex items-center justify-center gap-1 px-5 py-2.5 text-sm"
+                >
+                  Log in & track my order →
+                </Link>
+              </div>
+            )}
+
             <p className="mt-4 border-t border-[var(--forest)]/10 pt-4 text-xs font-medium leading-relaxed text-[var(--forest-deep)]/75">
               A confirmation has been sent to {fields.email}. Track this order
               anytime from <Link href="/account" className="font-bold underline">your account</Link>.

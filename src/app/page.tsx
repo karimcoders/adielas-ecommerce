@@ -9,6 +9,9 @@ import { ProductSlider } from "@/components/more/ProductSlider";
 import { CTA } from "@/components/more/CTA";
 import { getAllCms } from "@/lib/cms";
 
+// CMS-editable homepage → render per-request so admin edits show instantly.
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const cms = await getAllCms();
 

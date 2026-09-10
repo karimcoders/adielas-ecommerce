@@ -1,7 +1,7 @@
 import { requireDb } from "@/lib/api-guard";
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { getSession } from "@/lib/auth";
+import { getSession, hashPassword } from "@/lib/auth";
 
 type IncomingItem = { slug: string; qty: number };
 
@@ -15,6 +15,14 @@ function makeOrderNumber() {
     .toUpperCase()
     .padStart(2, "0");
   return `ADL-${t}${r}`;
+}
+
+/** Readable temp password, e.g. "KP7M-Q4XD" (no ambiguous 0/O/1/I/L). */
+function makeTempPassword() {
+  const cs = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+  const pick = () =>
+    Array.from({ length: 4 }, () => cs[Math.floor(Math.random() * cs.length)]).join("");
+  return `${pick()}-${pick()}`;
 }
 
 /** POST /api/orders — create a new order from checkout. */
@@ -124,10 +132,39 @@ export async function POST(req: NextRequest) {
     const shipping = subtotal - discount >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
     const total = Math.max(0, subtotal - discount + shipping);
 
+    // --- Guest checkout → auto-create an account so the customer can log in,
+    //     see order history and reorder. Existing emails are never auto-linked
+    //     (only the verified account owner may own their history).
+    let linkedUserId: string | null = session?.sub ?? null;
+    let autoAccount: { email: string; tempPassword: string } | null = null;
+    if (!linkedUserId) {
+      try {
+        const existing = await db.user.findUnique({ where: { email }, select: { id: true } });
+        if (!existing) {
+          const tempPassword = makeTempPassword();
+          const newUser = await db.user.create({
+            data: {
+              email,
+              name: customerName,
+              phone: phone || null,
+              passwordHash: await hashPassword(tempPassword),
+              role: "CUSTOMER",
+            },
+            select: { id: true },
+          });
+          linkedUserId = newUser.id;
+          autoAccount = { email, tempPassword };
+        }
+      } catch (accountErr) {
+        // Account creation is best-effort — the order must never fail because of it.
+        console.error("[orders:POST] auto-account skipped:", accountErr);
+      }
+    }
+
     const order = await db.order.create({
       data: {
         orderNumber: makeOrderNumber(),
-        userId: session?.sub ?? null,
+        userId: linkedUserId,
         email,
         customerName,
         phone,
@@ -163,7 +200,15 @@ export async function POST(req: NextRequest) {
       await db.coupon.update({ where: { code: appliedCoupon }, data: { usedCount: { increment: 1 } } });
     }
 
-    return NextResponse.json({ order }, { status: 201 });
+    return NextResponse.json(
+      {
+        order,
+        account: autoAccount
+          ? { created: true as const, email: autoAccount.email, tempPassword: autoAccount.tempPassword }
+          : { created: false as const },
+      },
+      { status: 201 },
+    );
   } catch (err) {
     console.error("[orders:POST]", err);
     return NextResponse.json({ error: "Could not place the order. Please try again." }, { status: 500 });

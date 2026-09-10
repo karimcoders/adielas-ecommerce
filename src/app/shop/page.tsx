@@ -7,6 +7,9 @@ import { getCatalog } from "@/lib/server-catalog";
 import { getCmsSection } from "@/lib/cms";
 import { defaultShop } from "@/lib/cms-defaults";
 
+// CMS-editable shop page → render per-request so admin edits show instantly.
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Shop All — ADIELAS Nutrition",
   description:

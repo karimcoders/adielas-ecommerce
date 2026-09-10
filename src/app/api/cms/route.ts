@@ -1,5 +1,6 @@
 import { requireDb } from "@/lib/api-guard";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import { getAllCms, getCmsSection } from "@/lib/cms";
@@ -78,6 +79,7 @@ export async function PATCH(req: Request) {
       create: { key: section, data: JSON.stringify(data) },
     });
 
+    revalidatePath("/", "layout");
     return NextResponse.json({ success: true, section });
   } catch (error: unknown) {
     console.error("CMS update error:", error);
@@ -104,6 +106,7 @@ export async function DELETE(req: Request) {
     }
 
     await db.siteContent.deleteMany({ where: { key: section } });
+    revalidatePath("/", "layout");
     return NextResponse.json({ success: true, section });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Failed to reset CMS";

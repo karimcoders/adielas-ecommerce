@@ -8,6 +8,10 @@ import { SiteChrome } from "@/components/more/SiteChrome";
 import { getCatalog } from "@/lib/server-catalog";
 import { getAllCms } from "@/lib/cms";
 
+// Storefront is admin-editable via CMS → always render fresh from the DB
+// (static build-time snapshots would show stale content after CMS edits).
+export const dynamic = "force-dynamic";
+
 const anton = Anton({
   variable: "--font-anton",
   weight: "400",
