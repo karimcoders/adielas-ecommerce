@@ -195,6 +195,15 @@ function orderNumber(i: number) {
 }
 
 async function main() {
+  // Guard: if the database already has users, it has been seeded before —
+  // only refresh the admin password safety net and exit (keeps demo order
+  // data from being duplicated on every build).
+  const existingUsers = await db.user.count();
+  if (existingUsers > 0) {
+    console.log(`✔ Database already seeded (${existingUsers} users) — skipping demo data.`);
+    return;
+  }
+
   console.log("🌱 Seeding ADIELAS store…");
 
   // --- Users ---

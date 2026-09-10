@@ -12,6 +12,7 @@ from zero to a live store on your own domain (free tier is enough).
 | Storefront | Home, Shop, Product pages, Cart, Checkout (UPI/Card/COD) |
 | Customer accounts | Register/Login, Order history + tracking, Addresses, Profile |
 | Admin panel | `/admin` — Dashboard KPIs + charts, Products CRUD, Orders + status flow, Customers, Coupons |
+| Website CMS | `/admin/cms` — Hero, Marquee, Mission, Benefits, Stages, Comparison, Reviews, Shop page, Footer, Settings — **100% live editing without code** |
 | Backend | Next.js API routes, JWT auth (httpOnly cookie, bcrypt), Prisma ORM |
 | Database | SQLite locally → **PostgreSQL in production** (required on Vercel) |
 
@@ -109,10 +110,15 @@ DATABASE_URL="$PROD" bun prisma/seed.ts
 | `https://your-app.vercel.app/login` | Customer login |
 | `https://your-app.vercel.app/account` | Customer dashboard |
 | `https://your-app.vercel.app/admin` | **Admin panel** |
+| `https://your-app.vercel.app/admin/cms` | **Website CMS (sab pages/content edit karo)** |
 
 **Default logins (seed ke baad):**
 - Admin → `admin@adielas.com` / `Admin@123`
 - Demo customer → `priya@example.com` / `Customer@123`
+
+> ✅ **Auto-setup:** Vercel build automatically (1) Postgres tables banata hai,
+> (2) pehli baar seed karta hai (admin + products + coupons + demo orders).
+> Build ke liye bas `DATABASE_URL` aur `AUTH_SECRET` env vars set karne zaroori hain.
 
 > 🔐 **PRODUCTION ME PEHLA KAAM:** Admin panel → nothing, direct DB update:
 > ```bash
