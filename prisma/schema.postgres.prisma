@@ -143,3 +143,33 @@ model Coupon {
   usedCount   Int       @default(0)
   createdAt   DateTime  @default(now())
 }
+
+model AnalyticsEvent {
+  id        String   @id @default(cuid())
+  visitorId String
+  sessionId String?
+  userId    String?
+  userEmail String?
+  userName  String?
+  event     String   // page_view | product_view | add_to_cart | remove_from_cart | open_cart | begin_checkout | apply_coupon | order_placed
+  path      String
+  referrer  String?
+  ip        String?
+  city      String?
+  region    String?
+  country   String?
+  device    String?  // Mobile | Desktop | Tablet
+  browser   String?
+  os        String?
+  metadata  String?  // JSON string
+  createdAt DateTime @default(now())
+
+  @@index([visitorId])
+  @@index([sessionId])
+  @@index([event])
+  @@index([createdAt])
+  @@index([city])
+  @@index([country])
+  @@index([path])
+}
+

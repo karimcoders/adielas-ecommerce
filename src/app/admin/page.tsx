@@ -26,6 +26,7 @@ import {
   TicketPercent,
   TrendingUp,
   Users,
+  Activity,
 } from "lucide-react";
 import { formatINR } from "@/lib/products";
 
@@ -129,6 +130,12 @@ export default function AdminDashboardPage() {
             Last 30 days at the ADIELAS kitchen
           </p>
         </div>
+        <Link
+          href="/admin/analytics"
+          className="flex items-center gap-1.5 rounded-full border border-emerald-600/30 bg-emerald-50 px-4 py-2 text-sm font-bold text-emerald-800 transition hover:bg-emerald-100"
+        >
+          <Activity className="h-3.5 w-3.5" /> Traffic Analyzer
+        </Link>
         <Link
           href="/admin/cms"
           className="flex items-center gap-1.5 rounded-full border border-[var(--forest)]/25 bg-white px-4 py-2 text-sm font-bold text-[var(--forest)] transition hover:bg-[var(--sage-soft)]"

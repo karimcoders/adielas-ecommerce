@@ -11,6 +11,7 @@ import {
 } from "react";
 import type { CartItem } from "@/lib/products";
 import { useCatalog } from "./CatalogProvider";
+import { trackEvent } from "@/lib/tracker";
 
 type AddOptions = { open?: boolean };
 
@@ -71,7 +72,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [items, hydrated]);
 
   const add = useCallback((slug: string, qty = 1, opts?: AddOptions) => {
-    if (!getProduct(slug)) return;
+    const prod = getProduct(slug);
+    if (!prod) return;
     setItems((prev) => {
       const found = prev.find((it) => it.slug === slug);
       if (found) {
@@ -81,11 +83,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
       }
       return [...prev, { slug, qty: Math.min(20, Math.max(1, qty)) }];
     });
+    trackEvent("add_to_cart", {
+      slug,
+      name: prod.name,
+      price: prod.price,
+      qty,
+    });
     if (opts?.open !== false) setIsOpen(true);
   }, [getProduct]);
 
   const remove = useCallback((slug: string) => {
     setItems((prev) => prev.filter((it) => it.slug !== slug));
+    trackEvent("remove_from_cart", { slug });
   }, []);
 
   const setQty = useCallback((slug: string, qty: number) => {
@@ -100,7 +109,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const clear = useCallback(() => setItems([]), []);
-  const openCart = useCallback(() => setIsOpen(true), []);
+  const openCart = useCallback(() => {
+    setIsOpen(true);
+    trackEvent("open_cart");
+  }, []);
   const closeCart = useCallback(() => setIsOpen(false), []);
 
   const value = useMemo<CartContextValue>(() => {

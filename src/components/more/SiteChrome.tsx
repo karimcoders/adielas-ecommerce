@@ -6,6 +6,7 @@ import { Navbar } from "@/components/more/Navbar";
 import { Footer } from "@/components/more/Footer";
 import { CartDrawer } from "@/components/more/CartDrawer";
 import { ScrollProgress } from "@/components/more/motion";
+import { AnalyticsTracker } from "@/components/analytics/AnalyticsTracker";
 
 /**
  * Storefront chrome (navbar, footer, cart drawer) — hidden on /admin routes
@@ -28,6 +29,7 @@ export function SiteChrome({
 
   return (
     <>
+      <AnalyticsTracker />
       <ScrollProgress />
       <Navbar />
       {children}

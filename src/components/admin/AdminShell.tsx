@@ -13,12 +13,14 @@ import {
   PenSquare,
   Menu,
   X,
+  Activity,
 } from "lucide-react";
 import { useState } from "react";
 import type { ReactNode } from "react";
 
 const nav = [
   { href: "/admin", label: "Dashboard", Icon: LayoutDashboard },
+  { href: "/admin/analytics", label: "Traffic & Analyzer", Icon: Activity },
   { href: "/admin/cms", label: "Website CMS", Icon: PenSquare },
   { href: "/admin/products", label: "Products", Icon: Package },
   { href: "/admin/orders", label: "Orders", Icon: ShoppingCart },

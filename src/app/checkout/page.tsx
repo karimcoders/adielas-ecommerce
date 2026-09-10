@@ -18,6 +18,7 @@ import { Reveal } from "@/components/more/Reveal";
 import { useCart } from "@/components/more/CartProvider";
 import { useCatalog } from "@/components/more/CatalogProvider";
 import { FREE_SHIPPING_THRESHOLD, SHIPPING_FEE, formatINR } from "@/lib/products";
+import { trackEvent, setTrackingUser } from "@/lib/tracker";
 
 type Fields = {
   name: string;
@@ -114,8 +115,9 @@ export default function CheckoutPage() {
   const discount = coupon?.discount ?? 0;
   const total = Math.max(0, subtotal - discount + shipping);
 
-  // prefill from logged-in profile when available
+  // prefill from logged-in profile when available + track begin_checkout
   useEffect(() => {
+    trackEvent("begin_checkout", { itemCount: items.length, subtotal });
     fetch("/api/auth/me")
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => {
@@ -126,6 +128,7 @@ export default function CheckoutPage() {
             email: f.email || d.user.email || "",
             phone: f.phone || d.user.phone || "",
           }));
+          setTrackingUser({ name: d.user.name, email: d.user.email });
         }
       })
       .catch(() => {});
@@ -154,6 +157,7 @@ export default function CheckoutPage() {
       } else {
         setCoupon({ code: data.code, discount: data.discount });
         setCouponMsg({ ok: true, text: `${data.code} applied — you saved ${formatINR(data.discount)}!` });
+        trackEvent("apply_coupon", { code: data.code, discount: data.discount, subtotal });
       }
     } catch {
       setCouponMsg({ ok: false, text: "Could not check the code. Try again." });
@@ -211,6 +215,18 @@ export default function CheckoutPage() {
         total: data.order.total,
         discount: data.order.discount,
         account: data.account ?? { created: false },
+      });
+      setTrackingUser({ name: fields.name.trim(), email: fields.email.trim() });
+      trackEvent("order_placed", {
+        orderNumber: data.order.orderNumber,
+        total: data.order.total,
+        discount: data.order.discount,
+        subtotal,
+        itemCount: items.length,
+        customerName: fields.name.trim(),
+        customerEmail: fields.email.trim(),
+        city: fields.city.trim(),
+        paymentMethod: method.toUpperCase(),
       });
       clear();
       window.scrollTo({ top: 0, behavior: "smooth" });
