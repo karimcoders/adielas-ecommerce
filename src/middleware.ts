@@ -24,9 +24,32 @@ async function readSession(req: NextRequest): Promise<Payload | null> {
   }
 }
 
+/**
+ * API routes that work fine without a database connection.
+ * Everything else under /api returns a clear 503 until the
+ * owner connects a Postgres database and redeploys.
+ */
+function dbOptional(pathname: string, method: string): boolean {
+  if (pathname === "/api/health") return true;
+  if (pathname === "/api/auth/logout") return true;
+  if (pathname === "/api/cms" && method === "GET") return true; // falls back to built-in defaults
+  return false;
+}
+
 export async function middleware(req: NextRequest) {
   const { pathname, search } = req.nextUrl;
   const session = await readSession(req);
+
+  // --- API guard: clean 503 instead of ugly 500s before the DB is connected ---
+  if (pathname.startsWith("/api/") && !dbOptional(pathname, req.method) && !process.env.DATABASE_URL) {
+    return NextResponse.json(
+      {
+        error: "Database is not connected yet.",
+        hint: "Store owner: connect a Postgres database (Vercel → Storage → Neon), then redeploy. Admin CMS, orders and accounts activate automatically.",
+      },
+      { status: 503 },
+    );
+  }
 
   // --- Admin area ---
   if (pathname.startsWith("/admin")) {
@@ -66,5 +89,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/account/:path*", "/login", "/register"],
+  matcher: ["/admin/:path*", "/account/:path*", "/login", "/register", "/api/:path*"],
 };

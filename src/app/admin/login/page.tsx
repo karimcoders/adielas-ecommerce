@@ -1,16 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Loader2, Lock, ShieldCheck } from "lucide-react";
+import { AlertTriangle, Loader2, Lock, ShieldCheck } from "lucide-react";
 
-export default function AdminLoginPage() {
+function AdminLoginForm() {
   const router = useRouter();
   const params = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [dbMissing, setDbMissing] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/health")
+      .then((r) => r.json())
+      .then((d) => setDbMissing(d?.db === false))
+      .catch(() => setDbMissing(false));
+  }, []);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,6 +66,17 @@ export default function AdminLoginPage() {
               Secure sign-in
             </p>
           </div>
+
+          {dbMissing && (
+            <div className="mb-6 flex items-start gap-3 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-left">
+              <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
+              <p className="text-xs font-semibold leading-relaxed text-amber-800">
+                Database is not connected yet — sign-in and editing are disabled until then.
+                Connect a free Neon Postgres under <b>Vercel → Storage</b>, then redeploy.
+                The whole store (CMS, orders, accounts) activates automatically.
+              </p>
+            </div>
+          )}
 
           <form onSubmit={submit} className="mt-8 space-y-4">
             <label className="block">
@@ -111,5 +130,19 @@ export default function AdminLoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function AdminLoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-[var(--forest-deep)]">
+          <Loader2 className="h-6 w-6 animate-spin text-[var(--cream)]" />
+        </div>
+      }
+    >
+      <AdminLoginForm />
+    </Suspense>
   );
 }
