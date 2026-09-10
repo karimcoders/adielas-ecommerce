@@ -17,17 +17,16 @@ function BuyButton({ className = "" }: { className?: string }) {
   );
 }
 
-const stats = [
-  { to: 100, unit: "%", label: "Organic Grains", pos: "left-[56%] top-[1%]", delay: 300 },
-  { to: 0, unit: "", label: "Added Sugar", pos: "left-[2%] top-[30%]", delay: 600 },
-  { to: 35, unit: "+", label: "Yrs Expertise", pos: "left-[4%] top-[66%]", delay: 900 },
-];
+function StatBubbles({ data }: { data?: any }) {
+  const statList = [
+    { to: data?.stat1Number ?? 100, unit: data?.stat1Unit ?? "%", label: data?.stat1Label ?? "Organic Grains", pos: "left-[56%] top-[1%]", delay: 300 },
+    { to: data?.stat2Number ?? 0, unit: data?.stat2Unit ?? "", label: data?.stat2Label ?? "Added Sugar", pos: "left-[2%] top-[30%]", delay: 600 },
+    { to: data?.stat3Number ?? 35, unit: data?.stat3Unit ?? "+", label: data?.stat3Label ?? "Yrs Expertise", pos: "left-[4%] top-[66%]", delay: 900 },
+  ];
 
-/* bubbles parked along the big white ring path */
-function StatBubbles() {
   return (
     <>
-      {stats.map((s, i) => (
+      {statList.map((s, i) => (
         <Reveal
           key={s.label}
           variant="zoom"
@@ -52,7 +51,14 @@ function StatBubbles() {
   );
 }
 
-export function Hero() {
+export function Hero({ data }: { data?: any }) {
+  const headline1 = data?.headlineLine1 || "ANCIENT";
+  const headline2 = data?.headlineLine2 || "GRAINS MEET GROWING KIDS";
+  const subheadline =
+    data?.subheadline ||
+    "Single-grain sprouted ragi, ancient multigrains and sun-dried dry fruits. Zero refined sugar, zero preservatives, zero shortcuts.";
+  const note = data?.handwrittenNote || "Sprouted Ragi,\nSun-Dried";
+
   return (
     <section className="relative overflow-hidden pt-[84px] sm:pt-[96px]" id="top">
       {/* soft warm glow behind the whole hero */}
@@ -70,7 +76,7 @@ export function Hero() {
               aria-hidden="true"
               className="absolute left-[7%] top-[5%] h-[90%] w-[90%] rounded-full border-[22px] border-white sm:border-[30px]"
             />
-            <StatBubbles />
+            <StatBubbles data={data} />
 
             {/* tilted jar mockup, floating over the ring */}
             <Parallax speed={0.05} className="absolute inset-0">
@@ -90,10 +96,8 @@ export function Hero() {
 
             {/* handwritten note */}
             <div className="absolute -left-1 top-[2%] hidden -rotate-6 text-[var(--forest)] sm:block">
-              <p className="font-hand text-xl leading-[0.95] sm:text-2xl">
-                Sprouted Ragi,
-                <br />
-                Sun-Dried
+              <p className="font-hand whitespace-pre-line text-xl leading-[0.95] sm:text-2xl">
+                {note}
               </p>
               <CurvedArrow className="ml-2 mt-1 h-8 w-14 -scale-x-100" />
             </div>
@@ -120,35 +124,28 @@ export function Hero() {
                   key="l1"
                   className="font-display block text-[clamp(2.3rem,4.6vw,4rem)] leading-[0.95] text-[var(--olive)]"
                 >
-                  ANCIENT
+                  {headline1}
                 </span>,
                 <span
                   key="l2"
                   className="font-display block text-[clamp(2.3rem,4.6vw,4rem)] leading-[0.95] text-[var(--forest)]"
                 >
-                  GRAINS MEET
-                </span>,
-                <span
-                  key="l3"
-                  className="font-display block text-[clamp(2.3rem,4.6vw,4rem)] leading-[0.95] text-[var(--forest)]"
-                >
-                  GROWING KIDS
+                  {headline2}
                 </span>,
               ]}
             />
           </h2>
-          <Reveal delay={200}>
-            <p className="mx-auto mt-4 max-w-md text-sm font-medium leading-relaxed text-[var(--forest-deep)] sm:mt-5 sm:text-base lg:text-lg">
-              Wholesome everyday nutrition for little ones — sprouted millets,
-              multigrains and dry fruits, blended with clinical care. Clean
-              labels, happy tummies, zero shortcuts.
+
+          <Reveal delay={280}>
+            <p className="mx-auto mt-4 max-w-xl text-center text-sm font-medium leading-relaxed text-[var(--forest-deep)]/90 sm:text-base">
+              {subheadline}
             </p>
-            <div className="mt-3 flex justify-center text-[var(--forest)]">
-              <Squiggle className="h-3.5 w-28" />
-            </div>
-            <Reveal delay={260} variant="down" className="mt-5">
+          </Reveal>
+
+          <Reveal delay={340}>
+            <div className="mt-6 flex items-center justify-center">
               <BuyButton />
-            </Reveal>
+            </div>
           </Reveal>
         </div>
       </div>

@@ -1,3 +1,4 @@
+import { getAllCms } from "@/lib/cms";
 import { Hero } from "@/components/more/Hero";
 import { Marquee } from "@/components/more/Marquee";
 import { Mission } from "@/components/more/Mission";
@@ -8,18 +9,21 @@ import { Reviews } from "@/components/more/Reviews";
 import { ProductSlider } from "@/components/more/ProductSlider";
 import { CTA } from "@/components/more/CTA";
 
-export default function Home() {
+export default async function Home() {
+  const cms = await getAllCms();
+
   return (
     <>
-      <Hero />
+      <Hero data={cms.hero} />
       <Marquee />
       <Mission />
       <Benefits />
       <Flavors />
       <Comparison />
-      <Reviews />
+      <Reviews data={cms.reviews} />
       <ProductSlider />
       <CTA />
     </>
   );
 }
+

@@ -73,7 +73,16 @@ function VerifiedBadge() {
   );
 }
 
-export function Reviews() {
+export function Reviews({ data }: { data?: any[] }) {
+  const activeReviews =
+    data && data.length > 0
+      ? data.map((d: any) => ({
+          title: d.childInfo || "Parent Review",
+          body: d.text,
+          name: d.parentName + (d.city ? ` · ${d.city}` : ""),
+        }))
+      : reviews;
+
   const [index, setIndex] = useState(0);
   const [perView, setPerView] = useState(3);
 
@@ -88,11 +97,12 @@ export function Reviews() {
     return () => window.removeEventListener("resize", update);
   }, []);
 
-  const maxIndex = Math.max(0, reviews.length - perView);
+  const maxIndex = Math.max(0, activeReviews.length - perView);
   const current = Math.min(index, maxIndex);
   const activeIdx = current + Math.floor((perView - 1) / 2);
   const prev = useCallback(() => setIndex((i) => Math.min(i, maxIndex) <= 0 ? maxIndex : Math.min(i, maxIndex) - 1), [maxIndex]);
   const next = useCallback(() => setIndex((i) => Math.min(i, maxIndex) >= maxIndex ? 0 : Math.min(i, maxIndex) + 1), [maxIndex]);
+
 
   return (
     <section
@@ -164,14 +174,15 @@ export function Reviews() {
               className="flex transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
               style={{ transform: `translateX(-${current * (100 / perView)}%)` }}
             >
-              {reviews.map((review, i) => {
+              {activeReviews.map((review: any, i: number) => {
                 const active = i === activeIdx;
                 return (
                   <article
-                    key={review.title}
+                    key={review.title + i}
                     className="shrink-0 px-2 sm:px-3"
                     style={{ width: `${100 / perView}%` }}
                   >
+
                     <div
                       className={`flex h-full min-h-[230px] flex-col justify-between rounded-[1.4rem] p-6 transition-colors duration-500 sm:p-7 ${
                         active

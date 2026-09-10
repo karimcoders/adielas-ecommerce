@@ -159,14 +159,12 @@ export default function AdminDashboardPage() {
             </h1>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
             <Link
-              href="/"
-              target="_blank"
-              className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-bold text-white transition hover:bg-white/20"
+              href="/admin/cms"
+              className="flex items-center gap-2 rounded-full border border-amber-400/40 bg-amber-400/20 px-4 py-2 text-xs font-extrabold text-amber-200 transition hover:bg-amber-400/30"
             >
-              <Eye className="h-3.5 w-3.5" />
-              Live Store
+              <Sparkles className="h-3.5 w-3.5 text-amber-300" />
+              Content CMS (Edit Pages)
             </Link>
             <Link
               href="/admin/products"
@@ -175,6 +173,15 @@ export default function AdminDashboardPage() {
               <Boxes className="h-3.5 w-3.5" />
               Inventory &amp; Pricing
             </Link>
+            <Link
+              href="/"
+              target="_blank"
+              className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-bold text-white transition hover:bg-white/20"
+            >
+              <Eye className="h-3.5 w-3.5" />
+              Live Store
+            </Link>
+
             <button
               onClick={handleLogout}
               className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-bold text-[var(--forest)] transition hover:bg-red-50"
