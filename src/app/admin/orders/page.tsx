@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Eye, Loader2 } from "lucide-react";
+import { Eye, Loader2, Trash2 } from "lucide-react";
 import { formatINR } from "@/lib/products";
 
 type OrderItem = {
@@ -80,6 +80,31 @@ export default function AdminOrdersPage() {
     await load();
     setUpdating(null);
     setDetail((d) => (d && d.id === order.id ? { ...d, status } : d));
+  };
+
+  const [deleting, setDeleting] = useState<string | null>(null);
+
+  const deleteOrder = async (order: Order) => {
+    const ok = window.confirm(
+      `Permanently delete order ${order.orderNumber} (${order.customerName} · ${formatINR(order.total)})?\n\nThis will remove the order and items completely.`
+    );
+    if (!ok) return;
+
+    setDeleting(order.id);
+    try {
+      const res = await fetch(`/api/orders/${order.id}`, { method: "DELETE" });
+      if (res.ok) {
+        setOrders((prev) => prev.filter((o) => o.id !== order.id));
+        if (detail?.id === order.id) setDetail(null);
+      } else {
+        const d = await res.json().catch(() => ({}));
+        alert(d.error || "Could not delete order.");
+      }
+    } catch {
+      alert("Network error while deleting order.");
+    } finally {
+      setDeleting(null);
+    }
   };
 
   const filtered = useMemo(
@@ -203,13 +228,29 @@ export default function AdminOrdersPage() {
                   )}
                 </div>
 
-                <button
-                  type="button"
-                  onClick={() => setDetail(o)}
-                  className="flex items-center gap-1 rounded-full bg-[var(--forest)] px-3.5 py-1.5 text-xs font-bold text-[var(--cream)] transition active:scale-95"
-                >
-                  <Eye className="h-3.5 w-3.5" /> Details
-                </button>
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => setDetail(o)}
+                    className="flex items-center gap-1 rounded-full bg-[var(--forest)] px-3.5 py-1.5 text-xs font-bold text-[var(--cream)] transition active:scale-95"
+                  >
+                    <Eye className="h-3.5 w-3.5" /> Details
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => deleteOrder(o)}
+                    disabled={deleting === o.id}
+                    title="Delete order"
+                    aria-label={`Delete order ${o.orderNumber}`}
+                    className="flex h-7 w-7 items-center justify-center rounded-full bg-[#fbeaea] text-[#b3352f] transition hover:bg-[#b3352f] hover:text-white active:scale-95 disabled:opacity-50"
+                  >
+                    {deleting === o.id ? (
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    ) : (
+                      <Trash2 className="h-3.5 w-3.5" />
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
           ))
@@ -226,7 +267,7 @@ export default function AdminOrdersPage() {
               <th className="px-3 py-4">Payment</th>
               <th className="px-3 py-4">Total</th>
               <th className="px-3 py-4">Status</th>
-              <th className="px-5 py-4 text-right">Detail</th>
+              <th className="px-5 py-4 text-right">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-[var(--forest)]/6">
@@ -282,14 +323,30 @@ export default function AdminOrdersPage() {
                     )}
                   </td>
                   <td className="px-5 py-3 text-right">
-                    <button
-                      type="button"
-                      onClick={() => setDetail(o)}
-                      title="View order"
-                      className="inline-flex h-8 w-8 items-center justify-center rounded-full text-[var(--forest)]/55 transition hover:bg-[var(--cloud)] hover:text-[var(--forest)]"
-                    >
-                      <Eye className="h-4 w-4" />
-                    </button>
+                    <div className="inline-flex items-center justify-end gap-1">
+                      <button
+                        type="button"
+                        onClick={() => setDetail(o)}
+                        title="View order"
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-full text-[var(--forest)]/60 transition hover:bg-[var(--cloud)] hover:text-[var(--forest)]"
+                      >
+                        <Eye className="h-4 w-4" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => deleteOrder(o)}
+                        disabled={deleting === o.id}
+                        title="Delete order"
+                        aria-label={`Delete order ${o.orderNumber}`}
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-full text-[#b3352f]/60 transition hover:bg-[#fbeaea] hover:text-[#b3352f] disabled:opacity-50"
+                      >
+                        {deleting === o.id ? (
+                          <Loader2 className="h-4 w-4 animate-spin text-[#b3352f]" />
+                        ) : (
+                          <Trash2 className="h-4 w-4" />
+                        )}
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))
@@ -402,6 +459,23 @@ export default function AdminOrdersPage() {
                   </button>
                 ))}
               </div>
+            </div>
+
+            {/* danger zone — delete order */}
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-red-200 bg-red-50/60 p-4">
+              <div>
+                <p className="text-xs font-bold text-red-900">Delete this order</p>
+                <p className="text-[11px] font-medium text-red-700/80">Permanently removes the order and its items.</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => deleteOrder(detail)}
+                disabled={deleting === detail.id}
+                className="flex items-center gap-1.5 rounded-full bg-red-600 px-4 py-2 text-xs font-bold text-white shadow-xs transition hover:bg-red-700 active:scale-95 disabled:opacity-50"
+              >
+                {deleting === detail.id ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Trash2 className="h-3.5 w-3.5" />}
+                Delete Order
+              </button>
             </div>
           </div>
         </div>

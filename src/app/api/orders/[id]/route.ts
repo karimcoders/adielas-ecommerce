@@ -65,3 +65,26 @@ export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: strin
   const order = await db.order.update({ where: { id }, data, include: { items: true } });
   return NextResponse.json({ order });
 }
+
+/** DELETE /api/orders/[id] — admin only. */
+export async function DELETE(_req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
+  const denied = requireDb();
+  if (denied) return denied;
+
+  const { id } = await ctx.params;
+  const session = await getSession();
+  if (!session || session.role !== "ADMIN") {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
+  const existing = await db.order.findFirst({
+    where: { OR: [{ id }, { orderNumber: id }] },
+  });
+  if (!existing) {
+    return NextResponse.json({ error: "Order not found." }, { status: 404 });
+  }
+
+  await db.order.delete({ where: { id: existing.id } });
+  return NextResponse.json({ ok: true, id: existing.id, orderNumber: existing.orderNumber });
+}
+
