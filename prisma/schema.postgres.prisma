@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  role      String   @default("CUSTOMER") // "CUSTOMER" or "ADMIN"
+  phone     String?
+  address   String?
+  city      String?
+  pincode   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orders    Order[]
+}
+
+model Order {
+  id             String      @id // e.g. "ADL-739201"
+  userId         String?
+  user           User?       @relation(fields: [userId], references: [id])
+  customerName   String
+  customerEmail  String
+  customerPhone  String
+  address        String
+  city           String
+  pincode        String
+  subtotal       Float
+  shippingFee    Float       @default(0)
+  total          Float
+  status         String      @default("PENDING") // PENDING, PROCESSING, SHIPPED, DELIVERED, CANCELLED
+  paymentMethod  String      @default("UPI") // UPI, CARD, COD
+  paymentStatus  String      @default("PENDING") // PENDING, PAID
+  trackingNumber String?
+  notes          String?
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  items          OrderItem[]
+}
+
+model OrderItem {
+  id          String @id @default(cuid())
+  orderId     String
+  order       Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productSlug String
+  productName String
+  quantity    Int
+  price       Float
+  image       String?
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  price       Float
+  mrp         Float?
+  stageLabel  String
+  ageLabel    String
+  weight      String
+  inStock     Boolean  @default(true)
+  stockCount  Int      @default(100)
+  rating      Float    @default(5.0)
+  reviews     Int      @default(0)
+  description String?
+  ingredients String?
+  howTo       String?
+  image       String?
+  accent      String?
+  wash        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Coupon {
+  id        String   @id @default(cuid())
+  code      String   @unique
+  discount  Float    // e.g. 10 for 10% or 100 for ₹100 flat
+  type      String   @default("PERCENTAGE") // "PERCENTAGE" or "FLAT"
+  minOrder  Float    @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model CustomPage {
+  id        String   @id @default(cuid())
+  slug      String   @unique // e.g. "privacy-policy", "shipping-policy", "about-us"
+  title     String
+  content   String
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SiteContent {
+  key       String   @id // e.g. "hero", "announcement", "mission", "benefits", "settings", "reviews"
+  data      String   // JSON string of content
+  updatedAt DateTime @updatedAt
+}
