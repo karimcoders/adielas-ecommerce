@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { toast } from "@/hooks/use-toast";
 import {
   ArrowLeft,
   Check,
@@ -124,6 +125,11 @@ export default function AdminCmsPage() {
   const showToast = (ok: boolean, msg: string) => {
     setToast({ ok, msg });
     window.setTimeout(() => setToast(null), 2600);
+    toast({
+      title: ok ? "Success" : "Error",
+      description: msg,
+      variant: ok ? "success" : "destructive",
+    });
   };
 
   const update = (section: SectionKey, patch: Record<string, unknown>) => {

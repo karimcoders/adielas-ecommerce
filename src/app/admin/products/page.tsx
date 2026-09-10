@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Loader2, Pencil, Plus, Power, Search, Trash2, X } from "lucide-react";
 import { formatINR } from "@/lib/products";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
+import { toast } from "@/hooks/use-toast";
 
 type AdminProduct = {
   id: string;
@@ -98,31 +99,90 @@ export default function AdminProductsPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setFormError(data.error ?? "Could not save.");
+        const msg = data.error ?? "Could not save.";
+        setFormError(msg);
+        toast({
+          title: "Failed to Save Product",
+          description: msg,
+          variant: "destructive",
+        });
         return;
       }
+      toast({
+        title: editing ? "Product Updated" : "Product Created",
+        description: `"${form.name || "Product"}" has been saved successfully.`,
+        variant: "success",
+      });
       setDialogOpen(false);
       load();
     } catch {
       setFormError("Network error.");
+      toast({
+        title: "Network Error",
+        description: "Failed to connect to server.",
+        variant: "destructive",
+      });
     } finally {
       setSaving(false);
     }
   };
 
   const toggleActive = async (p: AdminProduct) => {
-    await fetch(`/api/admin/products/${p.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ active: !p.active }),
-    });
+    try {
+      const res = await fetch(`/api/admin/products/${p.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ active: !p.active }),
+      });
+      if (res.ok) {
+        toast({
+          title: p.active ? "Product Hidden" : "Product Activated",
+          description: `"${p.name}" is now ${p.active ? "hidden from storefront" : "visible to customers"}.`,
+          variant: "default",
+        });
+      } else {
+        toast({
+          title: "Update Failed",
+          description: "Could not change product status.",
+          variant: "destructive",
+        });
+      }
+    } catch {
+      toast({
+        title: "Network Error",
+        description: "Failed to update product status.",
+        variant: "destructive",
+      });
+    }
     load();
   };
 
   const remove = async (p: AdminProduct) => {
     if (!window.confirm(`Delete "${p.name}" permanently? If it has orders it will be deactivated instead.`))
       return;
-    await fetch(`/api/admin/products/${p.id}?hard=1`, { method: "DELETE" });
+    try {
+      const res = await fetch(`/api/admin/products/${p.id}?hard=1`, { method: "DELETE" });
+      if (res.ok) {
+        toast({
+          title: "Product Deleted",
+          description: `"${p.name}" was removed successfully.`,
+          variant: "destructive",
+        });
+      } else {
+        const d = await res.json().catch(() => ({}));
+        toast({
+          title: "Delete Failed",
+          description: d.error || "Could not delete product.",
+          variant: "destructive",
+        });
+      }
+    } catch {
+      toast({
+        title: "Network Error",
+        description: "Failed to connect to server.",
+        variant: "destructive",
+      });
+    }
     load();
   };
 

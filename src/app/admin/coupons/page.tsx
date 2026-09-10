@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Loader2, Plus, Power, Trash2, X } from "lucide-react";
 import { formatINR } from "@/lib/products";
+import { toast } from "@/hooks/use-toast";
 
 type Coupon = {
   id: string;
@@ -60,29 +61,89 @@ export default function AdminCouponsPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error ?? "Could not create coupon.");
+        const msg = data.error ?? "Could not create coupon.";
+        setError(msg);
+        toast({
+          title: "Failed to Create Coupon",
+          description: msg,
+          variant: "destructive",
+        });
         return;
       }
+      toast({
+        title: "Coupon Created",
+        description: `Code "${form.code.toUpperCase()}" is now active.`,
+        variant: "success",
+      });
       setDialogOpen(false);
       setForm({ code: "", type: "PERCENT", value: 10, minOrder: 0, maxDiscount: "", expiresAt: "" });
       load();
+    } catch {
+      toast({
+        title: "Network Error",
+        description: "Failed to create coupon.",
+        variant: "destructive",
+      });
     } finally {
       setSaving(false);
     }
   };
 
   const toggle = async (c: Coupon) => {
-    await fetch(`/api/coupons/${c.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ active: !c.active }),
-    });
+    try {
+      const res = await fetch(`/api/coupons/${c.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ active: !c.active }),
+      });
+      if (res.ok) {
+        toast({
+          title: c.active ? "Coupon Paused" : "Coupon Activated",
+          description: `Coupon ${c.code} is now ${c.active ? "paused" : "active"}.`,
+          variant: "default",
+        });
+      } else {
+        toast({
+          title: "Update Failed",
+          description: "Could not update coupon status.",
+          variant: "destructive",
+        });
+      }
+    } catch {
+      toast({
+        title: "Network Error",
+        description: "Failed to update coupon status.",
+        variant: "destructive",
+      });
+    }
     load();
   };
 
   const remove = async (c: Coupon) => {
     if (!window.confirm(`Delete coupon ${c.code}?`)) return;
-    await fetch(`/api/coupons/${c.id}`, { method: "DELETE" });
+    try {
+      const res = await fetch(`/api/coupons/${c.id}`, { method: "DELETE" });
+      if (res.ok) {
+        toast({
+          title: "Coupon Deleted",
+          description: `Coupon ${c.code} has been removed.`,
+          variant: "destructive",
+        });
+      } else {
+        const d = await res.json().catch(() => ({}));
+        toast({
+          title: "Delete Failed",
+          description: d.error || "Could not delete coupon.",
+          variant: "destructive",
+        });
+      }
+    } catch {
+      toast({
+        title: "Network Error",
+        description: "Failed to delete coupon.",
+        variant: "destructive",
+      });
+    }
     load();
   };
 

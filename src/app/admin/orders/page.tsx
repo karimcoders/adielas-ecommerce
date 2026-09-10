@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Eye, Loader2, Trash2 } from "lucide-react";
 import { formatINR } from "@/lib/products";
+import { toast } from "@/hooks/use-toast";
 
 type OrderItem = {
   id: string;
@@ -72,11 +73,32 @@ export default function AdminOrdersPage() {
 
   const updateStatus = async (order: Order, status: string) => {
     setUpdating(order.id);
-    await fetch(`/api/orders/${order.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status }),
-    });
+    try {
+      const res = await fetch(`/api/orders/${order.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+      });
+      if (res.ok) {
+        toast({
+          title: "Order Status Updated",
+          description: `${order.orderNumber} is now marked as ${status}.`,
+          variant: "success",
+        });
+      } else {
+        toast({
+          title: "Update Failed",
+          description: "Could not update order status.",
+          variant: "destructive",
+        });
+      }
+    } catch {
+      toast({
+        title: "Network Error",
+        description: "Failed to connect to server.",
+        variant: "destructive",
+      });
+    }
     await load();
     setUpdating(null);
     setDetail((d) => (d && d.id === order.id ? { ...d, status } : d));
@@ -96,12 +118,25 @@ export default function AdminOrdersPage() {
       if (res.ok) {
         setOrders((prev) => prev.filter((o) => o.id !== order.id));
         if (detail?.id === order.id) setDetail(null);
+        toast({
+          title: "Order Deleted Successfully",
+          description: `Order ${order.orderNumber} has been permanently deleted.`,
+          variant: "destructive",
+        });
       } else {
         const d = await res.json().catch(() => ({}));
-        alert(d.error || "Could not delete order.");
+        toast({
+          title: "Could Not Delete Order",
+          description: d.error || "An error occurred while deleting.",
+          variant: "destructive",
+        });
       }
     } catch {
-      alert("Network error while deleting order.");
+      toast({
+        title: "Network Error",
+        description: "Failed to connect to server.",
+        variant: "destructive",
+      });
     } finally {
       setDeleting(null);
     }
