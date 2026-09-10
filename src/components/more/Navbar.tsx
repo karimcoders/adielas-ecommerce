@@ -8,7 +8,7 @@ import {
   TikTokIcon,
   YouTubeIcon,
 } from "./icons";
-import { ShoppingBag, Menu, X } from "lucide-react";
+import { ShoppingBag, Menu, X, User } from "lucide-react";
 import { useCart } from "./CartProvider";
 
 const socials = [
@@ -29,6 +29,16 @@ export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const lastY = useRef(0);
   const { openCart, count } = useCart();
+  const [currentUser, setCurrentUser] = useState<any>(null);
+
+  useEffect(() => {
+    fetch("/api/auth/me")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.user) setCurrentUser(data.user);
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     let raf = 0;
@@ -136,6 +146,21 @@ export function Navbar() {
             Shop now
           </Link>
 
+          <Link
+            href={
+              currentUser
+                ? currentUser.role === "ADMIN"
+                  ? "/admin"
+                  : "/account"
+                : "/login"
+            }
+            aria-label={currentUser ? "My Account" : "Sign In"}
+            title={currentUser ? `Signed in as ${currentUser.name}` : "Sign In"}
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--cream)] text-[var(--forest)] shadow-sm backdrop-blur transition hover:scale-110 hover:bg-[var(--forest)] hover:text-[var(--cream)] sm:h-11 sm:w-11"
+          >
+            <User className="h-4 w-4" />
+          </Link>
+
           <button
             type="button"
             onClick={openCart}
@@ -155,6 +180,7 @@ export function Navbar() {
         </div>
       </nav>
 
+
       {/* mobile menu sheet */}
       <div
         className={`overflow-hidden px-4 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] lg:hidden ${
@@ -162,7 +188,22 @@ export function Navbar() {
         }`}
       >
         <div className="mt-1 rounded-3xl border border-[var(--forest)]/10 bg-[var(--cream)] p-3 shadow-[0_24px_50px_rgba(69,31,34,0.22)]">
-          {[...links, { label: "Shop All", href: "/shop" }].map(
+          {[
+            ...links,
+            { label: "Shop All", href: "/shop" },
+            {
+              label: currentUser
+                ? currentUser.role === "ADMIN"
+                  ? "Admin Dashboard"
+                  : "My Account"
+                : "Sign In / Register",
+              href: currentUser
+                ? currentUser.role === "ADMIN"
+                  ? "/admin"
+                  : "/account"
+                : "/login",
+            },
+          ].map(
             ({ label, href }) => (
               <Link
                 key={label}
@@ -175,6 +216,7 @@ export function Navbar() {
               </Link>
             ),
           )}
+
           <a
             href="tel:+919845379428"
             className="mt-1 block rounded-2xl px-4 pb-2 pt-3 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--olive)]"

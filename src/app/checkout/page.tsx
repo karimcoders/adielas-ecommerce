@@ -82,6 +82,31 @@ export default function CheckoutPage() {
   const [order, setOrder] = useState<{ id: string; total: number } | null>(
     null,
   );
+  const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    async function prefillUser() {
+      try {
+        const res = await fetch("/api/auth/me");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.user) {
+            setFields((prev) => ({
+              name: prev.name || data.user.name || "",
+              email: prev.email || data.user.email || "",
+              phone: prev.phone || data.user.phone || "",
+              address: prev.address || data.user.address || "",
+              city: prev.city || data.user.city || "",
+              pincode: prev.pincode || data.user.pincode || "",
+            }));
+          }
+        }
+      } catch (e) {
+        // guest checkout fallback
+      }
+    }
+    prefillUser();
+  }, []);
 
   const lines = useMemo(
     () =>
@@ -99,7 +124,7 @@ export default function CheckoutPage() {
     setErrors((er) => ({ ...er, [key]: undefined }));
   };
 
-  const placeOrder = () => {
+  const placeOrder = async () => {
     const er: Partial<Fields> = {};
     if (fields.name.trim().length < 2) er.name = "Please enter your name";
     if (!/^[6-9]\d{9}$/.test(fields.phone.replace(/\s/g, "")))
@@ -113,11 +138,46 @@ export default function CheckoutPage() {
     setErrors(er);
     if (Object.keys(er).length > 0) return;
 
-    const id = `ADL-${String(Date.now()).slice(-6)}`;
-    setOrder({ id, total });
-    clear();
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    try {
+      setSubmitting(true);
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customerName: fields.name,
+          customerEmail: fields.email,
+          customerPhone: fields.phone,
+          address: fields.address,
+          city: fields.city,
+          pincode: fields.pincode,
+          items: lines.map((l) => ({
+            slug: l.item.slug,
+            name: l.product!.name,
+            qty: l.item.qty,
+            price: l.product!.price,
+            image: l.product!.image,
+          })),
+          subtotal,
+          shippingFee: shipping,
+          paymentMethod: method.toUpperCase(),
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.order) {
+        setOrder({ id: data.order.id, total: data.order.total });
+        clear();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        throw new Error(data.error || "Failed to place order");
+      }
+    } catch (err: any) {
+      alert(err.message || "Failed to place order");
+    } finally {
+      setSubmitting(false);
+    }
   };
+
 
   /* ---------- success screen ---------- */
   if (order) {
